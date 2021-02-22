@@ -8,8 +8,6 @@ int main()
     float point2_x, point2_y;
     float point3_x, point3_y;
 
-    printf("info\n");
-
     scanf("%f%f", &point1_x, &point1_y);
     scanf("%f%f", &point2_x, &point2_y);
     scanf("%f%f", &point3_x, &point3_y);
