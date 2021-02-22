@@ -17,12 +17,13 @@ bool equal(double a, double b)
 }
 
 int check_point_position(double point_x, double point_y,
-                         double line_point1_x, double line_point1_y,
-                         double line_point2_x, double line_point2_y)
+double line_point1_x, double line_point1_y,
+double line_point2_x, double line_point2_y)
 {
     // line equation
     double line_coefficient = (line_point1_y - line_point2_y)
-                            / (line_point1_x - line_point2_x);
+        / (line_point1_x - line_point2_x);
+
     double line_free = line_point1_y - line_coefficient * line_point1_x;
 
     // so now y = line_coefficient * x + line_free. Just put out point there:
@@ -82,8 +83,8 @@ int main()
     {
         // general
         result = check_point_position(point_x, point_y,
-                                    line_point1_x, line_point1_y,
-                                    line_point2_x, line_point2_y);
+        line_point1_x, line_point1_y,
+        line_point2_x, line_point2_y);
     }
 
     printf("%d", result);
