@@ -25,15 +25,15 @@ int main()
 
     double distance_x = abs(point1_x - point2_x);
     double distance_y = abs(point1_y - point2_y);
-    perimeter += sqrt(distance_x * distance_x + distance_y + distance_y);
+    perimeter += sqrt(distance_x * distance_x + distance_y * distance_y);
 
     distance_x = abs(point2_x - point3_x);
     distance_y = abs(point2_y - point3_y);
-    perimeter += sqrt(distance_x * distance_x + distance_y + distance_y);
+    perimeter += sqrt(distance_x * distance_x + distance_y * distance_y);
 
     distance_x = abs(point1_x - point3_x);
     distance_y = abs(point1_y - point3_y);
-    perimeter += sqrt(distance_x * distance_x + distance_y + distance_y);
+    perimeter += sqrt(distance_x * distance_x + distance_y * distance_y);
 
     /*perimeter += distance(point1_x, point1_y, point2_x, point2_y);
     perimeter += distance(point1_x, point1_y, point3_x, point3_y);
