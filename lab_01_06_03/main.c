@@ -3,15 +3,15 @@
 //#include <stdlib.h>
 #include <math.h>
 
-//false, if succeded
-bool get_point_from_user(double *x, double *y)
+//0, if succeded
+int get_point_from_user(double *x, double *y)
 {
     int succesfully_scanned = scanf("%lf%lf", x, y);
 
     return succesfully_scanned != 2;
 }
 
-/*bool equal(double a, double b)
+/*int equal(double a, double b)
 {
     return fabs(a - b) < 1e-10;
 }*/
