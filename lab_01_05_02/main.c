@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-void swap(int* a, int* b)
+void swap(int *a, int *b)
 {
     int t = *a;
     *a = *b;
@@ -10,6 +10,12 @@ void swap(int* a, int* b)
 int biggest_common_factor(int a, int b)
 {
     // Using euclid's algorythm
+
+    if (a < 0)
+        a = -a;
+    
+    if (b < 0)
+        b = -b;
 
     while (a != b)
     {
@@ -28,7 +34,7 @@ int main()
 
     int succesfully_read = scanf("%d%d", &a, &b);
 
-    if (succesfully_read != 2 || a <= 0 || b <= 0)
+    if (succesfully_read != 2 || a == 0 || b == 0)
     {
         return -1;
     }
