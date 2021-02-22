@@ -11,10 +11,10 @@ bool get_point_from_user(double *x, double *y)
     return succesfully_scanned != 2;
 }
 
-bool equal(double a, double b)
+/*bool equal(double a, double b)
 {
     return fabs(a - b) < 1e-10;
-}
+}*/
 
 int check_point_position(double point_x, double point_y,
 double line_point1_x, double line_point1_y,
@@ -29,7 +29,7 @@ double line_point2_x, double line_point2_y)
     // so now y = line_coefficient * x + line_free. Just put out point there:
     double result = line_coefficient * point_x + line_free - point_y;
 
-    if (equal(result, 0.0))
+    if (result == 0.0)
         return 1;
     else if (result > 0.0)
         return 2;
