@@ -8,7 +8,7 @@ int get_point_from_user(double *x, double *y)
 {
     int succesfully_scanned = scanf("%lf%lf", x, y);
 
-    return succesfully_scanned != 2;
+    return (int)(succesfully_scanned != 2);
 }
 
 /*int equal(double a, double b)
@@ -26,7 +26,7 @@ double line_point2_x, double line_point2_y)
 
     double line_free = line_point1_y - line_coefficient * line_point1_x;
 
-    // so now y = line_coefficient * x + line_free. Just put out point there:
+    // so now y = line_coefficient * x + line_free. Just put our point there:
     double result = line_coefficient * point_x + line_free - point_y;
 
     if (result == 0.0)
