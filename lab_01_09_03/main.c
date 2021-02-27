@@ -5,7 +5,7 @@
 
 void add_element_in_array(double **array, double value, int current_size)
 {
-    double* new_pointer = (double*)malloc(sizeof(double) * (current_size + 1));
+    double *new_pointer = (double*)malloc(sizeof(double) * (current_size + 1));
     memcpy(new_pointer, *array, sizeof(double)*current_size);
     free(*array);
     new_pointer[current_size] = value;
@@ -18,7 +18,7 @@ double calculate_expression(double *array, int array_size)
 
     for (int i = 1; i <= array_size; i++)
     {
-        result /= array[i-1] + i;
+        result /= array[i - 1] + i;
     }
 
     return exp(result);
@@ -38,7 +38,7 @@ int main()
 {
     double value;
 
-    double* array = NULL;
+    double *array = NULL;
     int array_size = 0;
 
     while (1)
