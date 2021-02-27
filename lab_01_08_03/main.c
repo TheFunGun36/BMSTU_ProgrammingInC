@@ -1,10 +1,7 @@
 #include <stdio.h>
 
-
 void swap_bytes(unsigned int *value, int index1, int index2)
 {
-    //index1 = 7 - index1;
-    //index2 = 7 - index2;
     int v1 = (*value & (1 << index1)) >> index1;
     int v2 = (*value & (1 << index2)) >> index2;
     *value &= ~(1 << index1 | 1 << index2);
@@ -21,7 +18,7 @@ void print_bin(unsigned int value)
     for (int i = 0; i <= bits_last_index; i += 1)
         str[i] = (value & (1 << (bits_last_index - i))) ? '1' : '0';
     
-    printf("%s", str);
+    printf("Result: %s", str);
 }
 
 unsigned int encrypt(unsigned int value)
@@ -41,7 +38,10 @@ int main()
     unsigned int number;
 
     if (scanf("%ud", &number) != 1)
+    {
+        printf("Error: incorrect input");
         return -1;
+    }
 
     number = encrypt(number);
     print_bin(number);
