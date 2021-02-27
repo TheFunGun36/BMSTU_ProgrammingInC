@@ -40,7 +40,7 @@ int main()
 {
     unsigned int number;
 
-    if (scanf("%d", &number) != 1)
+    if (scanf("%ud", &number) != 1)
         return -1;
 
     number = encrypt(number);
