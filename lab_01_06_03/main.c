@@ -84,10 +84,7 @@ int main()
         // horizontal
         if (equal(point_y, line_point1_y))
             result = 1;
-        else if (point_y > line_point1_y)
-            result = 0;
-        else
-            result = 2;
+        else return -1;
     }
     else 
     {
