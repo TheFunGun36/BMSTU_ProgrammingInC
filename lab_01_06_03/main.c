@@ -32,9 +32,9 @@ double line_point2_x, double line_point2_y)
     if (equal(result, 0.0))
         return 1;
     else if (result > 0.0)
-        return 2;
-    else
         return 0;
+    else
+        return 2;
 }
 
 int main()
