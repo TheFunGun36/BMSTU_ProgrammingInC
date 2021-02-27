@@ -11,10 +11,10 @@ int get_point_from_user(double *x, double *y)
     return (int)(succesfully_scanned != 2);
 }
 
-/*int equal(double a, double b)
+int equal(double a, double b)
 {
     return fabs(a - b) < 1e-10;
-}*/
+}
 
 int check_point_position(double point_x, double point_y,
 double line_point1_x, double line_point1_y,
@@ -29,7 +29,7 @@ double line_point2_x, double line_point2_y)
     // so now y = line_coefficient * x + line_free. Just put our point there:
     double result = line_coefficient * point_x + line_free - point_y;
 
-    if (result == 0.0)
+    if (equal(result, 0.0))
         return 1;
     else if (result > 0.0)
         return 2;
@@ -58,7 +58,7 @@ int main()
 
     int result;
 
-    if (line_point1_x == line_point2_x)
+    if (equal(line_point1_x, line_point2_x))
     {   
         // vertical
 
@@ -69,12 +69,12 @@ int main()
         return -1;
     }
         
-    if (line_point1_y == line_point2_y)
+    if (equal(line_point1_y, line_point2_y))
     {
         // horizontal
         if (point_y > line_point1_y)
             result = 0;
-        else if (point_y == line_point1_y)
+        else if (equal(point_y, line_point1_y))
             result = 1;
         else
             result = 2;
