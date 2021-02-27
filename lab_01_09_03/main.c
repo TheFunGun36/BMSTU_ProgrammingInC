@@ -24,15 +24,15 @@ double calculate_expression(double *array, int array_size)
     return exp(result);
 }
 
-/*int is_zero(double *value)
+int is_zero(double *value)
 {
-    if (fabs(*value) <= 1e-10)
+    if (fabs(*value) <= 1e-6)
     {
         *value = 0.0;
         return 1;
     }
     return 0;
-}*/
+}
 
 int main()
 {
@@ -50,7 +50,7 @@ int main()
             return -1;
         }
 
-        if (value >= 0)
+        if (value >= 0 || is_zero(&value))
         {
             add_element_in_array(&array, value, array_size);
             array_size += 1;
