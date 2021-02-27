@@ -50,7 +50,7 @@ int main()
             return -1;
         }
 
-        if (value >= 0) // || is_zero(&value))
+        if (value >= 0)
         {
             add_element_in_array(&array, value, array_size);
             array_size += 1;
