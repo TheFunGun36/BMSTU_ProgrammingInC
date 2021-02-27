@@ -15,7 +15,7 @@ void swap_bytes(unsigned int *value, int index1, int index2)
 void print_bin(unsigned int value)
 {
     const int bits_last_index = 31;
-    char str[bits_last_index + 2];
+    char str[33];
     str[bits_last_index + 1] = '\0';
 
     for (int i = 0; i <= bits_last_index; i += 1)
