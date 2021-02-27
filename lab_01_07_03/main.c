@@ -4,7 +4,6 @@
 int equal(double value_a, double value_b)
 {
     return fabs(value_a - value_b) <= 1e-10;
-
 }
 
 double calculate_f(double x)
