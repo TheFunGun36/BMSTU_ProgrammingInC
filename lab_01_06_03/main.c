@@ -64,18 +64,28 @@ int main()
 
         /* Task says "above" or "below", since vertical line has
          * only "left" and "right" we can't actually answer given question.
+         * ... but let's try left side as "above"
          */ 
 
-        return -1;
+        if (equal(point_x, line_point1_x))
+            result = 1;
+        else if (point_x < line_point1_x)
+            result = 0;
+        else
+            result = 1;
+
+        printf("%d", result);
+
+        return 0;
     }
         
     if (equal(line_point1_y, line_point2_y))
     {
         // horizontal
-        if (point_y > line_point1_y)
-            result = 0;
-        else if (equal(point_y, line_point1_y))
+        if (equal(point_y, line_point1_y))
             result = 1;
+        else if (point_y > line_point1_y)
+            result = 0;
         else
             result = 2;
     }
