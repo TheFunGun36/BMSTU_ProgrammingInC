@@ -69,10 +69,8 @@ int main()
 
         if (equal(point_x, line_point1_x))
             result = 1;
-        else if (point_x < line_point1_x)
-            result = 0;
-        else
-            result = 1;
+        else 
+            return -1;
 
         printf("%d", result);
 
@@ -84,8 +82,10 @@ int main()
         // horizontal
         if (equal(point_y, line_point1_y))
             result = 1;
+        else if (point_y < line_point1_y)
+            result = 2;
         else
-            return -1;
+            result = 0;
     }
     else 
     {
