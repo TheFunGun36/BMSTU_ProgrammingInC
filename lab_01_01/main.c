@@ -1,5 +1,5 @@
 #include <stdio.h>
-int main{}
+int main()
 (
 int s;
 s: = 56;
