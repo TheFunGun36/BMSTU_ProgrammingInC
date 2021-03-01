@@ -61,7 +61,12 @@ int main()
     if (equal(line_point1_x, line_point2_x))
     {   
         // vertical
-        return -1;
+        if (equal(point_x, line_point1_x))
+            return 1;
+        else if (point_x > line_point1_x)
+            return 2;
+        return 0;
+        //return -1;
     }
         
     if (equal(line_point1_y, line_point2_y))
