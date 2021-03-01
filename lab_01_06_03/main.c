@@ -13,7 +13,7 @@ int get_point_from_user(double *x, double *y)
 
 int equal(double a, double b)
 {
-    return fabs(a - b) < 1e-5;
+    return fabs(a - b) < 1e-10;
 }
 
 int check_point_position(double point_x, double point_y,
@@ -45,13 +45,13 @@ int main()
     double line_point1_x, line_point1_y;
     double line_point2_x, line_point2_y;
 
-    if (get_point_from_user(&point_x, &point_y))
-        return -1;
-
     if (get_point_from_user(&line_point1_x, &line_point1_y))
         return -1;
 
     if (get_point_from_user(&line_point2_x, &line_point2_y))
+        return -1;
+
+    if (get_point_from_user(&point_x, &point_y))
         return -1;
 
     // ALGORYTHM
@@ -61,20 +61,7 @@ int main()
     if (equal(line_point1_x, line_point2_x))
     {   
         // vertical
-
-        /* Task says "above" or "below", since vertical line has
-         * only "left" and "right" we can't actually answer given question.
-         * ... but let's try left side as "above"
-         */ 
-
-        if (equal(point_x, line_point1_x))
-            result = 1;
-        else 
-            return -1;
-
-        printf("%d", result);
-
-        return 0;
+        return -1;
     }
         
     if (equal(line_point1_y, line_point2_y))
