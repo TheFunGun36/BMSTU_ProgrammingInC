@@ -3,5 +3,5 @@ int main()
 {
 int s;
 s = 56;
-printf (Year has s weeks)
+printf ("Year has s weeks")
 }
