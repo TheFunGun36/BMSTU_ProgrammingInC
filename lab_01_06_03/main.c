@@ -13,7 +13,7 @@ int get_point_from_user(double *x, double *y)
 
 int equal(double a, double b)
 {
-    return fabs(a - b) < 1e-10;
+    return fabs(a - b) < 1e-6;
 }
 
 int check_point_position(double point_x, double point_y,
