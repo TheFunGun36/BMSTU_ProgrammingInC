@@ -66,7 +66,7 @@ int main()
         // vertical
         if (equal(point_x, line_point1_x))
             result = 1;
-        else if (point_x > line_point1_x)
+        else if (point_x < line_point1_x)
             result = 2;
         result = 0;
         //return -1;
