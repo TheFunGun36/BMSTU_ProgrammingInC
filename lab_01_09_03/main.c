@@ -1,27 +1,48 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <math.h>
 
-void add_element_in_array(double **array, double value, int current_size)
+#define EXIT_OK 0
+#define EXIT_ERR_INVALID_INPUT -1
+#define EXIT_ERR_NO_INPUT -2
+
+int is_zero(double *value);
+int start_input_loop(double *result);
+
+int main()
 {
-    double *new_pointer = (double*)malloc(sizeof(double) * (current_size + 1));
-    memcpy(new_pointer, *array, sizeof(double)*current_size);
-    free(*array);
-    new_pointer[current_size] = value;
-    *array = new_pointer;
+    double exp_argument = 1;
+    
+    int exit_code = start_input_loop(&exp_argument);
+
+    if (exit_code != EXIT_OK)
+        return exit_code;
+
+    printf("%lf", exp(exp_argument));
+
+    return EXIT_OK;
 }
 
-double calculate_expression(double *array, int array_size)
+int start_input_loop(double *result)
 {
-    double result = 1;
+    *result = 1.0;
+    double current_value = 1.0;
+    int i;
 
-    for (int i = 1; i <= array_size; i++)
+    for (i = 1; current_value >= 0 || is_zero(&current_value); i++)
     {
-        result /= array[i - 1] + i;
+        if (scanf("%lf", &current_value) != 1)
+            return EXIT_ERR_INVALID_INPUT;
+
+        if (current_value >= 0 || is_zero(&current_value))
+            *result /= current_value + i;
+        else
+            break;
     }
 
-    return exp(result);
+    if (i == 1)
+        return EXIT_ERR_NO_INPUT;
+
+    return EXIT_OK;
 }
 
 int is_zero(double *value)
@@ -31,44 +52,6 @@ int is_zero(double *value)
         *value = 0.0;
         return 1;
     }
-    return 0;
-}
 
-int main()
-{
-    double value;
-
-    double *array = NULL;
-    int array_size = 0;
-
-    while (1)
-    {
-        if (scanf("%lf", &value) != 1)
-        {
-            if (array != NULL)
-                free(array);
-            return -1;
-        }
-
-        if (value >= 0 || is_zero(&value))
-        {
-            add_element_in_array(&array, value, array_size);
-            array_size += 1;
-        }
-        else
-            break;
-    }
-    
-    if (array_size == 0)
-    {
-        free(array);
-        return -2;
-    }
-
-    double result = calculate_expression(array, array_size);
-
-    printf("%lf", result);
-
-    free(array);
     return 0;
 }
