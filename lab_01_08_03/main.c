@@ -1,7 +1,5 @@
 #include <stdio.h>
 
-//#define CAN_USE_STATIC_ARRAY
-
 #define EXIT_OK 0
 #define EXIT_INVALID_INPUT -1
 
@@ -38,20 +36,10 @@ void swap_bytes(unsigned int *value, int index1, int index2)
 
 void print_bin(unsigned int value)
 {
-#ifdef CAN_USE_STATIC_ARRAY
-    char str[BITS_AMOUNT + 1];
-    str[BITS_AMOUNT] = '\0';
-
-    for (int i = 0; i < BITS_AMOUNT; i += 1)
-        str[i] = (value & (1 << (BITS_AMOUNT - 1 - i))) ? '1' : '0';
-    
-    printf("Result: %s", str);
-#else
     printf("Result: ");
 
     for (int i = 0; i < BITS_AMOUNT; i += 1)
-        printf("%c", (value & (1 << (BITS_AMOUNT - 1 - i))) ? '1' : '0');
-#endif
+        printf("%c", value & (1 << (BITS_AMOUNT - 1 - i)));
 }
 
 unsigned int encrypt(unsigned int value)
