@@ -48,19 +48,18 @@ double calculate_f(double x)
 
 double calculate_s(double x, double e)
 {
-    double sum = 0.0;
+    double sum = x;
     double delta_sum = e + 1.0;
-    int odd_num_counter = 1;
-    int sign = 1;
+    double element = x;
 
-    for (int i = 0; delta_sum > e; i += 1)
+    for (int i = 1; delta_sum > e; i += 1)
     {
-        double element = sign * pow(x, (double)odd_num_counter) / (double)odd_num_counter;
-
-        odd_num_counter += 2;
-        sign *= -1;
+        element *= x * x;
+        element *= 2 * (i - 1) + 1;
+        element /= 2 * i + 1;
+        element *= -1;
+     
         double new_sum = sum + element;
-        
         delta_sum = fabs(new_sum - sum);
         sum = new_sum;
     }
