@@ -26,7 +26,7 @@ int main()
 
     printf("%lf", result);
 
-    return 0;
+    return exit_code;
 }
 
 int get_geometric_mean(const int *array, int arr_size, double *result)

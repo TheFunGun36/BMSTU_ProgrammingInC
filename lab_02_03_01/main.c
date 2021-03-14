@@ -14,9 +14,13 @@ int main()
 {
     int array[ARR_SIZE_MAX];
     int arr_size_new;
-    start_input_loop(array, ARR_SIZE, &arr_size_new);
+    int exit_code = start_input_loop(array, ARR_SIZE, &arr_size_new);
+    
+    if (exit_code != OK)
+        return exit_code;
+        
     print_array(array, arr_size_new);
-    return 0;
+    return exit_code;
 }
 
 void get_next_fib(int *first, int *second)

@@ -24,7 +24,7 @@ int main()
 
     print_array(array, new_array_size);
 
-    return 0;
+    return exit_code;
 }
 
 int get_array_from_user(int *array, int arr_size)
