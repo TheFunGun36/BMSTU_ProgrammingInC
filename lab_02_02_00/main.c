@@ -5,6 +5,7 @@
 #define OK 0
 #define WRONG_INPUT -1
 #define WRONG_ARRAY_SIZE -2
+#define NO_ELEMENTS_IN_NEW_ARRAY -3
 
 int get_array_from_user(int *array, int *arr_size);
 double get_arithmetic_mean(int *array, int arr_size);
@@ -21,6 +22,9 @@ int main()
         return exit_code;
 
     reform_array(array, &array_size);
+
+    if (array_size <= 0)
+        return NO_ELEMENTS_IN_NEW_ARRAY;
 
     print_array(array, array_size);
 
