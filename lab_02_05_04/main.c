@@ -4,8 +4,9 @@
 
 #define OK 0
 #define WRONG_INPUT -1
+#define WRONG_ARRAY_SIZE -2
 
-int get_array_from_user(int *arr_begin, int *arr_end);
+int get_array_from_user(int *arr_begin, int **arr_end);
 int get_elements_amount(int *arr_begin, int *arr_end, int value);
 int get_unique_numbers_amount(int *arr_begin, int *arr_end);
 void print_array(int *array, int arr_size);
@@ -13,9 +14,8 @@ void print_array(int *array, int arr_size);
 int main()
 {
     int array[ARR_SIZE];
-    int *array_end = array + ARR_SIZE;
-
-    int exit_code = get_array_from_user(array, array_end);
+    int *array_end;
+    int exit_code = get_array_from_user(array, &array_end);
     
     if (exit_code != OK)
         return exit_code;
@@ -27,9 +27,19 @@ int main()
     return exit_code;
 }
 
-int get_array_from_user(int *array, int *array_end)
+int get_array_from_user(int *array, int **array_end)
 {
-    while (array < array_end)
+    int arr_size;
+
+    if (scanf("%d", &arr_size) != 1)
+        return WRONG_ARRAY_SIZE;
+
+    if (arr_size <= 0 || arr_size > 10)
+        return WRONG_ARRAY_SIZE;
+
+    *array_end = array + arr_size;
+
+    while (array < *array_end)
     {
         if (scanf("%d", array) != 1)
             return WRONG_INPUT;
