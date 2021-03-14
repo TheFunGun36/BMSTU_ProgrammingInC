@@ -32,8 +32,6 @@ int get_array_from_user(int *array, int *arr_size)
 
         if (result != 1)
         {
-            if (i == 0)
-                return NO_ELEMENTS;
 
             *arr_size = i;
             return OK;
