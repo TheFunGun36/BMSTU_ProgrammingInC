@@ -21,12 +21,13 @@ int main()
 
     insertion_sort(array, array_size);
     print_array(array, array_size);
+    printf("\n%d\n", exit_code);
     return exit_code;
 }
 
-int get_array_from_user(int *array, int *arr_size)
+int get_array_from_user(int *array, int *array_size)
 {
-    for (int i = 0; i < *arr_size; i++)
+    for (int i = 0; i < *array_size; i++)
     {
         int result = scanf("%d", &array[i]);
 
@@ -35,7 +36,7 @@ int get_array_from_user(int *array, int *arr_size)
             if (i == 0)
                 return NO_ELEMENTS;
 
-            *arr_size = i;
+            *array_size = i;
             return OK;
         }
     }
@@ -43,9 +44,9 @@ int get_array_from_user(int *array, int *arr_size)
     return ARRAY_OVERFLOW;
 }
 
-void insertion_sort(int *array, int arr_size)
+void insertion_sort(int *array, int array_size)
 {
-    for (int i = 1; i < arr_size; i++)
+    for (int i = 1; i < array_size; i++)
     {
         int current_value = array[i];
         int shift_from = 0;
@@ -54,16 +55,14 @@ void insertion_sort(int *array, int arr_size)
             shift_from++;
 
         for (int j = i; j > shift_from; j--)
-        {
             array[j] = array[j - 1];
-        }
 
         array[shift_from] = current_value;
     }
 }
 
-void print_array(int *array, int arr_size)
+void print_array(int *array, int array_size)
 {
-    for (int i = 0; i < arr_size; i++)
+    for (int i = 0; i < array_size; i++)
         printf("%d ", array[i]);
 }
