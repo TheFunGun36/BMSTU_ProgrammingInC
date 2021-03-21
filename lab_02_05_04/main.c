@@ -26,15 +26,17 @@ int main()
 
 int get_array_from_user(int *array, int **array_end)
 {
-    int arr_size;
+    {
+        int arr_size;
+        
+        if (scanf("%d", &arr_size) != 1)
+            return WRONG_ARRAY_SIZE;
 
-    if (scanf("%d", &arr_size) != 1)
+        *array_end = array + arr_size;
+    }
+
+    if (array == *array_end || (*array_end - array) > 10)
         return WRONG_ARRAY_SIZE;
-
-    if (arr_size <= 0 || arr_size > 10)
-        return WRONG_ARRAY_SIZE;
-
-    *array_end = array + arr_size;
 
     while (array < *array_end)
     {
@@ -51,7 +53,7 @@ int count_elements_with_value(int *arr_begin, int *arr_end, int value)
 {
     int result = 0;
 
-    while (arr_begin < arr_end)
+    while (arr_begin != arr_end)
     {
         if (*arr_begin == value)
             result++;
