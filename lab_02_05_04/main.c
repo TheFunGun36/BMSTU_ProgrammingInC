@@ -28,14 +28,14 @@ int get_array_from_user(int *array, int **array_end)
 {
     {
         int arr_size;
-        
+
         if (scanf("%d", &arr_size) != 1)
             return WRONG_ARRAY_SIZE;
 
         *array_end = array + arr_size;
     }
 
-    if (array == *array_end || (*array_end - array) > 10)
+    if ((*array_end - array) <= 0 || (*array_end - array) > 10)
         return WRONG_ARRAY_SIZE;
 
     while (array < *array_end)
