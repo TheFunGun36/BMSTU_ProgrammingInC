@@ -49,7 +49,7 @@ int get_array_from_user(int *array, int **array_end)
     return OK;
 }
 
-int count_elements_with_value(int *arr_begin, int *arr_end, int value)
+/*int count_elements_with_value(int *arr_begin, int *arr_end, int value)
 {
     int result = 0;
 
@@ -62,11 +62,28 @@ int count_elements_with_value(int *arr_begin, int *arr_end, int value)
     }
 
     return result;
-}
+}*/
 
 int get_unique_numbers_amount(int *arr_begin, int *arr_end)
 {
-    int result = 0;
+    int result = arr_end - arr_begin;
+
+    while (arr_begin < arr_end - 1)
+    {
+        int *temp_pointer = arr_begin + 1;
+
+        while (temp_pointer < arr_end && *temp_pointer != *arr_begin)
+            temp_pointer++;
+
+        if (temp_pointer != arr_end)
+            result--;
+
+        arr_begin++;
+    }
+
+    return result;
+
+    /*int result = 0;
     int *current_element = arr_begin;
 
     while (current_element < arr_end)
@@ -77,5 +94,5 @@ int get_unique_numbers_amount(int *arr_begin, int *arr_end)
         current_element++;
     }
 
-    return result;
+    return result;*/
 }
