@@ -21,7 +21,6 @@ int main()
 
     insertion_sort(array, array_size);
     print_array(array, array_size);
-    //printf("\n%d\n", exit_code);
     return exit_code;
 }
 
@@ -36,12 +35,12 @@ int get_array_from_user(int *array, int *array_size)
 
     int return_code;
 
-    if (*array_size > 10 && result == 1)
+    if (i > 10 && result == 1)
     {
         *array_size = 10;
         return_code = ARRAY_OVERFLOW;
     }
-    else if (*array_size <= 0)
+    else if (i <= 1)
     {
         return_code = NO_ELEMENTS;
     }
