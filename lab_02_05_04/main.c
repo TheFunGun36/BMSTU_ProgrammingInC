@@ -7,7 +7,7 @@
 #define WRONG_ARRAY_SIZE -2
 
 int get_array_from_user(int *arr_begin, int **arr_end);
-int get_amount_of_elements_with_value(int *arr_begin, int *arr_end, int value);
+int count_elements_with_value(int *arr_begin, int *arr_end, int value);
 int get_unique_numbers_amount(int *arr_begin, int *arr_end);
 
 int main()
@@ -20,9 +20,7 @@ int main()
         return exit_code;
 
     int unique_numbers_amount = get_unique_numbers_amount(array, array_end);
-
     printf("%d", unique_numbers_amount);
-
     return exit_code;
 }
 
@@ -49,7 +47,7 @@ int get_array_from_user(int *array, int **array_end)
     return OK;
 }
 
-int get_amount_of_elements_with_value(int *arr_begin, int *arr_end, int value)
+int count_elements_with_value(int *arr_begin, int *arr_end, int value)
 {
     int result = 0;
 
@@ -71,7 +69,7 @@ int get_unique_numbers_amount(int *arr_begin, int *arr_end)
 
     while (current_element < arr_end)
     {
-        if (get_amount_of_elements_with_value(arr_begin, arr_end, *current_element) == 1)
+        if (count_elements_with_value(arr_begin, arr_end, *current_element) == 1)
             result++;
 
         current_element++;
