@@ -9,10 +9,10 @@
 
 int get_matrix_size(size_t *size_x, size_t *size_y)
 {
-    if (scanf("%lud", size_y) != 1 || *size_y <= 0 || *size_y > MAX_MATRIX_SIZE_Y)
+    if (scanf("%lud", size_y) != 1 || *size_y <= 1 || *size_y > MAX_MATRIX_SIZE_Y)
         return INVALID_SZ_Y;
 
-    if (scanf("%lud", size_x) != 1 || *size_x <= 0 || *size_x > MAX_MATRIX_SIZE_X)
+    if (scanf("%lud", size_x) != 1 || *size_x <= 1 || *size_x > MAX_MATRIX_SIZE_X)
         return INVALID_SZ_X;
     
     return OK;
@@ -67,7 +67,6 @@ void create_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y
             current_number++;
         }
     }
-
 }
 
 void print_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
