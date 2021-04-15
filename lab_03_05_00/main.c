@@ -44,6 +44,15 @@ int is_prime(int value)
     return 1;
 }
 
+int array_has_primes(int *array, size_t size)
+{
+    for (int i = 0; i < size; i++)
+        if (is_prime(array[i]))
+            return 1;
+
+    return 0;
+}
+
 void swap(int *a, int *b)
 {
     int tmp = *a;
@@ -51,7 +60,7 @@ void swap(int *a, int *b)
     *b = tmp;
 }
 
-void reconstruct_matrix(int* matrix, size_t size)
+void reconstruct_matrix(int *matrix, size_t size)
 {
     int *prime1 = matrix;
     int *prime2 = matrix + size;
@@ -94,9 +103,15 @@ int main()
     if (exit_code != OK)
         return exit_code;
 
-    reconstruct_matrix(array, array_size);
-
-    print_matrix(array, array_size, matrix_size_x);
+    if (array_has_primes(array, array_size))
+    {
+        reconstruct_matrix(array, array_size);
+        print_matrix(array, array_size, matrix_size_x);
+    }
+    else
+    {
+        exit_code = NO_PRIME_NUMBERS;
+    }
 
     return exit_code;
 }
