@@ -31,22 +31,30 @@ int get_matrix_from_user(int matrix[][MAX_MATRIX_SIZE_X], size_t *size_x, size_t
 
 void reconstruct_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
 {
-    for (unsigned int i = 0; i < size_x; i++)
-    {   
-        if (matrix[0][i] != 0)
-        {
-            int is_last_positive = (matrix[0][i] > 0);
-
-            matrix[0][i] = 1;
-
-            for (unsigned int j = 1; j < size_y && matrix[0][i]; j++)
+    if (size_y == 1)
+    {
+        for (int i = 0; i < size_x; i++)
+            matrix[0][i] = 0;
+    }
+    else
+    {
+        for (unsigned int i = 0; i < size_x; i++)
+        {   
+            if (matrix[0][i] != 0)
             {
-                if (matrix[j][i] == 0)
-                    matrix[0][i] = 0;
-                else if ((is_last_positive && (matrix[j][i] > 0)) || (!is_last_positive && (matrix[j][i] < 0)))
-                    matrix[0][i] = 0;
-                else
-                    is_last_positive = !is_last_positive;
+                int is_last_positive = (matrix[0][i] > 0);
+
+                matrix[0][i] = 1;
+
+                for (unsigned int j = 1; j < size_y && matrix[0][i]; j++)
+                {
+                    if (matrix[j][i] == 0)
+                        matrix[0][i] = 0;
+                    else if ((is_last_positive && (matrix[j][i] > 0)) || (!is_last_positive && (matrix[j][i] < 0)))
+                        matrix[0][i] = 0;
+                    else
+                        is_last_positive = !is_last_positive;
+                }
             }
         }
     }
