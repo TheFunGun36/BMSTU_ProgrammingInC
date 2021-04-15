@@ -30,10 +30,13 @@ int get_matrix_from_user(int matrix[][MAX_MATRIX_SIZE_X], size_t *size_x, size_t
 
 int get_col_min_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_y, unsigned int col)
 {
-    int result = 1;
+    int result = matrix[0][col];
 
     for (unsigned int i = 0; i < size_y; i++)
-        result *= matrix[i][col];
+    {
+        if (matrix[i][col] < result)
+            result = matrix[i][col];
+    }
 
     return result;
 }
@@ -61,7 +64,7 @@ void sort_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
 
         for (unsigned int j = i + 1; j < size_x; j++)
         {
-            if (matrix[size_y][i] < matrix[size_y][j])
+            if (matrix[size_y][best_index] < matrix[size_y][j])
                 best_index = j;
         }
 
