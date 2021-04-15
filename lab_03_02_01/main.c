@@ -56,7 +56,7 @@ void find_min_digit_sum_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, 
         {
             int current_sum = calculate_digit_sum(matrix[i][j]);
 
-            if (current_sum > last_sum)
+            if (current_sum < last_sum)
             {
                 best_pos_x = j;
                 best_pos_y = i;
