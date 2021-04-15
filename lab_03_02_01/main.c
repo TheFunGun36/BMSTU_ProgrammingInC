@@ -10,10 +10,10 @@
 
 int get_matrix_from_user(int matrix[][MAX_MATRIX_SIZE_X], size_t *size_x, size_t *size_y)
 {
-    if (scanf("%lud", size_y) != 1 || *size_y <= 0 || *size_y > MAX_MATRIX_SIZE_Y)
+    if (scanf("%lud", size_y) != 1 || *size_y <= 1 || *size_y > MAX_MATRIX_SIZE_Y)
         return INVALID_SZ_Y;
 
-    if (scanf("%lud", size_x) != 1 || *size_x <= 0 || *size_x > MAX_MATRIX_SIZE_X)
+    if (scanf("%lud", size_x) != 1 || *size_x <= 1 || *size_x > MAX_MATRIX_SIZE_X)
         return INVALID_SZ_X;
 
     for (unsigned int i = 0; i < *size_y; i++)
@@ -46,7 +46,7 @@ int calculate_digit_sum(int value)
 
 void find_min_digit_sum_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y, unsigned int *pos_x, unsigned int *pos_y)
 {
-    int last_sum = -1;
+    int last_sum = calculate_digit_sum(matrix[0][0]);
     unsigned int best_pos_x = 0;
     unsigned int best_pos_y = 0;
 
