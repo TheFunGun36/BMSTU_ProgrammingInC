@@ -55,7 +55,7 @@ void reconstruct_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t s
 void print_first_line(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x)
 {
     for (unsigned int i = 0; i < size_x; i++)
-            printf("%d ", matrix[0][i]);
+        printf("%d ", matrix[0][i]);
 }
 
 int main()
@@ -69,7 +69,7 @@ int main()
         return exit_code;
 
     reconstruct_matrix(matrix, size_x, size_y);
-    print_first_line(matrix, size_x, size_y);
+    print_first_line(matrix, size_x);
 
     return exit_code;
 }
