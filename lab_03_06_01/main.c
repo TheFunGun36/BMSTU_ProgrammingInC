@@ -6,7 +6,7 @@
 #define OK 0
 #define INVALID_SZ_X -1
 #define INVALID_SZ_Y -2
-#define MATRIX_SIZE_ONE -3
+#define SIZES_ARENT_EQUAL -3
 
 int get_matrix_size(size_t *size_x, size_t *size_y)
 {
@@ -15,10 +15,10 @@ int get_matrix_size(size_t *size_x, size_t *size_y)
 
     if (scanf("%lud", size_x) != 1 || *size_x <= 0 || *size_x > MAX_MATRIX_SIZE_X)
         return INVALID_SZ_X;
-
-    if (*size_x == 1 && *size_y == 1)
-        return MATRIX_SIZE_ONE;
     
+    if (*size_x != *size_y)
+        return SIZES_ARENT_EQUAL;
+
     return OK;
 }
 
