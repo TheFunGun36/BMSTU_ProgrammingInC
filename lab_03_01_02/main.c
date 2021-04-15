@@ -52,28 +52,24 @@ void reconstruct_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t s
     }
 }
 
-void print_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
+void print_first_line(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x)
 {
-    for (unsigned int i = 0; i < size_y; i++)
-    {
-        for (unsigned int j = 0; j < size_x; j++)
-            printf("%d ", matrix[i][j]);
-
-        printf("\n");    
-    }
+    for (unsigned int i = 0; i < size_x; i++)
+            printf("%d ", matrix[0][i]);
 }
 
 int main()
 {
-    int array[MAX_MATRIX_SIZE_Y][MAX_MATRIX_SIZE_X];
+    int matrix[MAX_MATRIX_SIZE_Y][MAX_MATRIX_SIZE_X];
     size_t size_x, size_y;
 
-    int exit_code = get_matrix_from_user(array, &size_x, &size_y);
+    int exit_code = get_matrix_from_user(matrix, &size_x, &size_y);
 
     if (exit_code != OK)
         return exit_code;
 
-    print_matrix(array, size_x, size_y);
+    reconstruct_matrix(matrix, size_x, size_y);
+    print_first_line(matrix, size_x, size_y);
 
     return exit_code;
 }
