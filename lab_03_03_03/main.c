@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#define MAX_MATRIX_SIZE_X 10
-#define MAX_MATRIX_SIZE_Y 11
+#define MAX_MATRIX_SIZE_X 11
+#define MAX_MATRIX_SIZE_Y 10
 
 #define OK 0
 #define INVALID_SZ_X -1
@@ -10,10 +10,10 @@
 
 int get_matrix_from_user(int matrix[][MAX_MATRIX_SIZE_X], size_t *size_x, size_t *size_y)
 {
-    if (scanf("%lud", size_y) != 1 || *size_y <= 0 || *size_y >= MAX_MATRIX_SIZE_Y)
+    if (scanf("%lud", size_y) != 1 || *size_y <= 0 || *size_y > MAX_MATRIX_SIZE_Y)
         return INVALID_SZ_Y;
 
-    if (scanf("%lud", size_x) != 1 || *size_x <= 0 || *size_x > MAX_MATRIX_SIZE_X)
+    if (scanf("%lud", size_x) != 1 || *size_x <= 0 || *size_x >= MAX_MATRIX_SIZE_X)
         return INVALID_SZ_X;
 
     for (unsigned int i = 0; i < *size_y; i++)
@@ -28,48 +28,48 @@ int get_matrix_from_user(int matrix[][MAX_MATRIX_SIZE_X], size_t *size_x, size_t
     return OK;
 }
 
-int get_col_min_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_y, unsigned int col)
+int get_row_min_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, unsigned int row)
 {
-    int result = matrix[0][col];
+    int result = matrix[row][0];
 
-    for (unsigned int i = 0; i < size_y; i++)
+    for (unsigned int i = 0; i < size_x; i++)
     {
-        if (matrix[i][col] < result)
-            result = matrix[i][col];
+        if (matrix[row][i] < result)
+            result = matrix[row][i];
     }
 
     return result;
 }
 
-void swap_columns(int matrix[][MAX_MATRIX_SIZE_X], size_t size_y, unsigned int col1, unsigned int col2)
+void swap_rows(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, unsigned int row1, unsigned int row2)
 {
-    for (unsigned int i = 0; i < size_y; i++)
+    for (unsigned int i = 0; i < size_x; i++)
     {
-        int tmp = matrix[i][col1];
-        matrix[i][col1] = matrix[i][col2];
-        matrix[i][col2] = tmp;
+        int tmp = matrix[row1][i];
+        matrix[row1][i] = matrix[row2][i];
+        matrix[row2][i] = tmp;
     }
 }
 
 void sort_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
 {
-    for (unsigned int i = 0; i < size_x; i++)
+    for (unsigned int i = 0; i < size_y; i++)
     {
-        matrix[size_y][i] = get_col_min_element(matrix, size_y, i);
+        matrix[i][size_x] = get_row_min_element(matrix, size_x, i);
     }
 
-    for (unsigned int i = 0; i < size_x; i++)
+    for (unsigned int i = 0; i < size_y; i++)
     {
         unsigned int best_index = i;
 
-        for (unsigned int j = i + 1; j < size_x; j++)
+        for (unsigned int j = i + 1; j < size_y; j++)
         {
-            if (matrix[size_y][best_index] < matrix[size_y][j])
+            if (matrix[best_index][size_x] < matrix[j][size_x])
                 best_index = j;
         }
 
         if (best_index != i)
-            swap_columns(matrix, size_y + 1, i, best_index);
+            swap_rows(matrix, size_x + 1, i, best_index);
     }
 }
 
