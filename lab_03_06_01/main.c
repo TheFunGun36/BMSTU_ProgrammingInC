@@ -16,7 +16,7 @@ int get_matrix_size(size_t *size_x, size_t *size_y)
     if (scanf("%lud", size_x) != 1 || *size_x <= 0 || *size_x > MAX_MATRIX_SIZE_X)
         return INVALID_SZ_X;
 
-    if (size_x == 1 && size_y == 1)
+    if (*size_x == 1 && *size_y == 1)
         return MATRIX_SIZE_ONE;
     
     return OK;
