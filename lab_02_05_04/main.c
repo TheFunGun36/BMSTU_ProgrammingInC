@@ -26,16 +26,14 @@ int main()
 
 int get_array_from_user(int *array, int **array_end)
 {
-    {
-        int arr_size;
+    int arr_size;
 
-        if (scanf("%d", &arr_size) != 1)
-            return WRONG_ARRAY_SIZE;
+    if (scanf("%d", &arr_size) != 1)
+        return WRONG_ARRAY_SIZE;
 
-        *array_end = array + arr_size;
-    }
+    *array_end = array + arr_size;
 
-    if ((*array_end - array) <= 0 || (*array_end - array) > 10)
+    if (arr_size <= 0 || arr_size > 10)
         return WRONG_ARRAY_SIZE;
 
     while (array < *array_end)
@@ -48,21 +46,6 @@ int get_array_from_user(int *array, int **array_end)
 
     return OK;
 }
-
-/*int count_elements_with_value(int *arr_begin, int *arr_end, int value)
-{
-    int result = 0;
-
-    while (arr_begin != arr_end)
-    {
-        if (*arr_begin == value)
-            result++;
-
-        arr_begin++;
-    }
-
-    return result;
-}*/
 
 int get_unique_numbers_amount(int *arr_begin, int *arr_end)
 {
@@ -82,17 +65,4 @@ int get_unique_numbers_amount(int *arr_begin, int *arr_end)
     }
 
     return result;
-
-    /*int result = 0;
-    int *current_element = arr_begin;
-
-    while (current_element < arr_end)
-    {
-        if (count_elements_with_value(arr_begin, arr_end, *current_element) == 1)
-            result++;
-
-        current_element++;
-    }
-
-    return result;*/
 }
