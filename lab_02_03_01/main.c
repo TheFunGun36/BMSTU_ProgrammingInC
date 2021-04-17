@@ -8,18 +8,21 @@
 #define WRONG_ARRAY_SIZE -2
 
 void get_next_fib(int *first, int *second);
-int start_input_loop(int *array, int *arr_size);
+int get_array_from_user(int *array, int *arr_size);
+void shift_array(int *array, int arr_size, int element);
+void insert_fibonachi_numbers(int *array, int *arr_size);
 void print_array(int *array, int arr_size);
 
 int main()
 {
     int array[ARR_SIZE_MAX];
     int arr_size;
-    int exit_code = start_input_loop(array, &arr_size);
+    int exit_code = get_array_from_user(array, &arr_size);
     
     if (exit_code != OK)
         return exit_code;
 
+    insert_fibonachi_numbers(array, &arr_size);
     print_array(array, arr_size);
     return exit_code;
 }
@@ -31,7 +34,7 @@ void get_next_fib(int *first, int *second)
     *second = next_number;
 }
 
-int start_input_loop(int *array, int *arr_size)
+int get_array_from_user(int *array, int *arr_size)
 {
     if (scanf("%d", arr_size) != 1)
         return WRONG_ARRAY_SIZE;
@@ -39,26 +42,37 @@ int start_input_loop(int *array, int *arr_size)
     if (*arr_size <= 0 || *arr_size > 10)
         return WRONG_ARRAY_SIZE;
 
-    int fib_0 = 0;
-    int fib_1 = 1;
-
     for (int i = 0; i < *arr_size; i++)
     {
-        int result = scanf("%d", &array[i]);
-        
-        if (result != 1)
+        if (scanf("%d", &array[i]) != 1)
             return WRONG_INPUT;
-
-        if (array[i] % 3 == 0)
-        {
-            i++;
-            (*arr_size)++;
-            array[i] = fib_0;
-            get_next_fib(&fib_0, &fib_1);
-        }
     }
 
     return OK;
+}
+
+void shift_array(int *array, int arr_size, int element)
+{
+    for (int i = arr_size - 1; i > element; i--)
+    {
+        array[i] = array[i - 1];
+    }
+}
+
+void insert_fibonachi_numbers(int *array, int *arr_size)
+{
+    int fib1 = 0;
+    int fib2 = 1;
+    
+    for (int i = 0; i < *arr_size; i++)
+    {
+        if (!(array[i] % 3))
+        {
+            shift_array(array, ++(*arr_size), ++i);
+            array[i] = fib1;
+            get_next_fib(&fib1, &fib2);
+        }
+    }
 }
 
 void print_array(int *array, int arr_size)
