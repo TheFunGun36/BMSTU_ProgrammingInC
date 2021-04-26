@@ -5,3 +5,6 @@
 *.gch
 .vscode
 main
+*.pro
+*.pro.user
+build-*-Default-Debug
