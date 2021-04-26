@@ -31,6 +31,21 @@ int get_string_from_user(char* string, int max_string_length)
     return OK;
 }
 
+int get_two_strings(char *string1, char *string2)
+{
+    int result = OK;
+    printf("Введите первую строку:\n");
+    result = get_string_from_user(string1, MAX_STRING_LENGTH);
+
+    if (result != OK)
+        return result;
+
+    printf("Введите вторую строку:\n");
+    result = get_string_from_user(string2, MAX_STRING_LENGTH);
+
+    return result;
+}
+
 int main()
 {
     char string1[MAX_STRING_LENGTH + 1];
@@ -38,11 +53,20 @@ int main()
 
     setlocale(LC_ALL, "Russian");
 
-    printf("Введите первую строку:\n");
-    get_string_from_user(string1, MAX_STRING_LENGTH);
+    int result = get_two_strings(string1, string2);
 
-    printf("Введите вторую строку:\n");
-    get_string_from_user(string2, MAX_STRING_LENGTH);
+    switch (result)
+    {
+        case OK:
+            break;
+        case STRING_IS_TOO_LONG:
+            printf("Строка слишком длинная\n");
+        default:
+            printf("Неизвестная ошибка\n");
+    }
+
+    if (result != OK)
+        return result;
 
     printf("strpbrk (поиск первого вхождения подстроки в строку):\n");
     printf("\t%s\n", my_strpbrk(string1, string2));
@@ -61,5 +85,5 @@ int main()
     printf("strchr (последнее вхождение символа в строке)\n");
     printf("\t%s\n\n", my_strrchr(string1, *string2));
 
-    return 0;
+    return OK;
 }
