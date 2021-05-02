@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "my_string.h"
+#include "string_part.h"
 
 #define OK 0
 #define STRING_IS_TOO_LONG -1
@@ -7,6 +7,9 @@
 
 #define MAX_STRING_LENGTH 256
 #define MAX_WORD_LENGTH 16
+#define MAX_WORD_AMOUNT MAX_STRING_LENGTH / 2
+
+#define WORD_SPLITTER ' '
 
 int get_string_from_user(char* string, int max_string_length)
 {
@@ -30,29 +33,24 @@ int get_string_from_user(char* string, int max_string_length)
     return OK;
 }
 
-void print_words(string main_str)
+void sort_string_array(string_part array[], int array_len)
 {
-    string left_part = main_str;
-    string right_part = main_str;
+    string_part *array_end = array + array_len;
 
-    string current_word = get_word(right_part, 0);
-
-    while (!is_string_empty(current_word))
+    for (string_part *current_element = array; current_element < array_end; current_element++)
     {
-        left_part.end = current_word.begin;
-        right_part.begin = current_word.begin;
-
-        if (!count_word(left_part, current_word))
+        for (string_part *new_place = array; new_place < current_element; new_place++)
         {
-            print_string(current_word);
+            if (is_strings_equal(*new_place, get_larger_string(*new_place, *current_element)))
+            {
+                string_part saved_element = *current_element;
 
-            int words_amount = count_word(right_part, current_word);
-            printf(" %d\n", words_amount);
+                for (string_part *p = current_element; p > new_place; p--)
+                    *p = *(p - 1);
+
+                *new_place = saved_element;
+            }
         }
-
-        move_beg_one_word_forward(&right_part);
-        left_part.end = right_part.begin;
-        current_word = get_word(right_part, 0);
     }
 }
 
@@ -64,13 +62,22 @@ int main()
 
     if (exit_code == OK)
     {
-        string str = str_to_mystr(str_beg);
+        string_part str = get_full_str_part(str_beg);
 
-        exit_code += (get_max_word_size(str) > MAX_WORD_LENGTH) * WORD_IS_TOO_LONG;
+        exit_code += (get_word_max_len(str, WORD_SPLITTER) > MAX_WORD_LENGTH) * WORD_IS_TOO_LONG;
 
         if (exit_code == OK)
         {
-            print_words(str);
+            string_part str_array[MAX_WORD_AMOUNT];
+            int str_array_size;
+            split_into_word_set(str, WORD_SPLITTER, MAX_WORD_AMOUNT, str_array, &str_array_size);
+            sort_string_array(str_array, str_array_size);
+
+            for (int i = 0; i < str_array_size; i++)
+            {
+                print_string(str_array[i]);
+                printf("\n");
+            }
         }
     }
 
