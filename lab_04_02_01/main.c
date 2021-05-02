@@ -73,10 +73,12 @@ int main()
             split_into_word_set(str, WORD_SPLITTER, MAX_WORD_AMOUNT, str_array, &str_array_size);
             sort_string_array(str_array, str_array_size);
 
+            printf("Result: ");
+
             for (int i = 0; i < str_array_size; i++)
             {
                 print_string(str_array[i]);
-                printf("\n");
+                printf(" ");
             }
         }
     }
