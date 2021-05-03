@@ -9,7 +9,7 @@
 #define MAX_STRING_LENGTH 256
 #define MAX_WORD_LENGTH 16
 
-int get_string_from_user(char* string, int max_string_length)
+int get_string_from_user(char *string, int max_string_length)
 {
     int i;
     char chr = getc(stdin);
