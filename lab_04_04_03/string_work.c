@@ -59,7 +59,7 @@ int is_phone_number(const char *str)
 
     str += number_length;
 
-    if (*str == ' ')
+    if (*str == '-')
         str++;
     else
         return 0;
