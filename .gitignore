@@ -8,3 +8,4 @@ main
 *.pro
 *.pro.user
 build-*-Default-Debug
+.config
