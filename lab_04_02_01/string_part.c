@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "string_part.h"
 
-char* get_str_end(char* str)
+char *get_str_end(char *str)
 {
     while (*str != '\0')
         str++;
@@ -100,7 +100,7 @@ int is_strings_equal(string_part str1, string_part str2)
     return 0;
 }
 
-string_part get_full_str_part(char* str)
+string_part get_full_str_part(char *str)
 {
     string_part my_str;
     my_str.begin = str;
@@ -185,7 +185,8 @@ string_part get_larger_string(string_part str1, string_part str2)
         {
             if (*str1.begin > *str2.begin)
                 return str1_saved;
-            else return str2_saved;
+            else
+                return str2_saved;
         }
 
         str1.begin++;

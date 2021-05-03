@@ -16,7 +16,7 @@ int get_string_from_user(char* string, int max_string_length)
     int i;
     char chr = getc(stdin);
 
-    for (i = 0; chr != '\n'; i++)
+    for (i = 0; chr != '\n' && chr != '\0'; i++)
     {
         if (i >= max_string_length)
         {
@@ -27,6 +27,9 @@ int get_string_from_user(char* string, int max_string_length)
         string[i] = chr;
         chr = getc(stdin);
     }
+
+    if (i == 0)
+        return STRING_IS_TOO_LONG;
 
     string[i] = '\0';
 

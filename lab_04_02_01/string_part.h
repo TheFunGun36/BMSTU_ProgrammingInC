@@ -14,7 +14,7 @@ int count_word(string_part source_str, string_part word, char splitter);
 void print_string(string_part str);
 int is_string_empty(string_part str);
 int is_strings_equal(string_part str1, string_part str2);
-string_part get_full_str_part(char* str);
+string_part get_full_str_part(char *str);
 void move_beg_one_word_forward(string_part *str, char splitter);
 int get_str_size(string_part str);
 int get_word_max_len(string_part str, char splitter);
