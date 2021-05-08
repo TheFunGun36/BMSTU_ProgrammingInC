@@ -66,6 +66,9 @@ int main()
         char splitter_set_mem[] = " ,;:-.!?";
         string_part splitter_set = get_full_str_part(splitter_set_mem);
 
+        if (get_word(input_str_part, 0, splitter_set).begin == input_str_part.end)
+            return EMPTY_RESULT_ARRAY;
+
         if (get_word_max_len(input_str_part, splitter_set) >= MAX_WORD_LENGTH)
             return WORD_IS_TOO_LONG;
 
@@ -76,7 +79,15 @@ int main()
         string_part output_str_part = get_full_str_part(output_str);
 
         strarr_form(input_str_part, splitter_set, MAX_WORD_AMOUNT, word_list, &word_list_size);
+
+        if (word_list_size <= 0)
+            return EMPTY_RESULT_ARRAY;
+
         strarr_remove_element_all(word_list, &word_list_size, word_list[word_list_size - 1]);
+
+        if (word_list_size <= 0)
+            return EMPTY_RESULT_ARRAY;
+
         foreach_strarr_element(word_list, &word_list_size);
 
         if (word_list_size <= 0)
@@ -85,6 +96,7 @@ int main()
         strarr_form_string(&output_str_part, word_list, word_list_size, ' ', 1);
         printf("Result: ");
         print_string(output_str_part);
+        printf("\n");
     }
 
     return exit_code;
