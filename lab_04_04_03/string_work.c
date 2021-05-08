@@ -18,9 +18,10 @@ int get_string_from_user(char *string, int max_length)
 
 void cutoff_spaces(char **str)
 {
+    char splitter_set[] = " ,;:-.!?";
     char *ptr = *str;
 
-    while (*ptr == ' ')
+    while (strchr(splitter_set, *ptr) != NULL)
         ptr++;
 
     *str = ptr;
