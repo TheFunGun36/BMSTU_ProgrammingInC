@@ -9,7 +9,7 @@
 #define MAX_WORD_LENGTH 16
 #define MAX_WORD_AMOUNT MAX_STRING_LENGTH / 2
 
-int get_string_from_user(char* string, int max_string_length)
+int get_string_from_user(char *string, int max_string_length)
 {
     int i;
     char chr = getc(stdin);
@@ -68,6 +68,7 @@ int main()
         string_part splitter_set = get_full_str_part(splitter_set_mem);
 
         exit_code += (get_word_max_len(str, splitter_set) > MAX_WORD_LENGTH) * WORD_IS_TOO_LONG;
+        exit_code += get_word(str, 0, splitter_set).begin == str.end;
 
         if (exit_code == OK)
         {
