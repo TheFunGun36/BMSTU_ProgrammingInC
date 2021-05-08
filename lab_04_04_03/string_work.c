@@ -37,61 +37,16 @@ int is_phone_number(const char *str)
 {
     char *number_set = "0123456789";
 
-    if (strspn(str, "+-") == 1)
-        str++;
+    int result = strspn(str, number_set) == 3 || (*str == '+' && strspn(++str, number_set) > 3);
+    str += strspn(str, number_set);
 
-    int number_length = strspn(str, number_set);
+    result = result && *str == '-' && strspn(str + 1, number_set) == 3;
+    str += 4;
+    result = result && *str == '-' && strspn(str + 1, number_set) == 2;
+    str += 3;
+    result = result && *str == '-' && strspn(str + 1, number_set) == 2;
+    str += 3;
+    result = result && *str == '\0';
 
-    if (number_length == 0)
-        return 0;
-
-    str += number_length;
-
-    if (*str == ' ')
-        str++;
-    else
-        return 0;
-
-    number_length = strspn(str, number_set);
-
-    if (number_length != 3)
-        return 0;
-
-    str += number_length;
-
-    if (*str == '-')
-        str++;
-    else
-        return 0;
-
-    number_length = strspn(str, number_set);
-
-    if (number_length != 3)
-        return 0;
-
-    str += number_length;
-
-    if (*str == '-')
-        str++;
-    else
-        return 0;
-
-    number_length = strspn(str, number_set);
-
-    if (number_length != 2)
-        return 0;
-
-    str += number_length;
-
-    if (*str == '-')
-        str++;
-    else
-        return 0;
-
-    number_length = strspn(str, number_set);
-
-    if (number_length != 2)
-        return 0;
-
-    return *(str + number_length) == '\0';
+    return result;
 }
