@@ -9,8 +9,6 @@
 #define MAX_WORD_LENGTH 16
 #define MAX_WORD_AMOUNT MAX_STRING_LENGTH / 2
 
-#define WORD_SPLITTER ' '
-
 int get_string_from_user(char* string, int max_string_length)
 {
     int i;
@@ -66,14 +64,16 @@ int main()
     if (exit_code == OK)
     {
         string_part str = get_full_str_part(str_beg);
+        char splitter_set_mem[] = " ,;:-.!?";
+        string_part splitter_set = get_full_str_part(splitter_set_mem);
 
-        exit_code += (get_word_max_len(str, WORD_SPLITTER) > MAX_WORD_LENGTH) * WORD_IS_TOO_LONG;
+        exit_code += (get_word_max_len(str, splitter_set) > MAX_WORD_LENGTH) * WORD_IS_TOO_LONG;
 
         if (exit_code == OK)
         {
             string_part str_array[MAX_WORD_AMOUNT];
             int str_array_size;
-            split_into_word_set(str, WORD_SPLITTER, MAX_WORD_AMOUNT, str_array, &str_array_size);
+            split_into_word_set(str, splitter_set, MAX_WORD_AMOUNT, str_array, &str_array_size);
             sort_string_array(str_array, str_array_size);
 
             printf("Result: ");
