@@ -7,7 +7,7 @@
 int get_string_from_user(char *string, int max_length)
 {
     fgets(string, max_length + 2, stdin);
-    string[max_length + 1] = '\0';
+    //string[max_length + 1] = '\0';
 
     int str_length = strlen(string);
 
@@ -21,7 +21,6 @@ int get_string_from_user(char *string, int max_length)
 
     return OK;
 }
-
 
 int main()
 {
@@ -51,7 +50,7 @@ int main()
                 reverse_word_array(str_arr, arr_size);
                 strarr_to_string(str_arr, arr_size, ' ', input_str);
 
-                if (strlen(input_str) > 0 && strlen(input_str) != strcspn(input_str, SPLITTERS))
+                if (strlen(input_str) > 0)
                     printf("Result: %s\n", input_str);
                 else
                     exit_code = EMPTY_RESULT_ARRAY;
