@@ -50,7 +50,7 @@ int main()
                 reverse_word_array(str_arr, arr_size);
                 strarr_to_string(str_arr, arr_size, ' ', input_str);
 
-                if (strlen(input_str) > 0)
+                if (strlen(input_str) > 0 && strlen(input_str) != strcspn(input_str, SPLITTERS))
                     printf("Result: %s\n", input_str);
                 else
                     exit_code = EMPTY_RESULT_ARRAY;
