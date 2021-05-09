@@ -2,17 +2,20 @@
 
 #define NULL 0x0
 
-const char *my_strpbrk(const char *main_str, const char *symbol_set)
+char *my_strpbrk(char *main_str, char *symbol_set)
 {
-    const char *result = NULL;
+    char *result = NULL;
 
     while (*main_str != '\0')
     {
-        if (my_strchr(symbol_set, *main_str) != NULL)
+        for (char *p = symbol_set; *p != '\0'; p++)
         {
-            result = main_str;
-            break;
+            if (*main_str == *p)
+                result = main_str;
         }
+
+        if (result)
+            break;
 
         main_str++;
     }
@@ -20,54 +23,77 @@ const char *my_strpbrk(const char *main_str, const char *symbol_set)
     return result;
 }
 
-unsigned int my_strspn(const char *main_str, const char *symbol_set)
+unsigned int my_strspn(char *main_str, char *symbol_set)
 {
-    const char *string_begin = main_str;
+    char *mp;
+
+    for (mp = main_str; *mp != '\0'; mp++)
+    {
+        int is_found = 0;
+
+        for (char *sp = symbol_set; *sp != '\0'; sp++)
+        {
+            if (*mp == *sp)
+            {
+                is_found = 1;
+                break;
+            }
+        }
+
+        if (!is_found)
+            break;
+    }
+
+    return mp - main_str;
+}
+
+unsigned int my_strcspn(char *main_str, char *symbol_set)
+{
+    char *main_str_saved = main_str;
+    unsigned int result = 0;
 
     while (*main_str != '\0')
     {
-        if (my_strchr(symbol_set, *main_str) == NULL)
+        for (char *p = symbol_set; *p != '\0'; p++)
+        {
+            if (*main_str == *p)
+                result = main_str - main_str_saved;
+        }
+
+        if (result)
             break;
 
         main_str++;
     }
 
-    return main_str - string_begin;
+    return result;
 }
 
-unsigned int my_strcspn(const char *main_str, const char *symbol_set)
+char *my_strchr(char *string, int symbol)
 {
-    const char *string_begin = main_str;
-    while (*main_str != '\0')
-    {
-        if (my_strchr(symbol_set, *main_str) != NULL)
-            break;
+    char *result = NULL;
 
-        main_str++;
-    }
-
-    return main_str - string_begin;
-}
-
-const char *my_strchr(const char *string, int symbol)
-{
     if (*string == symbol)
-        return string;
+        result = string;
 
-    while (*string++ != '\0')
+    if (!result)
     {
-        if (*string == symbol)
-            return string;
-
-        string++;
+        while (*string++ != '\0')
+        {
+            if (*string == symbol)
+            {
+                result = string;
+                break;
+            }
+        }
     }
 
-    return NULL;
+    return result;
 }
 
-const char *my_strrchr(const char *string, int symbol)
+char *my_strrchr(char *string, int symbol)
 {
-    const char *string_end = string;
+    char *string_end = string;
 
     while (*string_end != '\0')
         string_end++;
