@@ -11,6 +11,8 @@ int get_string_from_user(char *string, int max_length)
 
     int len = strlen(string);
 
+    if (len <= 0)
+        return STRING_IS_TOO_SHORT;
     if (len >= max_length + 1 && string[len - 1] != '\n')
         return STRING_IS_TOO_LONG;
 
@@ -22,18 +24,17 @@ int get_string_from_user(char *string, int max_length)
 int main()
 {
     char input_str[MAX_STRING_LENGTH + 2];
+    char str_arr[MAX_WORD_AMOUNT][MAX_WORD_LENGTH + 1];
 
     int exit_code = get_string_from_user(input_str, MAX_STRING_LENGTH);
 
     if (exit_code == OK)
     {
-        char str_arr[MAX_WORD_AMOUNT][MAX_WORD_LENGTH + 1];
         int arr_size;
 
         char *word_to_exclude;
-        char *input_str_ptr = input_str;
 
-        exit_code = pop_last_word(input_str_ptr, &word_to_exclude);
+        exit_code = pop_last_word(input_str, &word_to_exclude);
 
         if (exit_code == OK)
         {

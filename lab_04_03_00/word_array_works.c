@@ -37,6 +37,11 @@ int pop_last_word(char *string, char **word)
 {
     char *p = string + strlen(string) - 1;
 
+    while (p > string && strchr(SPLITTERS, *p))
+        p--;
+
+    *(p + 1) = '\0';
+
     while (p > string && !strchr(SPLITTERS, *p))
         p--;
 
