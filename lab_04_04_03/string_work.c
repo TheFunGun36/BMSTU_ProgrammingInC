@@ -20,7 +20,7 @@ int get_string_from_user(char *string, int max_length)
 
 void cutoff_spaces(char **str)
 {
-    char splitter_set[] = " ,;:-.!?";
+    char splitter_set[] = " \t\n\r\v\f";
     char *ptr = *str;
 
     while (strchr(splitter_set, *ptr) != NULL)
@@ -45,7 +45,7 @@ int is_phone_number(const char *str)
     if (*str == '+')
     {
         int numbers_amount = strspn(++str, number_set);
-        result = result && numbers_amount > 0;
+        result = numbers_amount >= 0;
         str += numbers_amount;
     }
 
