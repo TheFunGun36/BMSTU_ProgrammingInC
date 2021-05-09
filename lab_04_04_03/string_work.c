@@ -31,9 +31,6 @@ int is_phone_number(const char *str)
 
     int result = 1;
 
-    if (strlen(++str) <= 1)
-        return 0;
-
     if (*str == '+')
     {
         str++;
