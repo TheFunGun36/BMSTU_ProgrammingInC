@@ -1,18 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#include "word_array.h"
+//#include "word_array.h"
+#include "word_array_works.h"
 
 #define DEBUG
-
-#define MAX_STRING_LENGTH 256
-#define MAX_WORD_LENGTH 16
-#define OK 0
-#define STRING_IS_TOO_LONG -1
-#define STRING_IS_TOO_SHORT -2
-#define EMPTY_RESULT_ARRAY -3
-#define WORD_IS_TOO_LONG -4
-
-#define MAX_WORD_AMOUNT MAX_STRING_LENGTH / 2
 
 int get_string_from_user(char *string, int max_length)
 {
@@ -32,25 +23,6 @@ int get_string_from_user(char *string, int max_length)
     return OK;
 }
 
-void foreach_strarr_element(string_part strarr[], int *strarr_len)
-{
-    int i_new = 0;
-
-    for (int i_old = 0; i_old < *strarr_len; i_old++)
-    {
-        char symbol = *strarr[i_old].begin;
-        string_part word = strarr[i_old];
-        word.begin++;
-        remove_symbol(&word, symbol);
-        word.begin--;
-        strarr[i_new] = word;
-
-        i_new += !is_string_empty(strarr[i_old]);
-    }
-
-    *strarr_len = i_new;
-}
-
 int main()
 {
     char input_str[MAX_STRING_LENGTH + 1];
@@ -63,39 +35,29 @@ int main()
     }
     else
     {
-        string_part input_str_part = get_full_str_part(input_str);
+        char str_arr[MAX_WORD_AMOUNT][MAX_WORD_LENGTH + 1];
+        int arr_size;
 
-        if (get_word(input_str_part, 0).begin == input_str_part.end)
-            return EMPTY_RESULT_ARRAY;
+        char *word_to_exclude;
+        char *input_str_ptr = input_str;
 
-        if (get_word_max_len(input_str_part) >= MAX_WORD_LENGTH)
-            return WORD_IS_TOO_LONG;
+        exit_code = pop_last_word(input_str_ptr, &word_to_exclude);
 
-        string_part word_list[MAX_WORD_AMOUNT];
-        int word_list_size;
+        if (exit_code != OK)
+            return exit_code;
 
-        char output_str[MAX_STRING_LENGTH + 2];
-        string_part output_str_part = get_full_str_part(output_str);
+        exit_code = split_string(input_str, word_to_exclude, str_arr, &arr_size);
 
-        strarr_form(input_str_part, MAX_WORD_AMOUNT, word_list, &word_list_size);
+        if (exit_code != OK)
+            return exit_code;
 
-        if (word_list_size <= 0)
-            return EMPTY_RESULT_ARRAY;
+        remove_first_letter_entry(str_arr, arr_size);
+        reverse_word_array(str_arr, arr_size);
 
-        strarr_remove_element_all(word_list, &word_list_size, word_list[word_list_size - 1]);
+        strarr_to_string(str_arr, arr_size, ' ', input_str);
 
-        if (word_list_size <= 0)
-            return EMPTY_RESULT_ARRAY;
-
-        foreach_strarr_element(word_list, &word_list_size);
-
-        if (word_list_size <= 0)
-            return EMPTY_RESULT_ARRAY;
-
-        strarr_form_string(&output_str_part, word_list, word_list_size, ' ', 1);
-        printf("Result: ");
-        print_string(output_str_part);
-        printf("\n");
+        printf("Result: %s\n", input_str);
+        //aaaaaaaaa abc abc def asldfkj abc def ded def
     }
 
     return exit_code;
