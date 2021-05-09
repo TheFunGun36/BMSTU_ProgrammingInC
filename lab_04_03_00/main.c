@@ -11,8 +11,9 @@ int get_string_from_user(char *string, int max_length)
 
     int len = strlen(string);
 
-    if (len <= 0)
+    if (len <= 1)
         return STRING_IS_TOO_SHORT;
+
     if (len >= max_length + 1 && string[len - 1] != '\n')
         return STRING_IS_TOO_LONG;
 
@@ -49,7 +50,10 @@ int main()
                 reverse_word_array(str_arr, arr_size);
                 strarr_to_string(str_arr, arr_size, ' ', input_str);
 
-                printf("Result: %s\n", input_str);
+                if (strlen(input_str) > 0)
+                    printf("Result: %s\n", input_str);
+                else
+                    exit_code = EMPTY_RESULT_ARRAY;
             }
         }
     }
