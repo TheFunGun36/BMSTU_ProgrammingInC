@@ -50,23 +50,23 @@ unsigned int my_strspn(char *main_str, char *symbol_set)
 unsigned int my_strcspn(char *main_str, char *symbol_set)
 {
     char *main_str_saved = main_str;
-    unsigned int result = 0;
+    int is_found = 0;
 
     while (*main_str != '\0')
     {
         for (char *p = symbol_set; *p != '\0'; p++)
         {
             if (*main_str == *p)
-                result = main_str - main_str_saved;
+                is_found = 1;
         }
 
-        if (result)
+        if (is_found)
             break;
 
         main_str++;
     }
 
-    return result;
+    return main_str - main_str_saved;
 }
 
 char *my_strchr(char *string, int symbol)
