@@ -1,16 +1,16 @@
 #include "word_array.h"
 
-void strarr_form(string_part str, string_part splitter_set, int arr_len_max, string_part array[], int *array_len)
+void strarr_form(string_part str, int arr_len_max, string_part array[], int *array_len)
 {
     *array_len = 0;
-    string_part word = get_word(str, 0, splitter_set);
+    string_part word = get_word(str, 0);
 
     while (!is_string_empty(word) && *array_len < arr_len_max)
     {
         *array++ = word;
         str.begin = word.end;
         (*array_len)++;
-        word = get_word(str, 0, splitter_set);
+        word = get_word(str, 0);
     }
 }
 

@@ -1,18 +1,17 @@
 #include <stdio.h>
 #include <string.h>
-#include "string_part.h"
 #include "word_array.h"
 
-#undef DEBUG
-
-#define OK 0
-#define STRING_IS_TOO_LONG -1
-#define STRING_IS_TOO_SHORT -2
-#define WORD_IS_TOO_LONG -3
-#define EMPTY_RESULT_ARRAY -4
+#define DEBUG
 
 #define MAX_STRING_LENGTH 256
 #define MAX_WORD_LENGTH 16
+#define OK 0
+#define STRING_IS_TOO_LONG -1
+#define STRING_IS_TOO_SHORT -2
+#define EMPTY_RESULT_ARRAY -3
+#define WORD_IS_TOO_LONG -4
+
 #define MAX_WORD_AMOUNT MAX_STRING_LENGTH / 2
 
 int get_string_from_user(char *string, int max_length)
@@ -54,7 +53,7 @@ void foreach_strarr_element(string_part strarr[], int *strarr_len)
 
 int main()
 {
-    char input_str[MAX_STRING_LENGTH + 2];
+    char input_str[MAX_STRING_LENGTH + 1];
 
     int exit_code = get_string_from_user(input_str, MAX_STRING_LENGTH);
 
@@ -66,13 +65,10 @@ int main()
     {
         string_part input_str_part = get_full_str_part(input_str);
 
-        char splitter_set_mem[] = " ,;:-.!?";
-        string_part splitter_set = get_full_str_part(splitter_set_mem);
-
-        if (get_word(input_str_part, 0, splitter_set).begin == input_str_part.end)
+        if (get_word(input_str_part, 0).begin == input_str_part.end)
             return EMPTY_RESULT_ARRAY;
 
-        if (get_word_max_len(input_str_part, splitter_set) >= MAX_WORD_LENGTH)
+        if (get_word_max_len(input_str_part) >= MAX_WORD_LENGTH)
             return WORD_IS_TOO_LONG;
 
         string_part word_list[MAX_WORD_AMOUNT];
@@ -81,7 +77,7 @@ int main()
         char output_str[MAX_STRING_LENGTH + 2];
         string_part output_str_part = get_full_str_part(output_str);
 
-        strarr_form(input_str_part, splitter_set, MAX_WORD_AMOUNT, word_list, &word_list_size);
+        strarr_form(input_str_part, MAX_WORD_AMOUNT, word_list, &word_list_size);
 
         if (word_list_size <= 0)
             return EMPTY_RESULT_ARRAY;

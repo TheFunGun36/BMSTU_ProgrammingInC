@@ -9,14 +9,14 @@ char *get_str_end(char *str)
     return str;
 }
 
-int is_char_in_string(string_part string, char chr)
+int is_char_in_string(const char *string, char chr)
 {
-    while (string.begin < string.end)
+    while (*string != '\0')
     {
-        if (*string.begin == chr)
+        if (*string == chr)
             return 1;
 
-        string.begin++;
+        string++;
     }
 
     return 0;
@@ -32,7 +32,7 @@ string_part get_empty_string()
     return str;
 }
 
-string_part get_word(string_part source_str, int word_count, string_part splitter_set)
+string_part get_word(string_part source_str, int word_count)
 {
     string_part word;
     word.begin = source_str.begin;
@@ -42,12 +42,12 @@ string_part get_word(string_part source_str, int word_count, string_part splitte
 
     while (word.end < source_str.end)
     {
-        while (is_char_in_string(splitter_set, *word.begin) && word.begin < source_str.end)
+        while (is_char_in_string(SPLITTERS, *word.begin) && word.begin < source_str.end)
             word.begin++;
 
         word.end = word.begin;
 
-        while (!is_char_in_string(splitter_set, *word.end) && *(word.end) != '\0' && word.end < source_str.end)
+        while (!is_char_in_string(SPLITTERS, *word.end) && *(word.end) != '\0' && word.end < source_str.end)
             word.end++;
 
         if (word_count == counter++)
@@ -59,18 +59,18 @@ string_part get_word(string_part source_str, int word_count, string_part splitte
     return get_empty_string();
 }
 
-string_part find_word(string_part source_str, string_part word, string_part splitter_set)
+string_part find_word(string_part source_str, string_part word)
 {
     string_part current_word;
 
     for (int i = 1; source_str.begin < source_str.end; i++)
     {
-        current_word = get_word(source_str, 0, splitter_set);
+        current_word = get_word(source_str, 0);
 
         if (is_strings_equal(current_word, word))
             return current_word;
 
-        move_beg_one_word_forward(&source_str, splitter_set);
+        move_beg_one_word_forward(&source_str);
     }
 
     return get_empty_string();
@@ -102,9 +102,9 @@ string_part get_full_str_part(char *str)
     return my_str;
 }
 
-void move_beg_one_word_forward(string_part *str, string_part splitter_set)
+void move_beg_one_word_forward(string_part *str)
 {
-    str->begin = get_word(*str, 1, splitter_set).begin;
+    str->begin = get_word(*str, 1).begin;
 
     if (str->begin == (char*)0x0)
         str->begin = str->end;
@@ -115,17 +115,17 @@ int get_str_size(string_part str)
     return str.end - str.begin;
 }
 
-int get_word_max_len(string_part str, string_part splitter_set)
+int get_word_max_len(string_part str)
 {
     int word_size_max = 0;
     while (str.begin < str.end)
     {
-        int word_size = get_str_size(get_word(str, 0, splitter_set));
+        int word_size = get_str_size(get_word(str, 0));
 
         if (word_size > word_size_max)
             word_size_max = word_size;
 
-        move_beg_one_word_forward(&str, splitter_set);
+        move_beg_one_word_forward(&str);
     }
 
     return word_size_max;
