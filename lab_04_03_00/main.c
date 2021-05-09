@@ -41,7 +41,7 @@ int main()
         {
             exit_code = split_string(input_str, word_to_exclude, str_arr, &arr_size);
 
-            if (!arr_size)
+            if (arr_size <= 0)
                 exit_code = EMPTY_RESULT_ARRAY;
 
             if (exit_code == OK)

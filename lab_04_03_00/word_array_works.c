@@ -8,18 +8,15 @@ int split_string(char *string, char *word_to_exclude, char string_array[][MAX_WO
 
     while (word != NULL)
     {
-        int result = -1;
+        int i;
 
-        for (int i = 0; i <= MAX_WORD_LENGTH; i++)
+        for (i = 0; i <= MAX_WORD_LENGTH; i++)
         {
             if (word[i] == '\0')
-            {
-                result = i;
                 break;
-            }
         }
 
-        if (result < 0)
+        if (i > MAX_WORD_LENGTH)
             return WORD_IS_TOO_LONG;
 
         strncpy(string_array[*string_array_size], word, MAX_WORD_LENGTH + 1);
