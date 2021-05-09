@@ -40,8 +40,11 @@ void foreach_strarr_element(string_part strarr[], int *strarr_len)
     for (int i_old = 0; i_old < *strarr_len; i_old++)
     {
         char symbol = *strarr[i_old].begin;
-        remove_symbol(&strarr[i_old], symbol);
-        strarr[i_new] = strarr[i_old];
+        string_part word = strarr[i_old];
+        word.begin++;
+        remove_symbol(&word, symbol);
+        word.begin--;
+        strarr[i_new] = word;
 
         i_new += !is_string_empty(strarr[i_old]);
     }
