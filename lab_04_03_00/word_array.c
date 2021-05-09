@@ -14,28 +14,6 @@ void strarr_form(string_part str, string_part splitter_set, int arr_len_max, str
     }
 }
 
-void strarr_form_set(string_part str, string_part splitter_set, int arr_len_max, string_part array[], int *array_len)
-{
-    *array_len = 0;
-    string_part word = get_word(str, 0, splitter_set);
-    string_part left_part = str;
-    left_part.end = str.begin;
-
-    while (!is_string_empty(word) && *array_len < arr_len_max)
-    {
-        if (is_string_empty(find_word(left_part, word, splitter_set)))
-        {
-            *array++ = word;
-            str.begin = word.end;
-            (*array_len)++;
-        }
-
-        left_part.end = word.end;
-        str.begin = word.end;
-        word = get_word(str, 0, splitter_set);
-    }
-}
-
 void strarr_remove_element_all(string_part *strarr, int *strarr_len, string_part element)
 {
     string_part *array_end = strarr + *strarr_len;

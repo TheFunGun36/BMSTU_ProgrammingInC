@@ -9,16 +9,6 @@ char *get_str_end(char *str)
     return str;
 }
 
-string_part get_empty_string()
-{
-    string_part str;
-
-    str.begin = (char*)0x0;
-    str.end = str.begin;
-
-    return str;
-}
-
 int is_char_in_string(string_part string, char chr)
 {
     while (string.begin < string.end)
@@ -30,6 +20,16 @@ int is_char_in_string(string_part string, char chr)
     }
 
     return 0;
+}
+
+string_part get_empty_string()
+{
+    string_part str;
+
+    str.begin = (char*)0x0;
+    str.end = str.begin;
+
+    return str;
 }
 
 string_part get_word(string_part source_str, int word_count, string_part splitter_set)
@@ -74,46 +74,6 @@ string_part find_word(string_part source_str, string_part word, string_part spli
     }
 
     return get_empty_string();
-}
-
-string_part get_word_last(string_part source_str, string_part splitter_set)
-{
-    string_part word;
-
-    word.end = source_str.end - 1;
-
-    while (is_char_in_string(splitter_set, *word.end) && word.end > source_str.begin)
-        word.end--;
-
-    word.begin = word.end++;
-
-    while (!is_char_in_string(splitter_set, *word.begin) && word.end > source_str.begin)
-        word.begin--;
-
-    if (is_char_in_string(splitter_set, *word.begin))
-        return get_empty_string();
-    else
-        return word;
-}
-
-int count_word(string_part source_str, string_part word, string_part splitter_set)
-{
-    int words_found = 0;
-
-    for (int i = 1; source_str.begin < source_str.end; i++)
-    {
-        string_part current_word = get_word(source_str, 0, splitter_set);
-        words_found += is_strings_equal(current_word, word);
-        move_beg_one_word_forward(&source_str, splitter_set);
-    }
-
-    return words_found;
-}
-
-void print_string(string_part str)
-{
-    while (str.begin < str.end)
-        printf("%c", *(str.begin)++);
 }
 
 int is_string_empty(string_part str)
@@ -171,33 +131,6 @@ int get_word_max_len(string_part str, string_part splitter_set)
     return word_size_max;
 }
 
-string_part get_larger_string(string_part str1, string_part str2)
-{
-    string_part str1_saved = str1;
-    string_part str2_saved = str2;
-
-    while (str1.begin < str1.end && str2.begin < str2.end)
-    {
-        if (*str1.begin != *str2.begin)
-        {
-            if (*str1.begin > *str2.begin)
-                return str1_saved;
-            else
-                return str2_saved;
-        }
-
-        str1.begin++;
-        str2.begin++;
-    }
-
-    if (!is_string_empty(str1))
-        return str1_saved;
-    else if (!is_string_empty(str2))
-        return str2_saved;
-
-    return get_empty_string();
-}
-
 void remove_symbol(string_part *str, char symbol)
 {
     char *p_new = str->begin;
@@ -211,4 +144,10 @@ void remove_symbol(string_part *str, char symbol)
     }
 
     str->end = p_new;
+}
+
+void print_string(string_part str)
+{
+    while (str.begin < str.end)
+        printf("%c", *(str.begin)++);
 }

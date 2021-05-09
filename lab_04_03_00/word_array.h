@@ -4,7 +4,6 @@
 #include "string_part.h"
 
 void strarr_form(string_part str, string_part splitter_set, int arr_len_max, string_part array[], int *array_len);
-void strarr_form_set(string_part str, string_part splitter_set, int arr_len_max, string_part array[], int *array_len);
 void strarr_remove_element_all(string_part *strarr, int *strarr_len, string_part element);
 void strarr_form_string(string_part *str, string_part strarr[], int strarr_size, char splitter, int is_reverse);
 

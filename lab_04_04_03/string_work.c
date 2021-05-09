@@ -1,5 +1,7 @@
 #include "string_work.h"
 
+#define SPLITTERS " \t\n\r\v\f"
+
 int get_string_from_user(char *string, int max_length)
 {
     fgets(string, max_length + 2, stdin);
@@ -16,23 +18,11 @@ int get_string_from_user(char *string, int max_length)
     return OK;
 }
 
-
 void cutoff_spaces(char **str)
 {
-    char splitter_set[] = " \t\n\r\v\f";
-    char *ptr = *str;
+    *str += strspn(*str, SPLITTERS);
 
-    while (strchr(splitter_set, *ptr) != NULL)
-        ptr++;
-
-    *str = ptr;
-
-    ptr += strlen(ptr) - 1;
-
-    while (*ptr == ' ')
-        ptr--;
-
-    *(ptr + 1) = '\0';
+    *(*str + strcspn(*str, SPLITTERS)) = '\0';
 }
 
 int is_phone_number(const char *str)
@@ -41,13 +31,21 @@ int is_phone_number(const char *str)
 
     int result = 1;
 
+    if (strlen(++str) <= 1)
+        return 0;
+
     if (*str == '+')
     {
-        if (strlen(++str) <= 0)
-            return 0;
+        str++;
 
         int numbers_amount = strspn(str, number_set);
-        result = numbers_amount >= 0;
+        result = numbers_amount > 0;
+        str += numbers_amount;
+    }
+    else
+    {
+        int numbers_amount = strspn(str, number_set);
+        result = numbers_amount > 0 || *str == '(';
         str += numbers_amount;
     }
 
