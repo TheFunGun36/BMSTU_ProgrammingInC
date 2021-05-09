@@ -7,16 +7,15 @@ int get_string_from_user(char *string, int max_length)
 
     int str_length = strlen(string);
 
-    if (string[str_length - 1] == '\n')
-        string[--str_length] = '\0';
-
     if (str_length > max_length)
         return STRING_IS_TOO_LONG;
-    if (str_length <= 0)
-        return STRING_IS_TOO_LONG;
+
+    if (string[str_length - 1] == '\n')
+        string[str_length - 1] = '\0';
 
     return OK;
 }
+
 
 void cutoff_spaces(char **str)
 {
@@ -44,10 +43,16 @@ int is_phone_number(const char *str)
 
     if (*str == '+')
     {
-        int numbers_amount = strspn(++str, number_set);
+        if (strlen(++str) <= 0)
+            return 0;
+
+        int numbers_amount = strspn(str, number_set);
         result = numbers_amount >= 0;
         str += numbers_amount;
     }
+
+    if (strlen(str) != 15)
+        return 0;
 
     result = result && *str == '(' && strspn(str + 1, number_set) == 3 && *(str + 4) == ')';
     str += 5;

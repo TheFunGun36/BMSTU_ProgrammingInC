@@ -7,6 +7,7 @@
 #define OK 0
 #define STRING_IS_TOO_LONG -1
 #define WORD_IS_TOO_LONG -2
+#define STRING_IS_TOO_SHORT -3
 
 #define MAX_STRING_LENGTH 256
 
