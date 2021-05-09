@@ -6,21 +6,22 @@
 
 int get_string_from_user(char *string, int max_length)
 {
-    if (!fgets(string, max_length + 2, stdin))
-        return UNEXPECTED_INPUT_ERROR;
+    fgets(string, max_length + 2, stdin);
+    string[max_length + 1] = '\0';
 
-    int len = strlen(string);
+    int str_length = strlen(string);
 
-    if (len <= 1)
+    if (str_length > max_length)
+        return STRING_IS_TOO_LONG;
+    if (str_length <= 1)
         return STRING_IS_TOO_SHORT;
 
-    if (len >= max_length + 1 && string[len - 1] != '\n')
-        return STRING_IS_TOO_LONG;
-
-    string[len - 1] = '\0';
+    if (string[str_length - 1] == '\n')
+        string[str_length - 1] = '\0';
 
     return OK;
 }
+
 
 int main()
 {
