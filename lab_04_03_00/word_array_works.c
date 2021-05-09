@@ -10,7 +10,7 @@ int split_string(char *string, char *word_to_exclude, char string_array[][MAX_WO
     {
         int result = -1;
 
-        for (int i = MAX_WORD_LENGTH; i >= 0; i--)
+        for (int i = 0; i <= MAX_WORD_LENGTH; i++)
         {
             if (word[i] == '\0')
             {
@@ -24,7 +24,7 @@ int split_string(char *string, char *word_to_exclude, char string_array[][MAX_WO
 
         strncpy(string_array[*string_array_size], word, MAX_WORD_LENGTH + 1);
 
-        if (strcmp(string_array[*string_array_size], word_to_exclude))
+        if (strncmp(string_array[*string_array_size], word_to_exclude, MAX_WORD_LENGTH))
             (*string_array_size)++;
 
         word = strtok(NULL, SPLITTERS);
