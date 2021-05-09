@@ -6,18 +6,22 @@
 
 int get_string_from_user(char *string, int max_length)
 {
-    fgets(string, max_length + 2, stdin);
-    //string[max_length + 1] = '\0';
+    int i;
+    char chr = getc(stdin);
 
-    int str_length = strlen(string);
+    for (i = 0; chr != '\n'; i++)
+    {
+        if (i >= max_length)
+        {
+            string[max_length] = '\0';
+            return STRING_IS_TOO_LONG;
+        }
 
-    if (str_length > max_length)
-        return STRING_IS_TOO_LONG;
-    if (str_length <= 1)
-        return STRING_IS_TOO_SHORT;
+        string[i] = chr;
+        chr = getc(stdin);
+    }
 
-    if (string[str_length - 1] == '\n')
-        string[str_length - 1] = '\0';
+    string[i] = '\0';
 
     return OK;
 }
