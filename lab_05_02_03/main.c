@@ -25,7 +25,6 @@ int main(int argc, char *argv[])
                 if (exit_code == EXIT_SUCCESS)
                 {
                     printf("%d", (avg - 3 * sigma < min && avg + 3 * sigma > max));
-                    printf("\nsigma=%f\nmin=%f\nmax=%f\navg=%f", sigma, min, max, avg);
                 }
             }
 
