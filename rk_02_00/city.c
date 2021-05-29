@@ -22,13 +22,19 @@ int read_struct_from_file(char *filename, City cities[], int *cities_amount)
                 fgets(cities[i].name, MAX_STRING_SIZE + 1, f);
                 if (strnlen(cities[i].name, MAX_STRING_SIZE + 1) >= MAX_STRING_SIZE && cities[i].name[MAX_STRING_SIZE] != '\n')
                     exit_code = EXIT_FAILURE;
+                else if (strnlen(cities[i].name, MAX_STRING_SIZE) <= 1)
+                    exit_code = EXIT_FAILURE;
 
                 fgets(cities[i].region, MAX_STRING_SIZE + 1, f);
                 if (strnlen(cities[i].region, MAX_STRING_SIZE + 1) >= MAX_STRING_SIZE && cities[i].region[MAX_STRING_SIZE] != '\n')
                     exit_code = EXIT_FAILURE;
+                else if (strnlen(cities[i].region, MAX_STRING_SIZE) <= 1)
+                    exit_code = EXIT_FAILURE;
 
                 fgets(cities[i].fed_okr, MAX_STRING_SIZE + 1, f);
                 if (strnlen(cities[i].fed_okr, MAX_STRING_SIZE + 1) >= MAX_STRING_SIZE && cities[i].fed_okr[MAX_STRING_SIZE] != '\n')
+                    exit_code = EXIT_FAILURE;
+                else if (strnlen(cities[i].fed_okr, MAX_STRING_SIZE) <= 1)
                     exit_code = EXIT_FAILURE;
 
                 result = fscanf(f, "%d", &cities[i].people_amount);
@@ -135,7 +141,7 @@ int print_some_info(char *filename, City cities[], int *cities_amount)
         int result = fprintf(f, "%d\n", p_a);
 
         if (result > 0)
-            result = fprintf(f, "%d", p_b);
+            result = fprintf(f, "%d\n", p_b);
 
         if (result <= 0)
             exit_code = EXIT_FAILURE;
