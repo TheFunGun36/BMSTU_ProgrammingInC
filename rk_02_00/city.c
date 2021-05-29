@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include "city.h"
 
 int read_struct_from_file(char *filename, City cities[], int *cities_amount)
@@ -18,16 +19,28 @@ int read_struct_from_file(char *filename, City cities[], int *cities_amount)
         {
             for (int i = 0; i < *cities_amount && exit_code == EXIT_SUCCESS; i++)
             {
-                fgets(cities[i].name, MAX_STRING_SIZE, f);
-                fgets(cities[i].region, MAX_STRING_SIZE, f);
-                fgets(cities[i].fed_okr, MAX_STRING_SIZE, f);
+                fgets(cities[i].name, MAX_STRING_SIZE + 1, f);
+                if (strnlen(cities[i].name, MAX_STRING_SIZE + 1) >= MAX_STRING_SIZE && cities[i].name[MAX_STRING_SIZE] != '\n')
+                    exit_code = EXIT_FAILURE;
+
+                fgets(cities[i].region, MAX_STRING_SIZE + 1, f);
+                if (strnlen(cities[i].region, MAX_STRING_SIZE + 1) >= MAX_STRING_SIZE && cities[i].region[MAX_STRING_SIZE] != '\n')
+                    exit_code = EXIT_FAILURE;
+
+                fgets(cities[i].fed_okr, MAX_STRING_SIZE + 1, f);
+                if (strnlen(cities[i].fed_okr, MAX_STRING_SIZE + 1) >= MAX_STRING_SIZE && cities[i].fed_okr[MAX_STRING_SIZE] != '\n')
+                    exit_code = EXIT_FAILURE;
 
                 result = fscanf(f, "%d", &cities[i].people_amount);
                 fgetc(f);
-                result |= fscanf(f, "%d", &cities[i].emergence_date);
-                fgetc(f);
 
-                if (feof(f) || ferror(f))
+                if (result == 1)
+                {
+                    result = fscanf(f, "%d", &cities[i].emergence_date);
+                    fgetc(f);
+                }
+
+                if (result != 1)
                     exit_code = EXIT_FAILURE;
             }
         }
@@ -86,6 +99,7 @@ int get_best_index_b(City cities[], int cities_amount)
     for (int i = 1; i < cities_amount; i++)
     {
         int cur_ss = count_ss(cities[i].name);
+
         if (cur_ss > ss)
         {
             best_index = i;
@@ -133,23 +147,3 @@ int print_some_info(char *filename, City cities[], int *cities_amount)
 
     return exit_code;
 }
-
-/*int print_foreach(char *filename, City cities[], int cities_amount)
-{
-    int exit_code = EXIT_SUCCESS;
-    FILE *f = fopen(filename, "w");
-
-    if (f)
-    {
-        for (int i = 0; i < cities_amount; i++)
-        {
-
-        }
-
-        fclose(f);
-    }
-    else
-        exit_code = EXIT_FAILURE;
-
-    return exit_code;
-}*/
