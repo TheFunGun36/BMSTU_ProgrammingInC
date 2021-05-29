@@ -3,6 +3,9 @@
 
 #define MAX_STRING_SIZE 100
 
+#define EXIT_SUCCESS 0
+#define EXIT_FAILURE -1
+
 typedef struct City {
     char name[MAX_STRING_SIZE];
     char region[MAX_STRING_SIZE];
