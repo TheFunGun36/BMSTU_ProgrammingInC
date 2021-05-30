@@ -22,8 +22,8 @@ void goods_print(product_t goods[], int goods_amount, char *name_endl_mask)
         {
             printf("%s\n", goods[i].name);
             printf("%s\n", goods[i].manufacturer);
-            printf("%ud\n", goods[i].price);
-            printf("%ud\n", goods[i].amount);
+            printf("%u\n", goods[i].price);
+            printf("%u\n", goods[i].amount);
         }
 #endif
     }
@@ -74,10 +74,10 @@ int product_fread(FILE *f, product_t *product)
 
     if (exit_code == EXIT_SUCCESS)
     {
-        int result = fscanf(f, "%d", &product->price);
+        int result = fscanf(f, "%u", &product->price);
 
         if (result == 1)
-            result = fscanf(f, "%d", &product->amount);
+            result = fscanf(f, "%u", &product->amount);
 
         if (result != 1)
             exit_code = ERR_INCOMPLETE_STRUCT;
