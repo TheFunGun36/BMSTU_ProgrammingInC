@@ -108,7 +108,7 @@ int goods_fread(char *filename, product_t goods[], int *goods_amount)
             if (exit_code == EXIT_SUCCESS)
                 (*goods_amount)++;
         }
-        while (!(feof(f) || ferror(f) || exit_code != EXIT_SUCCESS || *goods_amount < GOODS_MAX_AMOUNT - 1));
+        while (!(feof(f) || ferror(f) || exit_code != EXIT_SUCCESS || *goods_amount >= GOODS_MAX_AMOUNT - 1));
 
         if (!feof(f))
         {
