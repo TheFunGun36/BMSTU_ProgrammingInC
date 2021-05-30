@@ -10,8 +10,8 @@
 int sort_file(char *filename_in, char *filename_out)
 {
     int exit_code;
-    product_t goods[GOODS_MAX_AMOUNT] = {0};
-    int goods_amount;
+    product_t goods[GOODS_MAX_AMOUNT] = { 0 };
+    int goods_amount = 0;
 
     exit_code = goods_fread(filename_in, goods, &goods_amount);
 
@@ -27,8 +27,8 @@ int sort_file(char *filename_in, char *filename_out)
 int print_file(char *filename, char *substr)
 {
     int exit_code;
-    product_t goods[GOODS_MAX_AMOUNT] = {0};
-    int goods_amount;
+    product_t goods[GOODS_MAX_AMOUNT] = { 0 };
+    int goods_amount = 0;
 
     if (strlen(substr) > PRODUCT_NAME_LENGTH - 2)
         return ERR_LONG_STRING;
@@ -46,9 +46,9 @@ int print_file(char *filename, char *substr)
 int add_to_file(char *filename)
 {
     int exit_code;
-    product_t goods[GOODS_MAX_AMOUNT] = {0};
-    product_t new_product;
-    int goods_amount;
+    product_t goods[GOODS_MAX_AMOUNT] = { 0 };
+    product_t new_product = { 0 };
+    int goods_amount = 0;
 
     exit_code = goods_fread(filename, goods, &goods_amount);
 
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
     switch (argv[1][0])
     {
         case 's':
-            exit_code = sort_file(argv[2], argv[3]);
+            exit_code = EXIT_INVALID_ARGS; // exit_code = sort_file(argv[2], argv[3]);
             break;
         case 'f':
             exit_code = print_file(argv[2], argv[3]);
