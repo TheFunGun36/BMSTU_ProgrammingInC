@@ -3,12 +3,18 @@
 
 void goods_print(product_t goods[], int goods_amount, char *name_endl_mask)
 {
-    int mask_len = strlen(name_endl_mask);
+    unsigned int mask_len = strlen(name_endl_mask);
 
     for (int i = 0; i < goods_amount; i++)
     {
-        char *ptr = strchr(goods[i].name, '\0') - mask_len;
-        int is_printed = strcmp(name_endl_mask, ptr) == 0;
+        char *ptr;
+        int is_printed = 0;
+
+        if (strlen(goods[i].name) >= mask_len)
+        {
+            ptr = strchr(goods[i].name, '\0') - mask_len;
+            is_printed = strcmp(name_endl_mask, ptr) == 0;
+        }
 #ifdef DEBUG
         if (is_printed)
             printf("[PRINTED] ");

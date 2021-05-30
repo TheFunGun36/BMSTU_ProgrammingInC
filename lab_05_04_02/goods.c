@@ -13,20 +13,11 @@ void goods_sort_price_descend(product_t goods[], int goods_amount)
 {
     for (int i = 1; i < goods_amount; i++)
     {
-        for (int j = 0; j < i; j++)
+        for (int j = i - 1; j >= 0 && (goods[j].price < goods[j + 1].price || (goods[j].price == goods[j + 1].price && goods[j].amount < goods[j + 1].amount)); j--)
         {
-            if (goods[j].price < goods[i].price || (goods[j].price == goods[i].price && goods[j].amount < goods[i].amount))
-            {
-                product_t tmp = goods[j];
-
-                for (int k = j; k < i; k++)
-                {
-                    goods[k] = goods[k + 1];
-                }
-
-                goods[i] = tmp;
-                break;
-            }
+            product_t tmp1 = goods[j];
+            goods[j] = goods[j + 1];
+            goods[j + 1] = tmp1;
         }
     }
 }

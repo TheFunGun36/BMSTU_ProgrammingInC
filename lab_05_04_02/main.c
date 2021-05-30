@@ -10,7 +10,7 @@
 int sort_file(char *filename_in, char *filename_out)
 {
     int exit_code;
-    product_t goods[GOODS_MAX_AMOUNT];
+    product_t goods[GOODS_MAX_AMOUNT] = {0};
     int goods_amount;
 
     exit_code = goods_fread(filename_in, goods, &goods_amount);
@@ -27,7 +27,7 @@ int sort_file(char *filename_in, char *filename_out)
 int print_file(char *filename, char *substr)
 {
     int exit_code;
-    product_t goods[GOODS_MAX_AMOUNT];
+    product_t goods[GOODS_MAX_AMOUNT] = {0};
     int goods_amount;
 
     if (strlen(substr) > PRODUCT_NAME_LENGTH - 2)
@@ -46,7 +46,7 @@ int print_file(char *filename, char *substr)
 int add_to_file(char *filename)
 {
     int exit_code;
-    product_t goods[GOODS_MAX_AMOUNT];
+    product_t goods[GOODS_MAX_AMOUNT] = {0};
     product_t new_product;
     int goods_amount;
 
