@@ -71,6 +71,8 @@ int print_file_content(char *filename)
     {
         if (!feof(f))
             return EXIT_NO_ACCESS;
+        else
+            return EXIT_EMPTY_FILE;
     }
 
     fclose(f);

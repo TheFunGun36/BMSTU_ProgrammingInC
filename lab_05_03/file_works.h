@@ -6,6 +6,7 @@
 #define EXIT_SUCCESS 0
 #define EXIT_NO_FILE -1
 #define EXIT_NO_ACCESS -2
+#define EXIT_EMPTY_FILE -3
 
 int get_number_by_pos(FILE *f, int position, int *value);
 int put_number_by_pos(FILE *f, int position, int value);

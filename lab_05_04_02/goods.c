@@ -1,11 +1,11 @@
-#include <string.h>
 #include <stdio.h>
+#include <string.h>
 #include "goods.h"
 
 int is_valid_product(product_t product)
 {
-    int result = strnlen(product.name, PRODUCT_NAME_LENGTH) >= PRODUCT_NAME_LENGTH;
-    result |= strnlen(product.manufacturer, PRODUCT_MAN_LENGTH) >= PRODUCT_MAN_LENGTH;
+    int result = strlen(product.name) >= PRODUCT_NAME_LENGTH;
+    result |= strlen(product.manufacturer) >= PRODUCT_MAN_LENGTH;
     return result;
 }
 
@@ -25,7 +25,6 @@ void goods_sort_price_descend(product_t goods[], int goods_amount)
                 }
 
                 goods[i] = tmp;
-
                 break;
             }
         }

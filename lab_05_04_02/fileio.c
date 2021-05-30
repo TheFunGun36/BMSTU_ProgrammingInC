@@ -3,7 +3,7 @@
 
 void goods_print(product_t goods[], int goods_amount, char *name_endl_mask)
 {
-    int mask_len = strnlen(name_endl_mask, PRODUCT_NAME_LENGTH);
+    int mask_len = strlen(name_endl_mask);
 
     for (int i = 0; i < goods_amount; i++)
     {
@@ -35,7 +35,7 @@ int readline(FILE *f, char *str, int max_str_size)
 
     fgets(str, max_str_size, f);
 
-    int len = strnlen(str, max_str_size);
+    int len = strlen(str);
 
     if (len >= 1 && (str[len - 1] == '\r' || str[len - 1] == '\n'))
     {

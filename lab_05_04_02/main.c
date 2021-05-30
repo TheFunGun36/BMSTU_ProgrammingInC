@@ -30,6 +30,9 @@ int print_file(char *filename, char *substr)
     product_t goods[GOODS_MAX_AMOUNT];
     int goods_amount;
 
+    if (strlen(substr) > PRODUCT_NAME_LENGTH - 2)
+        return ERR_LONG_STRING;
+
     exit_code = goods_fread(filename, goods, &goods_amount);
 
     if (exit_code == EXIT_SUCCESS)
