@@ -76,13 +76,13 @@ int main(int argc, char *argv[])
     switch (argv[1][0])
     {
         case 's':
-            exit_code = EXIT_INVALID_ARGS; // exit_code = sort_file(argv[2], argv[3]);
+            exit_code = sort_file(argv[2], argv[3]);
             break;
         case 'f':
-            exit_code = print_file(argv[2], argv[3]);
+            return EXIT_INVALID_ARGS; //exit_code = print_file(argv[2], argv[3]);
             break;
         case 'a':
-            exit_code = add_to_file(argv[2]);
+            return EXIT_INVALID_ARGS; //exit_code = add_to_file(argv[2]);
             break;
         default:
             exit_code = EXIT_INVALID_ARGS;
