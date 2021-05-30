@@ -21,8 +21,9 @@ void goods_insert(product_t goods[], int *goods_amount, product_t new_product)
 {
     product_t tmp;
     (*goods_amount)++;
+    goods[*goods_amount - 1] = new_product;
 
-    for (int j = *goods_amount; j >= 0 && (goods[j].price < new_product.price || (goods[j].price == new_product.price && goods[j].amount < new_product.amount)); j--)
+    for (int j = *goods_amount - 2; j >= 0 && (goods[j].price < new_product.price || (goods[j].price == new_product.price && goods[j].amount < new_product.amount)); j--)
     {
         tmp = goods[j];
         goods[j] = goods[j + 1];

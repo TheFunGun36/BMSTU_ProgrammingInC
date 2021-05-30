@@ -11,6 +11,7 @@
 #define ERR_EMPTY_STRING -3
 #define ERR_LONG_STRING -4
 #define ERR_FILE_IS_TOO_LONG -5
+#define ERR_NOTHING_TO_PRINT -6
 
 typedef struct
 {

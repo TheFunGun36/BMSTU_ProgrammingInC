@@ -36,7 +36,7 @@ int print_file(char *filename, char *substr)
 
     if (exit_code == EXIT_SUCCESS)
     {
-        goods_print(goods, goods_amount, substr);
+        exit_code = goods_print(goods, goods_amount, substr);
     }
 
     return exit_code;
@@ -44,12 +44,11 @@ int print_file(char *filename, char *substr)
 
 int add_to_file(char *filename)
 {
-    int exit_code;
     product_t goods[GOODS_MAX_AMOUNT] = { 0 };
     product_t new_product = { 0 };
     int goods_amount = 0;
 
-    exit_code = goods_fread(filename, goods, &goods_amount);
+    int exit_code = goods_fread(filename, goods, &goods_amount);
 
     if (exit_code == EXIT_SUCCESS)
     {

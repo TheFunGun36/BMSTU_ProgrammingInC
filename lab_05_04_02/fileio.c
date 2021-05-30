@@ -1,37 +1,32 @@
 #include <string.h>
 #include "fileio.h"
 
-void goods_print(product_t goods[], int goods_amount, char *name_endl_mask)
+int goods_print(product_t goods[], int goods_amount, char *name_endl_mask)
 {
     unsigned int mask_len = strlen(name_endl_mask);
+    int exit_code = ERR_NOTHING_TO_PRINT;
 
     for (int i = 0; i < goods_amount; i++)
     {
         int is_printed = 0;
 
-        if (strlen(goods[i].name) == mask_len)
+        if (strlen(goods[i].name) >= mask_len)
         {
             char *ptr = strchr(goods[i].name, '\0') - mask_len;
             is_printed = strcmp(name_endl_mask, ptr) == 0;
         }
-#ifdef DEBUG
-        if (is_printed)
-            printf("[PRINTED] ");
-        printf("%d:\n", i + 1);
-        printf("  name: %s\n", goods[i].name);
-        printf("  manufacturer=%s\n", goods[i].manufacturer);
-        printf("  price=%u\n", goods[i].price);
-        printf("  amount=%u\n\n", goods[i].amount);
-#else
+
         if (is_printed)
         {
+            exit_code = EXIT_SUCCESS;
             printf("%s\n", goods[i].name);
             printf("%s\n", goods[i].manufacturer);
             printf("%u\n", goods[i].price);
             printf("%u\n", goods[i].amount);
         }
-#endif
     }
+
+    return exit_code;
 }
 
 int readline(FILE *f, char *str, int max_str_size)
