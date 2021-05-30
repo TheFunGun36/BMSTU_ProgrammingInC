@@ -5,7 +5,6 @@
 #include "fileio.h"
 
 #define EXIT_INVALID_ARGS 53
-#define GOODS_MAX_AMOUNT 100
 
 int sort_file(char *filename_in, char *filename_out)
 {
@@ -66,11 +65,29 @@ int add_to_file(char *filename)
     return exit_code;
 }
 
+int is_args_valid(int argc, char *argv[])
+{
+    int result = 0;
+
+    if (argc == 3)
+    {
+        if (argv[1][0] == 'a' && argv[1][1] == 't' && argv[1][2] == '\0')
+            return 1;
+    }
+    else if (argc == 4)
+    {
+        if ((argv[1][0] == 's' || argv[1][0] == 'f') && argv[1][1] == 't' && argv[1][2] == '\0')
+            return 1;
+    }
+
+    return result;
+}
+
 int main(int argc, char *argv[])
 {
     int exit_code = EXIT_SUCCESS;
 
-    if (!((argc == 3 && strcmp(argv[1], "at") == 0) || (argc == 4 && (strcmp(argv[1], "st") == 0 || strcmp(argv[1], "ft") == 0))))
+    if (!is_args_valid(argc, argv))
         return EXIT_INVALID_ARGS;
 
     switch (argv[1][0])
@@ -79,10 +96,10 @@ int main(int argc, char *argv[])
             exit_code = sort_file(argv[2], argv[3]);
             break;
         case 'f':
-            return EXIT_INVALID_ARGS; //exit_code = print_file(argv[2], argv[3]);
+            exit_code = print_file(argv[2], argv[3]);
             break;
         case 'a':
-            return EXIT_INVALID_ARGS; //exit_code = add_to_file(argv[2]);
+            exit_code = add_to_file(argv[2]);
             break;
         default:
             exit_code = EXIT_INVALID_ARGS;

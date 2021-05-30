@@ -7,12 +7,11 @@ void goods_print(product_t goods[], int goods_amount, char *name_endl_mask)
 
     for (int i = 0; i < goods_amount; i++)
     {
-        char *ptr;
         int is_printed = 0;
 
-        if (strlen(goods[i].name) >= mask_len)
+        if (strlen(goods[i].name) == mask_len)
         {
-            ptr = strchr(goods[i].name, '\0') - mask_len;
+            char *ptr = strchr(goods[i].name, '\0') - mask_len;
             is_printed = strcmp(name_endl_mask, ptr) == 0;
         }
 #ifdef DEBUG
@@ -63,9 +62,7 @@ int readline(FILE *f, char *str, int max_str_size)
 
 int product_fread(FILE *f, product_t *product)
 {
-    int exit_code = EXIT_SUCCESS;
-
-    exit_code = readline(f, product->name, PRODUCT_NAME_LENGTH);
+    int exit_code = readline(f, product->name, PRODUCT_NAME_LENGTH);
 
     if (feof(f) || ferror(f))
         exit_code = ERR_NO_ACCESS;
@@ -88,7 +85,7 @@ int product_fread(FILE *f, product_t *product)
         if (result != 1)
             exit_code = ERR_INCOMPLETE_STRUCT;
 
-        char trash[3];
+        char trash[3] = { 0 };
         fgets(trash, 3, f);
     }
 
@@ -97,10 +94,8 @@ int product_fread(FILE *f, product_t *product)
 
 int goods_fread(char *filename, product_t goods[], int *goods_amount)
 {
-    FILE *f;
     int exit_code = EXIT_SUCCESS;
-
-    f = fopen(filename, "r");
+    FILE *f = fopen(filename, "r");
 
     if (f)
     {
@@ -113,10 +108,12 @@ int goods_fread(char *filename, product_t goods[], int *goods_amount)
             if (exit_code == EXIT_SUCCESS)
                 (*goods_amount)++;
         }
-        while (!(feof(f) || ferror(f) || exit_code != EXIT_SUCCESS));
+        while (!(feof(f) || ferror(f) || exit_code != EXIT_SUCCESS || *goods_amount < GOODS_MAX_AMOUNT - 1));
 
         if (!feof(f))
+        {
             exit_code = ERR_NO_ACCESS;
+        }
         else if (exit_code == ERR_NO_ACCESS)
         {
             exit_code = EXIT_SUCCESS;
@@ -132,13 +129,9 @@ int goods_fread(char *filename, product_t goods[], int *goods_amount)
 
 int goods_fwrite(char *filename, product_t goods[], int goods_amount)
 {
-    FILE *f;
     int exit_code = EXIT_SUCCESS;
 
-    if (filename[0] == '\0')
-        f = stdout;
-    else
-        f = fopen(filename, "w");
+    FILE *f = fopen(filename, "w");
 
     if (f)
     {

@@ -3,12 +3,14 @@
 
 #define PRODUCT_NAME_LENGTH 32
 #define PRODUCT_MAN_LENGTH 17
+#define GOODS_MAX_AMOUNT 101
 
 #define EXIT_SUCCESS 0
 #define ERR_NO_ACCESS -1
 #define ERR_INCOMPLETE_STRUCT -2
 #define ERR_EMPTY_STRING -3
 #define ERR_LONG_STRING -4
+#define ERR_FILE_IS_TOO_LONG -5
 
 typedef struct
 {
