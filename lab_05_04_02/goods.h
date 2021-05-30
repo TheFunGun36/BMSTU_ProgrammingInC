@@ -1,28 +1,26 @@
 #ifndef GOODS_H
 #define GOODS_H
 
-#define PRODUCT_NAME_LENGTH 31
-#define PRODUCT_MAN_LENGTH 16
+#define PRODUCT_NAME_LENGTH 32
+#define PRODUCT_MAN_LENGTH 17
 
-#define SUCCESS 0
+#define EXIT_SUCCESS 0
 #define ERR_NO_ACCESS -1
 #define ERR_INCOMPLETE_STRUCT -2
+#define ERR_EMPTY_STRING -3
+#define ERR_LONG_STRING -4
 
-typedef struct Product
+typedef struct
 {
     char name[PRODUCT_NAME_LENGTH];
     char manufacturer[PRODUCT_MAN_LENGTH];
     unsigned int price;
     unsigned int amount;
-} Product;
+} product_t;
 
-int is_valid_product(Product product);
+int is_valid_product(product_t product);
 
-void goods_sort_price_descend(Product goods[], int goods_amount);
-void goods_print(Product goods[], int goods_amount, char *name_endl_mask);
-void goods_insert(Product goods[], int *goods_amount, Product new_product);
-
-int goods_fread(char *filename, Product goods[], int *goods_amount);
-int goods_fwrite(char *filename, Product goods[], int goods_amount);
+void goods_sort_price_descend(product_t goods[], int goods_amount);
+void goods_insert(product_t goods[], int *goods_amount, product_t new_product);
 
 #endif
