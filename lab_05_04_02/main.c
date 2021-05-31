@@ -14,6 +14,9 @@ int sort_file(char *filename_in, char *filename_out)
 
     exit_code = goods_fread(filename_in, goods, &goods_amount);
 
+    if (exit_code == EXIT_SUCCESS && goods_amount <= 1)
+        exit_code = ERR_NOTHING_TO_SORT;
+
     if (exit_code == EXIT_SUCCESS)
     {
         goods_sort_price_descend(goods, goods_amount);
