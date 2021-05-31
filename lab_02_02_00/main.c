@@ -38,7 +38,7 @@ int get_array_from_user(int *array, int *arr_size)
     if (scanf("%d", arr_size) != 1)
         return WRONG_ARRAY_SIZE;
 
-    if (*arr_size <= 0 || *arr_size > 10)
+    if (*arr_size <= 1 || *arr_size > ARR_SIZE)
         return WRONG_ARRAY_SIZE;
 
     for (int i = 0; i < *arr_size; i++)
