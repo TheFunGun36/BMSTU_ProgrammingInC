@@ -25,7 +25,7 @@ int main()
     int new_array_size;
     form_new_array(array, array_size, new_array, &new_array_size);
 
-    if (array_size <= 0)
+    if (new_array_size <= 0)
         return NO_ELEMENTS_IN_NEW_ARRAY;
 
     print_array(new_array, new_array_size);
