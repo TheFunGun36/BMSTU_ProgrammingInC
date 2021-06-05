@@ -41,7 +41,7 @@ int get_row_min_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, unsigned
     return result;
 }
 
-void calculate_sort_keys(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y, int sort_keys[])
+void gen_keys_min_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y, int sort_keys[])
 {
     for (unsigned int i = 0; i < size_y; i++)
         sort_keys[i] = get_row_min_element(matrix, size_x, i);
@@ -60,12 +60,8 @@ void swap_rows(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, unsigned int row1
         swap(&matrix[row1][i], &matrix[row2][i]);
 }
 
-void sort_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
+void sort_matrix_by_keys(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y, int sort_keys[])
 {
-    int sort_keys[MAX_MATRIX_SIZE_Y];
-
-    calculate_sort_keys(matrix, size_x, size_y, sort_keys);
-
     for (size_t i = 0; i < size_y; i++)
     {
         size_t best_index = i;
@@ -105,7 +101,9 @@ int main()
     if (exit_code != OK)
         return exit_code;
 
-    sort_matrix(matrix, size_x, size_y);
+    int sort_keys[MAX_MATRIX_SIZE_Y];
+    gen_keys_min_element(matrix, size_x, size_y, sort_keys);
+    sort_matrix_by_keys(matrix, size_x, size_y, sort_keys);
     print_matrix(matrix, size_x, size_y);
 
     return exit_code;
