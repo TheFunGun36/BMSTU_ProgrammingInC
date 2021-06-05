@@ -29,29 +29,33 @@ int get_matrix_from_user(int matrix[][MAX_MATRIX_SIZE_X], size_t *size_x, size_t
     return OK;
 }
 
-void reconstruct_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
+void process_matrix_to_array(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y, int result[])
 {
     if (size_y == 1)
     {
-        for (int i = 0; i < size_x; i++)
-            matrix[0][i] = 0;
+        for (size_t i = 0; i < size_x; i++)
+            result[i] = 0;
     }
     else
     {
         for (unsigned int i = 0; i < size_x; i++)
-        {   
-            if (matrix[0][i] != 0)
+        {
+            if (matrix[0][i] == 0)
+            {
+                result[i] = 0;
+            }
+            else
             {
                 int is_last_positive = (matrix[0][i] > 0);
 
-                matrix[0][i] = 1;
+                result[i] = 1;
 
-                for (unsigned int j = 1; j < size_y && matrix[0][i]; j++)
+                for (unsigned int j = 1; j < size_y && result[i]; j++)
                 {
                     if (matrix[j][i] == 0)
-                        matrix[0][i] = 0;
+                        result[i] = 0;
                     else if ((is_last_positive && (matrix[j][i] > 0)) || (!is_last_positive && (matrix[j][i] < 0)))
-                        matrix[0][i] = 0;
+                        result[i] = 0;
                     else
                         is_last_positive = !is_last_positive;
                 }
@@ -60,15 +64,16 @@ void reconstruct_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t s
     }
 }
 
-void print_first_line(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x)
+void print_array(int array[], size_t size_x)
 {
     for (unsigned int i = 0; i < size_x; i++)
-        printf("%d ", matrix[0][i]);
+        printf("%d ", array[i]);
 }
 
 int main()
 {
     int matrix[MAX_MATRIX_SIZE_Y][MAX_MATRIX_SIZE_X];
+    int result_array[MAX_MATRIX_SIZE_X];
     size_t size_x, size_y;
 
     int exit_code = get_matrix_from_user(matrix, &size_x, &size_y);
@@ -76,8 +81,8 @@ int main()
     if (exit_code != OK)
         return exit_code;
 
-    reconstruct_matrix(matrix, size_x, size_y);
-    print_first_line(matrix, size_x);
+    process_matrix_to_array(matrix, size_x, size_y, result_array);
+    print_array(result_array, size_x);
 
     return exit_code;
 }
