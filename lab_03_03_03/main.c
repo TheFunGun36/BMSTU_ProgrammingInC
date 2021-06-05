@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-#define MAX_MATRIX_SIZE_X 11
+#define MAX_MATRIX_SIZE_X 10
 #define MAX_MATRIX_SIZE_Y 10
 
 #define OK 0
@@ -41,35 +41,46 @@ int get_row_min_element(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, unsigned
     return result;
 }
 
+void calculate_sort_keys(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y, int sort_keys[])
+{
+    for (unsigned int i = 0; i < size_y; i++)
+        sort_keys[i] = get_row_min_element(matrix, size_x, i);
+}
+
+void swap(int *a, int *b)
+{
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
 void swap_rows(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, unsigned int row1, unsigned int row2)
 {
     for (unsigned int i = 0; i < size_x; i++)
-    {
-        int tmp = matrix[row1][i];
-        matrix[row1][i] = matrix[row2][i];
-        matrix[row2][i] = tmp;
-    }
+        swap(&matrix[row1][i], &matrix[row2][i]);
 }
 
 void sort_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
 {
-    for (unsigned int i = 0; i < size_y; i++)
-    {
-        matrix[i][size_x] = get_row_min_element(matrix, size_x, i);
-    }
+    int sort_keys[MAX_MATRIX_SIZE_Y];
 
-    for (unsigned int i = 0; i < size_y; i++)
-    {
-        unsigned int best_index = i;
+    calculate_sort_keys(matrix, size_x, size_y, sort_keys);
 
-        for (unsigned int j = i + 1; j < size_y; j++)
+    for (size_t i = 0; i < size_y; i++)
+    {
+        size_t best_index = i;
+
+        for (size_t j = i + 1; j < size_y; j++)
         {
-            if (matrix[best_index][size_x] < matrix[j][size_x])
+            if (sort_keys[best_index] < sort_keys[j])
                 best_index = j;
         }
 
         if (best_index != i)
+        {
             swap_rows(matrix, size_x + 1, i, best_index);
+            swap(&sort_keys[i], &sort_keys[best_index]);
+        }
     }
 }
 
@@ -80,7 +91,7 @@ void print_matrix(int matrix[][MAX_MATRIX_SIZE_X], size_t size_x, size_t size_y)
         for (unsigned int j = 0; j < size_x; j++)
             printf("%d ", matrix[i][j]);
 
-        printf("\n");    
+        printf("\n");
     }
 }
 
@@ -95,7 +106,6 @@ int main()
         return exit_code;
 
     sort_matrix(matrix, size_x, size_y);
-
     print_matrix(matrix, size_x, size_y);
 
     return exit_code;
