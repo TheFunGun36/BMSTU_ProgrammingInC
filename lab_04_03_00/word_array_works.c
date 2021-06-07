@@ -54,7 +54,7 @@ int pop_last_word(char *string, char **word)
 
 void swap_strings(char *str1, char *str2)
 {
-    char *tmp[MAX_WORD_LENGTH + 1];
+    char tmp[MAX_WORD_LENGTH + 1];
     strcpy(tmp, str1);
     strcpy(str1, str2);
     strcpy(str2, tmp);
