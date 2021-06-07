@@ -230,9 +230,9 @@ int string_compare(string_part_t str1, string_part_t str2)
         str2.begin++;
     }
 
-    if (!is_string_empty(str1))
+    if (is_string_empty(str1))
         return -1;
-    else if (!is_string_empty(str2))
+    else if (is_string_empty(str2))
         return 1;
 
     return 0;
