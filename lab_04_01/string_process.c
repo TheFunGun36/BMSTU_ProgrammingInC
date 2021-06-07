@@ -49,24 +49,22 @@ unsigned int my_strspn(char *main_str, char *symbol_set)
 
 unsigned int my_strcspn(char *main_str, char *symbol_set)
 {
-    char *main_str_saved = main_str;
     int is_found = 0;
+    char *p;
 
-    while (*main_str != '\0')
+    for (p = main_str; *p != '\0' && !is_found; p++)
     {
-        for (char *p = symbol_set; *p != '\0'; p++)
+        for (char *pp = symbol_set; *pp != '\0' && !is_found; pp++)
         {
-            if (*main_str == *p)
+            if (*p == *pp)
+            {
                 is_found = 1;
+                p--;
+            }
         }
-
-        if (is_found)
-            break;
-
-        main_str++;
     }
 
-    return main_str - main_str_saved;
+    return p - main_str;
 }
 
 char *my_strchr(char *string, int symbol)
