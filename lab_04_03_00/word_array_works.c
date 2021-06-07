@@ -99,13 +99,14 @@ void strarr_to_string(char array[][MAX_WORD_LENGTH + 1], int array_length, char 
 {
     for (int i = 0; i < array_length; i++)
     {
-        for (int j = 0; array[i][j] != '\0'; j++)
-        {
-            *string++ = array[i][j];
-        }
+        int word_len = strlen(array[i]);
+        strcpy(string, array[i]);
+        string += word_len;
 
-        *string++ = splitter;
+        *string = splitter;
+        string++;
     }
 
-    *(--string) = '\0';
+    string--;
+    *string = '\0';
 }
