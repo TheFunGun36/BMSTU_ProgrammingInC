@@ -3,13 +3,92 @@
 #include <locale.h>
 #include "string_process.h"
 
-#define OK 0
-#define STRING_IS_TOO_LONG -1
-
-#define MAX_STRING_LENGTH 256
-#define MAX_WORD_LENGTH 16
+#define TEST_PASSED 0
+#define TEST_FAILED 1
 
 int main()
 {
-    return OK;
+    int exit_code = TEST_PASSED;
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "Here's my phone number: 8 (800) 555-35-35";
+        char *input_blacklist = "1234567890";
+        int expected_result = 24;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "abcdef";
+        char *input_blacklist = "1234567890";
+        int expected_result = 6;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "abcdef0";
+        char *input_blacklist = "1234567890";
+        int expected_result = 6;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "0abcdef";
+        char *input_blacklist = "1234567890";
+        int expected_result = 0;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "abcdef0";
+        char *input_blacklist = "qwertyuiopasdfghjklzxcvbnm";
+        int expected_result = 0;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "";
+        char *input_blacklist = "qwertyuiopasdfghjklzxcvbnm";
+        int expected_result = 0;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "nice";
+        char *input_blacklist = "";
+        int expected_result = 4;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    if (exit_code == TEST_PASSED)
+    {
+        char *input_string = "Testing level: \\b\\";
+        char *input_blacklist = "b";
+        int expected_result = 16;
+
+        int result = my_strcspn(input_string, input_blacklist);
+        exit_code = (expected_result == result) ? TEST_PASSED : TEST_FAILED;
+    }
+
+    return exit_code;
 }

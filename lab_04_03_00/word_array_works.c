@@ -52,50 +52,23 @@ int pop_last_word(char *string, char **word)
     return OK;
 }
 
+void swap_strings(char *str1, char *str2)
+{
+    char tmp[MAX_WORD_LENGTH + 1];
+    strcpy(tmp, str1);
+    strcpy(str1, str2);
+    strcpy(str2, tmp);
+}
+
 void reverse_word_array(char array[][MAX_WORD_LENGTH + 1], int array_length)
 {
-    for (int i = 0; i < array_length / 2; i++)
+    int j = array_length - 1;
+
+    for (int i = 0; i < j; i++)
     {
-        int j = 0;
-        char tmp;
+        swap_strings(array[i], array[j]);
 
-        while (array[i][j] != '\0' && array[array_length - i - 1][j] != '\0')
-        {
-            tmp = array[i][j];
-            array[i][j] = array[array_length - i - 1][j];
-            array[array_length - i - 1][j] = tmp;
-
-            j++;
-        }
-
-        tmp = array[i][j];
-        array[i][j] = array[array_length - i - 1][j];
-        array[array_length - i - 1][j] = tmp;
-
-        if (array[i][j] == '\0')
-        {
-            j++;
-
-            while (array[i][j] != '\0')
-            {
-                array[array_length - i - 1][j] = array[i][j];
-                j++;
-            }
-
-            array[array_length - i - 1][j] = '\0';
-        }
-        else if (array[array_length - i - 1][j] == '\0')
-        {
-            j++;
-
-            while (array[array_length - i - 1][j] != '\0')
-            {
-                array[i][j] = array[array_length - i - 1][j];
-                j++;
-            }
-
-            array[i][j] = '\0';
-        }
+        j--;
     }
 }
 
@@ -126,13 +99,14 @@ void strarr_to_string(char array[][MAX_WORD_LENGTH + 1], int array_length, char 
 {
     for (int i = 0; i < array_length; i++)
     {
-        for (int j = 0; array[i][j] != '\0'; j++)
-        {
-            *string++ = array[i][j];
-        }
+        int word_len = strlen(array[i]);
+        strcpy(string, array[i]);
+        string += word_len;
 
-        *string++ = splitter;
+        *string = splitter;
+        string++;
     }
 
-    *(--string) = '\0';
+    string--;
+    *string = '\0';
 }
