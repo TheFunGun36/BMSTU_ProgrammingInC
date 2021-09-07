@@ -37,5 +37,6 @@ do
     fi
 done
 
+rm output.txt
 echo "Succeeded positives $POSITIVES_SUCCEEDED/$POSITIVES_SUM"
 echo "Succeeded negatives $NEGATIVES_SUCCEEDED/$NEGATIVES_SUM"
