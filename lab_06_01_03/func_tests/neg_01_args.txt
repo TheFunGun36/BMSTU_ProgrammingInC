@@ -1,1 +1,1 @@
-app.exe func_tests/neg_02_in.txt 15
+app.exe func_tests/neg_01_in.txt 15

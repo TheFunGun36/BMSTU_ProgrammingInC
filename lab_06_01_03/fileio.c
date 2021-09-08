@@ -2,6 +2,10 @@
 #include <string.h>
 #include "fileio.h"
 
+#define EOF_FOUND 0
+#define EOF_NOT_FOUND 1
+#define EOF_SEARCHING 2
+
 int validate_string(char *str)
 {
     int result = 0;
@@ -71,6 +75,24 @@ int file_read_number(unsigned int *number, FILE *f)
     return exit_code;
 }
 
+int seek_eof(FILE *f)
+{
+    const char *space_symbols = "\r\n\t\v\f";
+    int result = EOF_SEARCHING;
+
+    while (result == EOF_SEARCHING)
+    {
+        char c = fgetc(f);
+
+        if (c == EOF)
+            result = EOF_FOUND;
+        else if (strchr(space_symbols, c))
+            result = EOF_NOT_FOUND;
+    }
+
+    return result;
+}
+
 int read_product_arr(product_t *product_arr, unsigned int *product_arr_size, char *filename)
 {
     int exit_code = EXIT_SUCCESS;
@@ -94,6 +116,9 @@ int read_product_arr(product_t *product_arr, unsigned int *product_arr_size, cha
             }
             
             *product_arr_size = products_amount;
+
+            if (seek_eof(f) == EOF_NOT_FOUND)
+                exit_code = EXIT_INVALID_PRODUCTS_AMOUNT;
         }
         else
             exit_code = EXIT_INVALID_PRODUCTS_AMOUNT;

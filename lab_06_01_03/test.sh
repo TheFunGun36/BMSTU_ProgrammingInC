@@ -5,10 +5,10 @@ NEGATIVES_SUM=0
 
 for file in `ls func_tests`
 do
-    if [[ $file =~ pos_[0-9]{2}_in.txt ]]
+    if [[ $file =~ pos_[0-9]{2}_args.txt ]]
     then
         ((POSITIVES_SUM++))
-        i=${file%_in.txt}
+        i=${file%_args.txt}
         i=${i#pos_}
         ./`cat func_tests/pos_${i}_args.txt` > output.txt
         if [[ $? == 0 ]] && cmp -s "output.txt" "func_tests/pos_${i}_out.txt"
@@ -20,10 +20,10 @@ do
             echo
         fi
     fi
-    if [[ $file =~ neg_[0-9]{2}_in.txt ]]
+    if [[ $file =~ neg_[0-9]{2}_args.txt ]]
     then
         ((NEGATIVES_SUM++))
-        i=${file%_in.txt}
+        i=${file%_args.txt}
         i=${i#neg_}
         ./`cat func_tests/neg_${i}_args.txt` > output.txt
         if [[ $? != 0 ]]
