@@ -26,7 +26,7 @@ do
         i=${file%_in.txt}
         i=${i#neg_}
         ./`cat func_tests/neg_${i}_args.txt` > output.txt
-        if [[$? != 0]] && cmp -s "output.txt" "func_tests/neg_${i}_out.txt"
+        if [[ $? != 0 ]]
         then
             ((NEGATIVES_SUCCEEDED++))
         else

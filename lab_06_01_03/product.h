@@ -5,7 +5,7 @@
 
 typedef struct product_t
 {
-    char name[MAX_PRODUCT_NAME_SIZE];
+    char name[MAX_PRODUCT_NAME_SIZE + 1];
     unsigned int price;
 } product_t;
 

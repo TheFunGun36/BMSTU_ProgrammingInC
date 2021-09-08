@@ -2,7 +2,7 @@
 #include <string.h>
 #include "fileio.h"
 
-int validate_string(char *str, int max_str_size)
+int validate_string(char *str)
 {
     int result = 0;
 
@@ -31,12 +31,12 @@ int validate_string(char *str, int max_str_size)
 int file_read_line(char *str, FILE *f)
 {
     int exit_code = EXIT_SUCCESS;
-    char str_tmp[MAX_PRODUCT_NAME_SIZE + 1];
-    char* result = fgets(str_tmp, MAX_PRODUCT_NAME_SIZE, f);
+    char str_tmp[MAX_PRODUCT_NAME_SIZE + 2];
+    char* result = fgets(str_tmp, MAX_PRODUCT_NAME_SIZE + 2, f);
 
     if (result)
     {
-        exit_code = validate_string(str_tmp, MAX_PRODUCT_NAME_SIZE + 1);
+        exit_code = validate_string(str_tmp);
 
         if (exit_code == EXIT_SUCCESS)
             strcpy(str, str_tmp);
@@ -50,7 +50,6 @@ int file_read_line(char *str, FILE *f)
 int file_read_number(unsigned int *number, FILE *f)
 {
     int exit_code = EXIT_SUCCESS;
-    
     int result = fscanf(f, "%u", number);
 
     if (result == 1)
