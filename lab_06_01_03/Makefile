@@ -1,36 +1,15 @@
-build:
-ifeq ("$(wildcard ./main.o)","")
-	make main
-else
-ifeq ("$(wildcard ./product.o)","")
-	make product
-else
-ifeq ("$(wildcard ./fileio.o)","")
-	make fileio
-else
-	gcc main.o product.o fileio.o -o app.exe
-endif
-endif
-endif
+CFLAGS = -std=c99 -pedantic -Wall -Werror -g3
+CC = gcc
 
-main:
-	gcc -std=c99 -Wpedantic -Wall -Werror -g3 main.c -c
-	make build
+app.exe: main.o fileio.o product.o
+	$(CC) $? -o $@
 
-product:
-	gcc -std=c99 -Wpedantic -Wall -Werror -g3 product.c -c
-	make build
+main.o: main.c
+	$(CC) main.c $(CFLAGS) -c
 
-fileio:
-	gcc -std=c99 -Wpedantic -Wall -Werror -g3 fileio.c -c
-	make build
+product.o: product.c product.h
+	$(CC) product.c $(CFLAGS) -c
 
-clear:
-	rm *.o *.exe
-
-test:
-ifeq ("$(wildcard ./app.exe)","")
-	make build
-endif
-	./test.sh
+fileio.o: fileio.c fileio.h
+	$(CC) fileio.c $(CFLAGS) -c
 	
