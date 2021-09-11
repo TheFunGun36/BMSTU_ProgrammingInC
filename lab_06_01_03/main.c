@@ -3,8 +3,8 @@
 #include "fileio.h"
 #include "product.h"
 
-#define EXIT_INVALID_MAX_PRICE EXIT_FILEIO_LAST-0
-#define EXIT_EMPTY_RESULT_ARRAY EXIT_FILEIO_LAST-1
+#define EXIT_INVALID_MAX_PRICE -7
+#define EXIT_EMPTY_RESULT_ARRAY -8
 
 int check_args(int argc, char *argv[], double *calculated_price)
 {
@@ -44,14 +44,7 @@ int main(int argc, char *argv[])
         { 
             filter_product_array(product_arr, &product_arr_size, max_price);
 
-            if (product_arr_size <= 0)
-            {
-                exit_code = EXIT_EMPTY_RESULT_ARRAY;
-            }
-            else
-            {
-                print_product_array(product_arr, product_arr_size);
-            }
+            print_product_array(product_arr, product_arr_size);
         }
     }
 

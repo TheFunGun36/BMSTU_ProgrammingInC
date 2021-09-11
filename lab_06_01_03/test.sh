@@ -1,8 +1,8 @@
 POSITIVES_SUCCEEDED=0
-POSITIVES_MEMORY_SUCCEEDED=4
+POSITIVES_MEMORY_SUCCEEDED=0
 POSITIVES_SUM=0
 NEGATIVES_SUCCEEDED=0
-NEGATIVES_MEMORY_SUCCEEDED=4
+NEGATIVES_MEMORY_SUCCEEDED=0
 NEGATIVES_SUM=0
 
 for file in `ls func_tests`
@@ -25,9 +25,10 @@ do
 
         if [ -s valg.txt ]
         then
-            ((POSITIVES_MEMORY_SUCCEEDED--))
             cp valg.txt log/valg$i.txt
             echo "Leak in positive test $i. Check valg$i.txt:"
+        else
+            ((POSITIVES_MEMORY_SUCCEEDED++))
         fi
     fi
     if [[ $file =~ neg_[0-9]{2}_args.txt ]]
@@ -42,15 +43,15 @@ do
             ((NEGATIVES_SUCCEEDED++))
         else
             echo "Failed negative test $i."
-            cat output.txt
             echo
         fi
 
         if [ -s valg.txt ]
         then
-            ((NEGATIVES_MEMORY_SUCCEEDED--))
             cp valg.txt log/valg$i.txt
             echo "Leak in positive test $i. Check valg$i.txt:"
+        else
+            ((NEGATIVES_MEMORY_SUCCEEDED++))
         fi
     fi
 done

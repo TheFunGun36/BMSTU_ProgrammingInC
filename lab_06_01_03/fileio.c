@@ -2,8 +2,8 @@
 #include <string.h>
 #include "fileio.h"
 
-#define EOF_FOUND 0
-#define EOF_NOT_FOUND 1
+#define EOF_NOT_FOUND 0
+#define EOF_FOUND 1
 #define EOF_SEARCHING 2
 
 int validate_string(char *str)
@@ -36,7 +36,7 @@ int file_read_line(char *str, FILE *f)
 {
     int exit_code = EXIT_SUCCESS;
     char str_tmp[MAX_PRODUCT_NAME_SIZE + 2];
-    char* result = fgets(str_tmp, MAX_PRODUCT_NAME_SIZE + 2, f);
+    char *result = fgets(str_tmp, MAX_PRODUCT_NAME_SIZE + 2, f);
 
     if (result)
     {
