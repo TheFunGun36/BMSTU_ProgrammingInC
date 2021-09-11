@@ -54,23 +54,32 @@ int file_read_line(char *str, FILE *f)
 int file_read_number(unsigned int *number, FILE *f)
 {
     int exit_code = EXIT_SUCCESS;
-    int result = fscanf(f, "%u", number);
+    int number_signed;
+    int result = fscanf(f, "%d", &number_signed);
 
     if (result == 1)
     {
-        char s = fgetc(f);
-
-        if (s == '\r')
+        if (number_signed < 0)
+            exit_code = EXIT_INVALID_NUMBER;
+        else
         {
-            s = fgetc(f);
-            if (s != '\n')
+            char s = fgetc(f);
+
+            if (s == '\r')
+            {
+                s = fgetc(f);
+                if (s != '\n')
+                    exit_code = EXIT_INVALID_NUMBER;
+            }
+            else if (s != EOF && s != '\n')
                 exit_code = EXIT_INVALID_NUMBER;
         }
-        else if (s != EOF && s != '\n')
-            exit_code = EXIT_INVALID_NUMBER;
     }
     else
         exit_code = EXIT_INVALID_NUMBER;
+
+    if (exit_code == EXIT_SUCCESS)
+        *number = number_signed;
 
     return exit_code;
 }

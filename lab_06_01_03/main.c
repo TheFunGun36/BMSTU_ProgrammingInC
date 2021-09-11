@@ -4,7 +4,6 @@
 #include "product.h"
 
 #define EXIT_INVALID_MAX_PRICE -7
-#define EXIT_EMPTY_RESULT_ARRAY -8
 
 int check_args(int argc, char *argv[], double *calculated_price)
 {

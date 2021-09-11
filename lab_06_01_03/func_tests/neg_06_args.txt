@@ -1,1 +1,1 @@
-app.exe func_tests/pos_06_args.txt 100
+app.exe func_tests/neg_06_in.txt 100
