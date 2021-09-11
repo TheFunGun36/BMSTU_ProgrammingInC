@@ -25,7 +25,7 @@ int validate_string(char *str)
         *name_end = '\0';
     }
 
-    if (str >= name_end)
+    if (name_end != 0 && str >= name_end)
         result = EXIT_EMPTY_INPUT_STRING;
 
     return result;
@@ -101,6 +101,21 @@ int seek_eof(FILE *f)
     return result;
 }
 
+int read_product(product_t *product, FILE *f)
+{
+    int exit_code = file_read_line(product->name, f);
+
+    if (exit_code == EXIT_SUCCESS)
+        exit_code = file_read_number(&product->price, f);
+
+    return exit_code;
+}
+
+int is_products_amount_valid(int products_amount)
+{
+    return 0 < products_amount && products_amount <= MAX_PRODUCTS_AMOUNT;
+}
+
 int read_product_arr(product_t *product_arr, unsigned int *product_arr_size, char *filename)
 {
     int exit_code = EXIT_SUCCESS;
@@ -108,19 +123,14 @@ int read_product_arr(product_t *product_arr, unsigned int *product_arr_size, cha
 
     if (f)
     {
-        unsigned int products_amount;
+        int products_amount;
         exit_code = file_read_number(&products_amount, f);
         
-        if (exit_code == EXIT_SUCCESS && 0 < products_amount && products_amount <= MAX_PRODUCTS_AMOUNT)
+        if (exit_code == EXIT_SUCCESS && is_products_amount_valid(products_amount))
         {
             for (unsigned int i = 0; i < products_amount && exit_code == EXIT_SUCCESS; i++)
             {
-                product_t *current_product = product_arr + i;
-
-                exit_code = file_read_line(current_product->name, f);
-
-                if (exit_code == EXIT_SUCCESS)
-                    exit_code = file_read_number(&current_product->price, f);
+                exit_code = read_product(product_arr + i, f);
             }
             
             *product_arr_size = products_amount;
