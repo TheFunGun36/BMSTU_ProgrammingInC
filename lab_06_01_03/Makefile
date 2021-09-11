@@ -1,15 +1,14 @@
 CFLAGS = -std=c99 -pedantic -Wall -Werror -g3
 CC = gcc
 
-app.exe: main.o fileio.o product.o
+build/app.exe: build/obj/main.o build/obj/fileio.o build/obj/product.o
 	$(CC) $^ -o $@
 
-main.o: main.c
-	$(CC) main.c $(CFLAGS) -c
+build/obj/main.o: src/main.c
+	$(CC) src/main.c $(CFLAGS) -c -o $@
 
-product.o: product.c product.h
-	$(CC) product.c $(CFLAGS) -c
+build/obj/product.o: src/product.c src/product.h
+	$(CC) src/product.c $(CFLAGS) -c -o $@
 
-fileio.o: fileio.c fileio.h
-	$(CC) fileio.c $(CFLAGS) -c
-	
+build/obj/fileio.o: src/fileio.c src/fileio.h
+	$(CC) src/fileio.c $(CFLAGS) -c -o $@

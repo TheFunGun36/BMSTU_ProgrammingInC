@@ -1,1 +1,1 @@
-app.exe func_tests/pos_04_in.txt 5.5
+build/app.exe func_tests/pos_04_in.txt 5.5

@@ -9,7 +9,6 @@
 int validate_string(char *str)
 {
     int result = 0;
-
     char *name_end = strchr(str, '\r');
 
     if (!name_end)

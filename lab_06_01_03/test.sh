@@ -12,7 +12,7 @@ do
         ((POSITIVES_SUM++))
         i=${file%_args.txt}
         i=${i#pos_}
-        valgrind -q --log-fd=9 9>valg.txt ./`cat func_tests/pos_${i}_args.txt` > output.txt
+        valgrind -q --log-fd=9 9>valg.txt --leak-check=full ./`cat func_tests/pos_${i}_args.txt` > output.txt
 
         if [[ $? == 0 ]] && cmp -s "output.txt" "func_tests/pos_${i}_out.txt"
         then
@@ -36,7 +36,7 @@ do
         ((NEGATIVES_SUM++))
         i=${file%_args.txt}
         i=${i#neg_}
-        valgrind -q --log-fd=9 9>valg.txt ./`cat func_tests/neg_${i}_args.txt` >/dev/null
+        valgrind -q --log-fd=9 9>valg.txt --leak-check=full ./`cat func_tests/neg_${i}_args.txt` >/dev/null
 
         if [[ $? != 0 ]]
         then

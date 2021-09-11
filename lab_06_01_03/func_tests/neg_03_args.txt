@@ -1,1 +1,1 @@
-app.exe wow.txt 15
+build/app.exe wow.txt 15

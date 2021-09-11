@@ -1,1 +1,1 @@
-app.exe func_tests/pos_03_in.txt 16
+build/app.exe func_tests/pos_03_in.txt 16

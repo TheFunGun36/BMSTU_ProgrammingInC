@@ -1,1 +1,1 @@
-app.exe func_tests/pos_02_in.txt 100001
+build/app.exe func_tests/pos_02_in.txt 100001

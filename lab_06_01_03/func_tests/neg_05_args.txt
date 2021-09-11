@@ -1,1 +1,1 @@
-app.exe func_tests/neg_05_in.txt abc
+build/app.exe func_tests/neg_05_in.txt abc
