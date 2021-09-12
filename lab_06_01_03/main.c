@@ -4,6 +4,7 @@
 #include "product.h"
 
 #define EXIT_INVALID_MAX_PRICE -7
+#define EXIT_INVALID_ARGS_COUNT -8
 
 int check_args(int argc, char *argv[], double *calculated_price)
 {
@@ -15,6 +16,10 @@ int check_args(int argc, char *argv[], double *calculated_price)
 
         if (*calculated_price <= 0.0)
             exit_code = EXIT_INVALID_MAX_PRICE;
+    }
+    else
+    {
+        exit_code = EXIT_INVALID_ARGS_COUNT;
     }
 
     return exit_code;
