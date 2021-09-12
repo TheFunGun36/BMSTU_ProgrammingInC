@@ -123,7 +123,7 @@ int read_product_arr(product_t *product_arr, unsigned int *product_arr_size, cha
 
     if (f)
     {
-        int products_amount;
+        unsigned int products_amount;
         exit_code = file_read_number(&products_amount, f);
         
         if (exit_code == EXIT_SUCCESS && is_products_amount_valid(products_amount))
