@@ -1,0 +1,7 @@
+func_tests/neg_01_in.txt output.txt
+func_tests/neg_02_in.txt output.txt f
+func_tests/neg_03_in.txt output.txt f
+func_tests/neg_04_in.txt output.txt
+func_tests/neg_05_in.txt output.txt f
+
+abc abc f
