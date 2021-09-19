@@ -3,10 +3,8 @@
 
 #include <stdio.h>
 
-// bubble mod 3, var 7
 void mysort(void *base, size_t nitems, size_t size, int (*compar)(const void*, const void*));
 
-// only elements bewteen min and max element
 int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst);
 
 int filter_array(int **arr_begin, int **arr_end);
