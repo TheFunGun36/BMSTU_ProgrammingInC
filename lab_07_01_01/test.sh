@@ -18,9 +18,9 @@ do
 
     if [[ $1 == "-m" ]]
     then
-        valgrind -q --log-fd=9 9>log/valg${index}_pos.txt --leak-check=full ./build/app.exe $line
+        valgrind -q --log-fd=9 9>log/valg${index}_pos.txt --leak-check=full ./app.exe $line
     else
-        ./build/app.exe $line
+        ./app.exe $line
     fi
 
     exit_code=$?
@@ -70,9 +70,9 @@ do
 
     if [[ $1 == "-m" ]]
     then
-        valgrind -q --log-fd=9 9>log/valg${index}_neg.txt --leak-check=full ./build/app.exe $line
+        valgrind -q --log-fd=9 9>log/valg${index}_neg.txt --leak-check=full ./app.exe $line
     else
-        ./build/app.exe $line
+        ./app.exe $line
     fi
 
     exit_code=$?
