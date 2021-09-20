@@ -4,7 +4,7 @@ CC = gcc
 app.exe: out/main.o out/fileio.o out/arrayworks.o
 	$(CC) $^ -o $@
 
-unit_testing.exe: out/arrayworks.o out/check_arrayworks.o out/check_main.o
+unit_tests.exe: out/arrayworks.o out/check_arrayworks.o out/check_main.o
 	$(CC) $^ -o $@
 
 out/main.o: src/main.c inc/fileio.h inc/arrayworks.h inc/errorcodes.h
@@ -28,6 +28,6 @@ out/check_main.o: unit_tests/check_main.c unit_tests/check_arrayworks.h inc/arra
 clear:
 	rm out/*. /*.exe
 
-test: /unit_testing.exe
-	@-.//unit_testing.exe
+test: unit_tests.exe
+	@-./unit_tests.exe
 	@echo Failed: $$?
