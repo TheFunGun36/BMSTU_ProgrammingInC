@@ -29,5 +29,5 @@ clear:
 	rm build/obj/*. build/*.exe
 
 test: build/unit_testing.exe
-	./build/unit_testing.exe
-	echo $?
+	@-./build/unit_testing.exe
+	@echo Failed: $$?

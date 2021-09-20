@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <alloca.h>
 #include <inttypes.h>
 #include "arrayworks.h"
 #include "errorcodes.h"
@@ -9,52 +8,57 @@ void mysort(void *base, size_t nitems, size_t size, int (*compar)(const void *, 
 {
     char *lower_last_swap = (char *)base;
     char *higher_last_swap = (char *)base + (nitems - 1) * size;
-    char *swap_buf = alloca(size);
+    char *swap_buf = malloc(size);
 
-    uint8_t should_ascend = 1;
-    char *tmp_last_swap = NULL;
-
-    do
+    if (swap_buf)
     {
-        tmp_last_swap = NULL;
+        uint8_t should_ascend = 1;
+        char *tmp_last_swap = NULL;
 
-        if (should_ascend)
+        do
         {
-            should_ascend = 0;
+            tmp_last_swap = NULL;
 
-            for (char *p = lower_last_swap; p < higher_last_swap; p += size)
+            if (should_ascend)
             {
-                if (compar(p, p + size) > 0)
+                should_ascend = 0;
+
+                for (char *p = lower_last_swap; p < higher_last_swap; p += size)
                 {
-                    memcpy(swap_buf, p, size);
-                    memcpy(p, p + size, size);
-                    memcpy(p + size, swap_buf, size);
+                    if (compar(p, p + size) > 0)
+                    {
+                        memcpy(swap_buf, p, size);
+                        memcpy(p, p + size, size);
+                        memcpy(p + size, swap_buf, size);
 
-                    tmp_last_swap = p;
+                        tmp_last_swap = p;
+                    }
                 }
+
+                higher_last_swap = tmp_last_swap;
             }
-
-            higher_last_swap = tmp_last_swap;
-        }
-        else
-        {
-            should_ascend = 1;
-
-            for (char *p = higher_last_swap; p > lower_last_swap; p -= size)
+            else
             {
-                if (compar(p - size, p) > 0)
+                should_ascend = 1;
+
+                for (char *p = higher_last_swap; p > lower_last_swap; p -= size)
                 {
-                    memcpy(swap_buf, p, size);
-                    memcpy(p, p - size, size);
-                    memcpy(p - size, swap_buf, size);
+                    if (compar(p - size, p) > 0)
+                    {
+                        memcpy(swap_buf, p, size);
+                        memcpy(p, p - size, size);
+                        memcpy(p - size, swap_buf, size);
 
-                    tmp_last_swap = p;
+                        tmp_last_swap = p;
+                    }
                 }
-            }
 
-            lower_last_swap = tmp_last_swap;
-        }
-    } while (tmp_last_swap != NULL);
+                lower_last_swap = tmp_last_swap;
+            }
+        } while (tmp_last_swap != NULL);
+
+        free(swap_buf);
+    }
 }
 
 void find_min_max_element(const int *arr_begin, const int *arr_end, const int **min, const int **max)
