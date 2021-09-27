@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include <string.h>
-#include <inttypes.h>
 #include "arrayworks.h"
 #include "errorcodes.h"
 
@@ -12,7 +11,7 @@ void mysort(void *base, size_t nitems, size_t size, int (*compar)(const void *, 
 
     if (swap_buf)
     {
-        uint8_t should_ascend = 1;
+        char should_ascend = 1;
         char *tmp_last_swap = NULL;
 
         do

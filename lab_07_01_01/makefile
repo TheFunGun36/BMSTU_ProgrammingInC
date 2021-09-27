@@ -1,32 +1,22 @@
 CFLAGS = -std=c99 -pedantic -Wfloat-conversion -Wvla -Wfloat-equal -Wall -Werror -g3 -Iinc
 CC = gcc
+OBJ = out/fileio.o out/arrayworks.o
+CHECKOBJ = out/check_arrayworks.o out/check_main.o
 
-app.exe: out/main.o out/fileio.o out/arrayworks.o
+app.exe: out/main.o $(OBJ)
 	$(CC) $^ -o $@
 
-unit_tests.exe: out/arrayworks.o out/check_arrayworks.o out/check_main.o
+unit_test.exe: $(CHECKOBJ) $(OBJ)
 	$(CC) $^ -o $@
 
-out/main.o: src/main.c inc/fileio.h inc/arrayworks.h inc/errorcodes.h
+out/%.o: src/%.c inc/*.h
+	@-mkdir out
 	$(CC) $< $(CFLAGS) -c -o $@
-
-out/fileio.o: src/fileio.c inc/fileio.h inc/arrayworks.h inc/errorcodes.h
-	$(CC) $< $(CFLAGS) -c -o $@
-
-out/arrayworks.o: src/arrayworks.c inc/arrayworks.h inc/errorcodes.h
-	$(CC) $< $(CFLAGS) -c -o $@
-
-out/check_arrayworks.o: unit_tests/check_arrayworks.c inc/arrayworks.h inc/arrayworks.h
-	$(CC) $< $(CFLAGS) -c -o $@
-
-out/check_main.o: unit_tests/check_main.c unit_tests/check_arrayworks.h inc/arrayworks.h
-	$(CC) $< $(CFLAGS) -c -o $@
-
 
 .PHONY: clear, test
 
 clear:
-	rm out/*. /*.exe
+	rm out/*.o *.exe
 
 test: unit_tests.exe
 	@-./unit_tests.exe
