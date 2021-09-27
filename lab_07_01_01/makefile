@@ -6,7 +6,7 @@ CHECKOBJ = out/check_arrayworks.o out/check_main.o
 app.exe: out/main.o $(OBJ)
 	$(CC) $^ -o $@
 
-unit_test.exe: $(CHECKOBJ) $(OBJ)
+unit_tests.exe: $(CHECKOBJ) $(OBJ)
 	$(CC) $^ -o $@
 
 out/%.o: src/%.c inc/*.h
