@@ -13,11 +13,11 @@ out/%.o: src/%.c inc/*.h
 	@-mkdir out
 	$(CC) $< $(CFLAGS) -c -o $@
 
+out/%.o: unit_tests/%.c inc/*.h
+	@-mkdir out
+	$(CC) $< $(CFLAGS) -c -o $@
+
 .PHONY: clear, test
 
 clear:
 	rm out/*.o *.exe
-
-test: unit_tests.exe
-	@-./unit_tests.exe
-	@echo Failed: $$?

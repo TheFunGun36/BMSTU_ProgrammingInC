@@ -5,5 +5,5 @@ int main()
     int exit_code = 0;
     exit_code += check_key();
     exit_code += check_mysort();
-    return 2;
+    return exit_code;
 }
