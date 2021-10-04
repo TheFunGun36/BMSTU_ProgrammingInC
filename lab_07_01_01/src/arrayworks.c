@@ -3,6 +3,8 @@
 #include "arrayworks.h"
 #include "errorcodes.h"
 
+void swap_constint(const int **a, const int **b);
+
 void mysort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *))
 {
     char *lower_last_swap = (char *)base;
@@ -85,11 +87,7 @@ int key(const int *pb_src, const int *pe_src, int **pb_dst, int **pe_dst)
     find_min_max_element(pb_src, pe_src, &arr_part_begin, &arr_part_end);
 
     if (arr_part_begin > arr_part_end)
-    {
-        const int *tmp = arr_part_end;
-        arr_part_end = arr_part_begin;
-        arr_part_begin = tmp;
-    }
+        swap_constint(&arr_part_begin, &arr_part_end);
 
     arr_part_begin++;
 
@@ -139,4 +137,11 @@ void safe_free(int **arr_begin, int **arr_end)
 int compar_ascend(const void *a, const void *b)
 {
     return *(int *)a - *(int *)b;
+}
+
+void swap_constint(const int **a, const int **b)
+{
+    const int *tmp = *a;
+    *a = *b;
+    *b = tmp;
 }
