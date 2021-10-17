@@ -6,9 +6,9 @@
 
 int main()
 {
-    matrix_t matrix_a = {0};
-    matrix_t matrix_b = {0};
-    matrix_t matrix_result = {0};
+    matrix_t matrix_a = { 0 };
+    matrix_t matrix_b = { 0 };
+    matrix_t matrix_result = { 0 };
 
     exit_t exit_code = exit_success;
     
