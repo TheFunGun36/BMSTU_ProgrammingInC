@@ -45,19 +45,28 @@ exit_t matrix_initialize(int64_t ***matrix, uint32_t rows, uint32_t cols)
 
 exit_t matrix_to_square(matrix_t *matrix)
 {
-    while (matrix->rows > matrix->cols)
+    exit_t exit_code = exit_success;
+
+    if (matrix->rows > 0 && matrix->cols > 0 && matrix->element != NULL)
     {
-        uint32_t row = matrix_find_max(matrix, 1);
-        matrix_delete_row(matrix, row);
+        while (matrix->rows > matrix->cols)
+        {
+            uint32_t row = matrix_find_max(matrix, 1);
+            matrix_delete_row(matrix, row);
+        }
+
+        while (matrix->cols > matrix->rows)
+        {
+            uint32_t col = matrix_find_max(matrix, 0);
+            matrix_delete_col(matrix, col);
+        }
+    }
+    else
+    {
+        exit_code = exit_internal_error;
     }
 
-    while (matrix->cols > matrix->rows)
-    {
-        uint32_t col = matrix_find_max(matrix, 0);
-        matrix_delete_col(matrix, col);
-    }
-
-    return exit_success;
+    return exit_code;
 }
 
 exit_t matrix_to_same_size(matrix_t *first, matrix_t *second)

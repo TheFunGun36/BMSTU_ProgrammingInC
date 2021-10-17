@@ -2,6 +2,8 @@
 #include "matrix.h"
 #include "userio.h"
 
+#define min(a, b) (((a) < (b)) ? (a) : (b))
+
 START_TEST(test_matrix_mul_unit)
 {
     matrix_t unit = { 3, 3 };
@@ -352,23 +354,393 @@ Suite *matrix_pow_suite(void)
     return s;
 }
 
-Suite *matrix_pow_suite(void)
+START_TEST(test_to_square_square)
+{
+    const int rows = 3, cols = 3;
+    int64_t in0[] = { 0, 1, 2 };
+    int64_t in1[] = { 3, 4, 5 };
+    int64_t in2[] = { 6, 7, 8 };
+    int64_t *in[] = { in0, in1, in2 };
+
+    matrix_t mtx = { 0 };
+    matrix_initialize(&mtx.element, rows, cols);
+    mtx.rows = rows;
+    mtx.cols = cols;
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            mtx.element[i][j] = in[i][j];
+
+    exit_t exit_code = matrix_to_square(&mtx);
+
+    ck_assert_int_eq(exit_code, 0);
+
+    ck_assert_int_eq(mtx.rows, min(rows, cols));
+    ck_assert_int_eq(mtx.cols, min(rows, cols));
+
+    for (int i = 0; i < mtx.rows; i++)
+        for (int j = 0; j < mtx.cols; j++)
+            ck_assert_int_eq(mtx.element[i][j], in[i][j]);
+
+    matrix_free(&mtx);
+}
+END_TEST
+
+START_TEST(test_to_square_column)
+{
+    const int rows = 5, cols = 1;
+    int64_t in0[] = { 0 };
+    int64_t in1[] = { 1 };
+    int64_t in2[] = { 2 };
+    int64_t in3[] = { 3 };
+    int64_t in4[] = { 4 };
+    int64_t *in[] = { in0, in1, in2, in3, in4 };
+
+    int64_t res0[] = { 0 };
+    int64_t *res[] = { res0 };
+
+    matrix_t mtx;
+    matrix_initialize(&mtx.element, rows, cols);
+    mtx.rows = rows;
+    mtx.cols = cols;
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            mtx.element[i][j] = in[i][j];
+
+    exit_t exit_code = matrix_to_square(&mtx);
+
+    ck_assert_int_eq(exit_code, 0);
+    ck_assert_int_eq(mtx.rows, min(rows, cols));
+    ck_assert_int_eq(mtx.cols, min(rows, cols));
+
+    for (int i = 0; i < mtx.rows; i++)
+        for (int j = 0; j < mtx.cols; j++)
+            ck_assert_int_eq(mtx.element[i][j], res[i][j]);
+
+    matrix_free(&mtx);
+}
+END_TEST
+
+START_TEST(test_to_square_row)
+{
+    const int rows = 1, cols = 5;
+    int64_t in0[] = { 0, 1, 2, 3, 4, 5 };
+    int64_t *in[] = { in0 };
+
+    int64_t res0[] = { 0 };
+    int64_t *res[] = { res0 };
+
+    matrix_t mtx;
+    matrix_initialize(&mtx.element, rows, cols);
+    mtx.rows = rows;
+    mtx.cols = cols;
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            mtx.element[i][j] = in[i][j];
+
+    exit_t exit_code = matrix_to_square(&mtx);
+
+    ck_assert_int_eq(exit_code, 0);
+    ck_assert_int_eq(mtx.rows, min(rows, cols));
+    ck_assert_int_eq(mtx.cols, min(rows, cols));
+
+    for (int i = 0; i < mtx.rows; i++)
+        for (int j = 0; j < mtx.cols; j++)
+            ck_assert_int_eq(mtx.element[i][j], res[i][j]);
+
+    matrix_free(&mtx);
+}
+END_TEST
+
+START_TEST(test_to_square_eq_els_row)
+{
+    const int rows = 5, cols = 3;
+    int64_t in0[] = { 0, 2, 3 };
+    int64_t in1[] = { 10, 0, 4 };
+    int64_t in2[] = { 2, -1, 7 };
+    int64_t in3[] = { 3, 10, 4 };
+    int64_t in4[] = { 4, 5, 10 };
+    int64_t *in[] = { in0, in1, in2, in3, in4 };
+
+    int64_t res0[] = { 0, 2, 3 };
+    int64_t res1[] = { 10, 0, 4 };
+    int64_t res2[] = { 2, -1, 7 };
+    int64_t *res[] = { res0, res1, res2 };
+
+    matrix_t mtx;
+    matrix_initialize(&mtx.element, rows, cols);
+    mtx.rows = rows;
+    mtx.cols = cols;
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            mtx.element[i][j] = in[i][j];
+
+    exit_t exit_code = matrix_to_square(&mtx);
+
+    ck_assert_int_eq(exit_code, 0);
+    ck_assert_int_eq(mtx.rows, min(rows, cols));
+    ck_assert_int_eq(mtx.cols, min(rows, cols));
+
+    for (int i = 0; i < mtx.rows; i++)
+        for (int j = 0; j < mtx.cols; j++)
+            ck_assert_int_eq(mtx.element[i][j], res[i][j]);
+
+    matrix_free(&mtx);
+}
+END_TEST
+
+START_TEST(test_to_square_eq_els_col)
+{
+    const int rows = 3, cols = 5;
+    int64_t in0[] = { 0, 2, 10, 3, 5 };
+    int64_t in1[] = { 10, 0, 4, 4, 9 };
+    int64_t in2[] = { 2, -1, 7, 7, 10 };
+    int64_t *in[] = { in0, in1, in2 };
+
+    int64_t res0[] = { 0, 2, 3 };
+    int64_t res1[] = { 10, 0, 4 };
+    int64_t res2[] = { 2, -1, 7 };
+    int64_t *res[] = { res0, res1, res2 };
+
+    matrix_t mtx;
+    matrix_initialize(&mtx.element, rows, cols);
+    mtx.rows = rows;
+    mtx.cols = cols;
+
+    for (int i = 0; i < rows; i++)
+        for (int j = 0; j < cols; j++)
+            mtx.element[i][j] = in[i][j];
+
+    exit_t exit_code = matrix_to_square(&mtx);
+
+    ck_assert_int_eq(exit_code, 0);
+    ck_assert_int_eq(mtx.rows, min(rows, cols));
+    ck_assert_int_eq(mtx.cols, min(rows, cols));
+
+    for (int i = 0; i < mtx.rows; i++)
+        for (int j = 0; j < mtx.cols; j++)
+            ck_assert_int_eq(mtx.element[i][j], res[i][j]);
+
+    matrix_free(&mtx);
+}
+END_TEST
+
+START_TEST(test_to_square_null)
+{
+    matrix_t mtx = { 0 };
+
+    exit_t exit_code = matrix_to_square(&mtx);
+
+    ck_assert_int_ne(exit_code, 0);
+}
+END_TEST
+
+Suite *matrix_to_square_suite(void)
 {
     Suite *s;
     TCase *tc_pos;
     TCase *tc_neg;
 
-    s = suite_create("matrix_power");
+    s = suite_create("matrix_to_square");
 
     tc_pos = tcase_create("positives");
-    tcase_add_test(tc_pos, test_matrix_pw_simple_even);
-    tcase_add_test(tc_pos, test_matrix_pw_simple_odd);
-    tcase_add_test(tc_pos, test_matrix_pw_simple_zero);
-    tcase_add_test(tc_pos, test_matrix_pw_simple_one);
+    tcase_add_test(tc_pos, test_to_square_square);
+    tcase_add_test(tc_pos, test_to_square_column);
+    tcase_add_test(tc_pos, test_to_square_row);
+    tcase_add_test(tc_pos, test_to_square_eq_els_row);
+    tcase_add_test(tc_pos, test_to_square_eq_els_col);
     suite_add_tcase(s, tc_pos);
 
     tc_neg = tcase_create("negatives");
-    tcase_add_test(tc_neg, test_matrix_pw_not_a_square);
+    tcase_add_test(tc_neg, test_to_square_null);
+    suite_add_tcase(s, tc_neg);
+
+    return s;
+}
+
+START_TEST(test_to_eq_sz_squares)
+{
+    matrix_t first = { 3, 3 };
+    matrix_t second = { 2, 2 };
+    
+    int64_t f0[] = { 1, 2, 3 };
+    int64_t f1[] = { 4, 5, 6 };
+    int64_t f2[] = { 7, 8, 9 };
+    int64_t *f[] = { f0, f1, f2 };
+
+    int64_t s0[] = { 1, 2 };
+    int64_t s1[] = { 4, 5 };
+    int64_t *s[] = { s0, s1 };
+
+    int64_t se0[] = { 1, 2, 1 };
+    int64_t se1[] = { 4, 5, 4 };
+    int64_t se2[] = { 2, 3, 2 };
+    int64_t *se[] = { se0, se1, se2 };
+    
+    matrix_initialize(&first.element, first.rows, first.cols);
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            first.element[i][j] = f[i][j];
+    
+    matrix_initialize(&second.element, second.rows, second.cols);
+    for (int i = 0; i < second.rows; i++)
+        for (int j = 0; j < second.cols; j++)
+            second.element[i][j] = s[i][j];
+
+    exit_t exit_code = matrix_to_same_size(&first, &second);
+
+    ck_assert_int_eq(exit_code, 0);
+    
+    ck_assert_int_eq(first.rows, 3);
+    ck_assert_int_eq(first.cols, 3);
+
+    ck_assert_int_eq(second.rows, 3);
+    ck_assert_int_eq(second.cols, 3);
+
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            ck_assert_int_eq(first.element[i][j], f[i][j]);
+
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            ck_assert_int_eq(second.element[i][j], se[i][j]);
+
+    matrix_free(&first);
+    matrix_free(&second);
+}
+END_TEST
+
+START_TEST(test_to_eq_sz_simple)
+{
+    matrix_t first = { 3, 2 };
+    matrix_t second = { 2, 3 };
+    
+    int64_t f0[] = { 1, 2 };
+    int64_t f1[] = { 4, 5 };
+    int64_t f2[] = { 1, 20 };
+    int64_t *f[] = { f0, f1, f2 };
+
+    int64_t s0[] = { 1, 2, 9 };
+    int64_t s1[] = { 4, 5, 19 };
+    int64_t *s[] = { s0, s1 };
+
+    int64_t fe0[] = { 1, 2, 1 };
+    int64_t fe1[] = { 4, 5, 4 };
+    int64_t fe2[] = { 1, 20, 1 };
+    int64_t *fe[] = { fe0, fe1, fe2 };
+
+    int64_t se0[] = { 1, 2, 9 };
+    int64_t se1[] = { 4, 5, 19 };
+    int64_t se2[] = { 2, 3, 14 };
+    int64_t *se[] = { se0, se1, se2 };
+    
+    matrix_initialize(&first.element, first.rows, first.cols);
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            first.element[i][j] = f[i][j];
+    
+    matrix_initialize(&second.element, second.rows, second.cols);
+    for (int i = 0; i < second.rows; i++)
+        for (int j = 0; j < second.cols; j++)
+            second.element[i][j] = s[i][j];
+
+    exit_t exit_code = matrix_to_same_size(&first, &second);
+
+    ck_assert_int_eq(exit_code, 0);
+    
+    ck_assert_int_eq(first.rows, 3);
+    ck_assert_int_eq(first.cols, 3);
+
+    ck_assert_int_eq(second.rows, 3);
+    ck_assert_int_eq(second.cols, 3);
+
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            ck_assert_int_eq(first.element[i][j], fe[i][j]);
+
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            ck_assert_int_eq(second.element[i][j], se[i][j]);
+
+    matrix_free(&first);
+    matrix_free(&second);
+}
+END_TEST
+
+START_TEST(test_to_eq_sz_rowcol)
+{
+    matrix_t first = { 3, 1 };
+    matrix_t second = { 1, 3 };
+    
+    int64_t f0[] = { 1 };
+    int64_t f1[] = { 4 };
+    int64_t f2[] = { -1 };
+    int64_t *f[] = { f0, f1, f2 };
+
+    int64_t s0[] = { 1, -2, 9 };
+    int64_t *s[] = { s0 };
+
+    int64_t fe0[] = { 1, 1, 1 };
+    int64_t fe1[] = { 4, 4, 4 };
+    int64_t fe2[] = { -1, -1, -1 };
+    int64_t *fe[] = { fe0, fe1, fe2 };
+
+    int64_t se0[] = { 1, -2, 9 };
+    int64_t se1[] = { 1, -2, 9 };
+    int64_t se2[] = { 1, -2, 9 };
+    int64_t *se[] = { se0, se1, se2 };
+    
+    matrix_initialize(&first.element, first.rows, first.cols);
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            first.element[i][j] = f[i][j];
+    
+    matrix_initialize(&second.element, second.rows, second.cols);
+    for (int i = 0; i < second.rows; i++)
+        for (int j = 0; j < second.cols; j++)
+            second.element[i][j] = s[i][j];
+
+    exit_t exit_code = matrix_to_same_size(&first, &second);
+
+    ck_assert_int_eq(exit_code, 0);
+    
+    ck_assert_int_eq(first.rows, 3);
+    ck_assert_int_eq(first.cols, 3);
+
+    ck_assert_int_eq(second.rows, 3);
+    ck_assert_int_eq(second.cols, 3);
+
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            ck_assert_int_eq(first.element[i][j], fe[i][j]);
+
+    for (int i = 0; i < first.rows; i++)
+        for (int j = 0; j < first.cols; j++)
+            ck_assert_int_eq(second.element[i][j], se[i][j]);
+
+    matrix_free(&first);
+    matrix_free(&second);
+}
+END_TEST
+
+Suite *matrix_to_eq_sz_suite(void)
+{
+    Suite *s;
+    TCase *tc_pos;
+    TCase *tc_neg;
+
+    s = suite_create("matrix_to_eq_sz");
+
+    tc_pos = tcase_create("positives");
+    tcase_add_test(tc_pos, test_to_eq_sz_squares);
+    tcase_add_test(tc_pos, test_to_eq_sz_simple);
+    tcase_add_test(tc_pos, test_to_eq_sz_rowcol);
+    suite_add_tcase(s, tc_pos);
+
+    tc_neg = tcase_create("negatives");
     suite_add_tcase(s, tc_neg);
 
     return s;
@@ -385,6 +757,18 @@ int main(void)
     srunner_free(runner);
 
     s = matrix_pow_suite();
+    runner = srunner_create(s);
+    srunner_run_all(runner, CK_VERBOSE);
+    failed = srunner_ntests_failed(runner);
+    srunner_free(runner);
+
+    s = matrix_to_square_suite();
+    runner = srunner_create(s);
+    srunner_run_all(runner, CK_VERBOSE);
+    failed = srunner_ntests_failed(runner);
+    srunner_free(runner);
+
+    s = matrix_to_eq_sz_suite();
     runner = srunner_create(s);
     srunner_run_all(runner, CK_VERBOSE);
     failed = srunner_ntests_failed(runner);
