@@ -23,3 +23,7 @@ clear:
 	rm out/ -r
 
 all: app.exe
+
+unit: unit_tests.exe
+	./unit_tests.exe
+	
