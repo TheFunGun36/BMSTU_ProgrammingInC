@@ -252,7 +252,7 @@ int64_t matrix_col_arithmetic_mean(const matrix_t *matrix, uint32_t col)
 
     int64_t **pp_end = matrix->element + matrix->rows;
     for (int64_t **pp = matrix->element; pp < pp_end; pp++)
-        result += abs(*(*pp + col));
+        result += *(*pp + col);
 
     return result / matrix->rows;
 }
