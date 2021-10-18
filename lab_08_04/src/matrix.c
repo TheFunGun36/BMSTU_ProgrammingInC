@@ -1,5 +1,6 @@
 #include "matrix.h"
 #include <string.h>
+#include <math.h>
 
 static uint32_t matrix_find_max(const matrix_t *matrix, char is_should_find_row);
 static void matrix_delete_row(matrix_t *matrix, uint32_t row);
@@ -254,7 +255,7 @@ int64_t matrix_col_arithmetic_mean(const matrix_t *matrix, uint32_t col)
     for (int64_t **pp = matrix->element; pp < pp_end; pp++)
         result += *(*pp + col);
 
-    return result / matrix->rows;
+    return (int64_t)(floor((double)result / matrix->rows + 1e-7) + 1e-7);
 }
 
 int64_t matrix_row_min(const matrix_t *matrix, uint32_t row)
