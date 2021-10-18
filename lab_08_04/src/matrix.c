@@ -255,7 +255,7 @@ int64_t matrix_col_arithmetic_mean(const matrix_t *matrix, uint32_t col)
     for (int64_t **pp = matrix->element; pp < pp_end; pp++)
         result += *(*pp + col);
 
-    return (int64_t)(floor((double)result / matrix->rows + 1e-7) + 1e-7);
+    return (int64_t)floor((double)result / matrix->rows);
 }
 
 int64_t matrix_row_min(const matrix_t *matrix, uint32_t row)
