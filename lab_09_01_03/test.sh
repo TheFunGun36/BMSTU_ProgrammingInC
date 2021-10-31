@@ -115,3 +115,5 @@ if [[ $NEGATIVES_SUCCEEDED == $NEGATIVES_SUM && $NEGATIVES_MEMORY_SUCCEEDED == $
 then
     echo -e "\e[32mNEGATIVES PASSED\e[0m"
 fi
+
+rm output.txt
