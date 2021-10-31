@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
 
     if (exit_code == EXIT_SUCCESS)
     {
-        product_t sample = { .price=(int)ceil(price), .name=NULL };
+        product_t sample = { .price = (int)ceil(price), .name = NULL };
         goods_filter(&goods, sample, comp);
         print_goods(goods);
     }

@@ -6,7 +6,7 @@ app.exe: out/main.o $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 
 unit_tests.exe: out/check_main.o $(OBJS)
-	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm -lsubunit
+	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm # -lsubunit
 
 out/%.o: src/%.c inc/*.h
 	@-mkdir out/

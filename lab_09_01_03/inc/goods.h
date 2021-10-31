@@ -3,12 +3,14 @@
 
 #include "exit_code.h"
 
-typedef struct {
+typedef struct
+{
     int price;
     char *name;
 } product_t;
 
-typedef struct {
+typedef struct
+{
     int amount;
     product_t *val;
 } goods_t;
