@@ -37,6 +37,8 @@ START_TEST(goods_filter_test_simple)
     ck_assert_int_eq(goods.val[0].price, 3);
     ck_assert_int_eq(goods.val[1].price, 5);
     ck_assert_int_eq(goods.val[2].price, 1);
+
+    free(goods.val);
 }
 END_TEST
 
