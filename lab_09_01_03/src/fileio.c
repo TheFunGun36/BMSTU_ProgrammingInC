@@ -106,7 +106,7 @@ exit_t file_read_string(FILE *f, char **str)
                 read_next = 0;
 
                 if (endl_pos - *str <= 0)
-                        exit_code = EXIT_FILE_INVALID_CONTENT;
+                    exit_code = EXIT_FILE_INVALID_CONTENT;
             }
         }
     }
