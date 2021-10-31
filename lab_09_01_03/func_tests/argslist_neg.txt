@@ -1,8 +1,5 @@
-neg_01_in.txt 1
-this_file_does_not_exist.wtf 12
-pos_01_in.txt -1
-pos_01_in.txt 0
-pos_01_in.txt lol
-pos_01_in.txt
-too much args and next line is empty
-
+func_tests/neg_01_in.txt abc
+func_tests/neg_02_in.txt 100
+func_tests/neg_03_in.txt 100
+func_tests/neg_09_in.txt 300
+wow.txt 15

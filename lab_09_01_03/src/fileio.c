@@ -100,9 +100,13 @@ exit_t file_read_string(FILE *f, char **str)
             {
                 *endl_pos = '\0';
 
-                if (endl_pos - *str <= 0)
-                    exit_code = EXIT_FILE_INVALID_CONTENT;
+                if (endl_pos - *str - 1 >= 0 && *(endl_pos - 1) == '\r')
+                    *(--endl_pos) = '\0';
+
                 read_next = 0;
+
+                if (endl_pos - *str <= 0)
+                        exit_code = EXIT_FILE_INVALID_CONTENT;
             }
         }
     }
@@ -120,6 +124,9 @@ exit_t file_read_endl(FILE *f)
 {
     char endl;
     int res = fscanf(f, "%c", &endl);
+
+    if (res == 1 && endl == '\r')
+        res = fscanf(f, "%c", &endl);
 
     return (res == 1 && endl == '\n') ? (EXIT_SUCCESS) : (EXIT_FILE_INVALID_CONTENT);
 }
