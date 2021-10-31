@@ -1,0 +1,6 @@
+func_tests/pos_01_in.txt 10
+func_tests/pos_02_in.txt 321
+func_tests/pos_03_in.txt 4
+func_tests/pos_03_in.txt 5
+func_tests/pos_03_in.txt 6
+func_tests/pos_03_in.txt 7

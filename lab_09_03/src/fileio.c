@@ -1,0 +1,117 @@
+#include "fileio.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#define STR_INC 8
+
+static exit_t file_read_product(FILE *f, product_t *prod);
+static exit_t file_read_string(FILE *f, char **string);
+
+exit_t file_read_goods(char *filename, goods_t *goods)
+{
+    exit_t exit_code = EXIT_SUCCESS;
+    FILE *f = fopen(filename, "rt");
+
+    if (f)
+    {
+        int res = fscanf(f, "%d", &goods->amount);
+
+        if (res != 1 || goods->amount <= 0)
+        {
+            exit_code = EXIT_FILE_INVALID_CONTENT;
+            memset(goods, 0, sizeof(goods_t));
+        }
+        else
+        {
+            exit_code = goods_init(goods, goods->amount);
+        }
+
+        for (int i = 0; exit_code == EXIT_SUCCESS && i < goods->amount; i++)
+            exit_code = file_read_product(f, goods->val + i);
+
+        fclose(f);
+    }
+    else
+    {
+        exit_code = EXIT_FILE_OPEN;
+    }
+
+    return exit_code;
+}
+
+exit_t file_read_product(FILE *f, product_t *prod)
+{
+    exit_t exit_code = EXIT_SUCCESS;
+
+    int res = fscanf(f, "%d", &prod->price);
+
+    if (res != 1)
+    {
+        exit_code = EXIT_FILE_INVALID_CONTENT;
+    }
+    else
+    {
+        char endl;
+        res = fscanf(f, "%c", &endl);
+
+        if (endl != '\n')
+            exit_code = EXIT_FILE_INVALID_CONTENT;
+    }
+
+    if (exit_code == EXIT_SUCCESS)
+        exit_code = file_read_string(f, &prod->name);
+
+    if (exit_code != EXIT_SUCCESS)
+        memset(prod, 0, sizeof(product_t));
+
+    return exit_code;
+}
+
+exit_t file_read_string(FILE *f, char **str)
+{
+    exit_t exit_code = EXIT_SUCCESS;
+    *str = NULL;
+
+    char read_next = 1;
+    char *endl_pos;
+
+    for (int i = STR_INC; exit_code == EXIT_SUCCESS && read_next; i += STR_INC)
+    {
+        char *new_str = realloc(*str, (i + 1) * sizeof(char));
+
+        if (!new_str)
+        {
+            exit_code = EXIT_NO_MEMORY;
+        }
+        else 
+        {
+            *str = new_str;
+
+            if (!fgets(*str + i - STR_INC, STR_INC + 1, f))
+                exit_code = EXIT_FILE_INVALID_CONTENT;
+        }
+
+        if (exit_code == EXIT_SUCCESS)
+        {
+            endl_pos = strchr(*str, '\n');
+
+            if (endl_pos)
+            {
+                *endl_pos = '\0';
+
+                if (endl_pos - *str <= 0)
+                    exit_code = EXIT_FILE_INVALID_CONTENT;
+                read_next = 0;
+            }
+        }
+    }
+    
+    if (exit_code != EXIT_SUCCESS)
+    {
+        free(*str);
+        *str = NULL;
+    }
+
+    return exit_code;
+}

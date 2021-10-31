@@ -1,0 +1,8 @@
+neg_01_in.txt 1
+this_file_does_not_exist.wtf 12
+pos_01_in.txt -1
+pos_01_in.txt 0
+pos_01_in.txt lol
+pos_01_in.txt
+too much args and next line is empty
+
