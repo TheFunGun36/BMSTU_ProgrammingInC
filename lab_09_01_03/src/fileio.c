@@ -7,6 +7,7 @@
 
 static exit_t file_read_product(FILE *f, product_t *prod);
 static exit_t file_read_string(FILE *f, char **string);
+static exit_t file_read_endl(FILE *f);
 
 exit_t file_read_goods(char *filename, goods_t *goods)
 {
@@ -16,15 +17,19 @@ exit_t file_read_goods(char *filename, goods_t *goods)
     if (f)
     {
         int res = fscanf(f, "%d", &goods->amount);
+        exit_code = file_read_endl(f);
 
-        if (res != 1 || goods->amount <= 0)
+        if (exit_code == EXIT_SUCCESS)
         {
-            exit_code = EXIT_FILE_INVALID_CONTENT;
-            memset(goods, 0, sizeof(goods_t));
-        }
-        else
-        {
-            exit_code = goods_init(goods, goods->amount);
+            if (res != 1 || goods->amount <= 0)
+            {
+                exit_code = EXIT_FILE_INVALID_CONTENT;
+                memset(goods, 0, sizeof(goods_t));
+            }
+            else
+            {
+                exit_code = goods_init(goods, goods->amount);
+            }
         }
 
         for (int i = 0; exit_code == EXIT_SUCCESS && i < goods->amount; i++)
@@ -42,28 +47,23 @@ exit_t file_read_goods(char *filename, goods_t *goods)
 
 exit_t file_read_product(FILE *f, product_t *prod)
 {
-    exit_t exit_code = EXIT_SUCCESS;
-
-    int res = fscanf(f, "%d", &prod->price);
-
-    if (res != 1)
-    {
-        exit_code = EXIT_FILE_INVALID_CONTENT;
-    }
-    else
-    {
-        char endl;
-        res = fscanf(f, "%c", &endl);
-
-        if (endl != '\n')
-            exit_code = EXIT_FILE_INVALID_CONTENT;
-    }
+    exit_t exit_code = file_read_string(f, &prod->name);
 
     if (exit_code == EXIT_SUCCESS)
-        exit_code = file_read_string(f, &prod->name);
+    {
+        int res = fscanf(f, "%d", &prod->price);
+
+        if (res != 1)
+            exit_code = EXIT_FILE_INVALID_CONTENT;
+        else
+            exit_code = file_read_endl(f);
+    }
 
     if (exit_code != EXIT_SUCCESS)
+    {
+        free(prod->name);
         memset(prod, 0, sizeof(product_t));
+    }
 
     return exit_code;
 }
@@ -114,4 +114,12 @@ exit_t file_read_string(FILE *f, char **str)
     }
 
     return exit_code;
+}
+
+exit_t file_read_endl(FILE *f)
+{
+    char endl;
+    int res = fscanf(f, "%c", &endl);
+
+    return (res == 1 && endl == '\n') ? (EXIT_SUCCESS) : (EXIT_FILE_INVALID_CONTENT);
 }

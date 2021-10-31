@@ -11,5 +11,5 @@ void print_goods(goods_t goods)
 
 static void print_product(product_t prod)
 {
-    printf("%d\n%s\n", prod.price, prod.name);
+    printf("%s\n%d\n", prod.name, prod.price);
 }
