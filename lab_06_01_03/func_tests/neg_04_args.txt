@@ -1,0 +1,1 @@
+build/app.exe func_tests/neg_04_in.txt 6

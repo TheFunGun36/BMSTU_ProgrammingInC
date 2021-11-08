@@ -1,0 +1,1 @@
+build/app.exe func_tests/pos_01_in.txt 100001
