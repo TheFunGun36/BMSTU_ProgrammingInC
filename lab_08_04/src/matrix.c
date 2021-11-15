@@ -285,11 +285,18 @@ static exit_t matrix_add_rows(matrix_t *matrix, uint32_t amount)
         int64_t **pp = matrix->element + matrix->rows;
         for (; exit_code == exit_success && pp < pp_end; pp++, matrix->rows++)
         {
-            *pp = malloc(matrix->cols * sizeof(int64_t));
+            *pp = (int64_t*)malloc(matrix->cols * sizeof(int64_t));
 
-            int64_t *p_end = *pp + matrix->cols;
-            for (int64_t *p = *pp, col = 0; p < p_end; p++, col++)
-                *p = matrix_col_arithmetic_mean(matrix, col);
+            if (!*pp)
+            {
+                exit_code = exit_no_memory;
+            }
+            else
+            {
+                int64_t *p_end = *pp + matrix->cols;
+                for (int64_t *p = *pp, col = 0; p < p_end; p++, col++)
+                    *p = matrix_col_arithmetic_mean(matrix, col);
+            }
         }
     }
     else
