@@ -76,19 +76,21 @@ exit_t matrix_to_same_size(matrix_t *first, matrix_t *second)
 
     int delta_rows = first->rows - second->rows;
 
-    if (delta_rows > 0)
-        exit_code = matrix_add_rows(second, delta_rows);
-    else if (delta_rows < 0)
-        exit_code = matrix_add_rows(first, -delta_rows);
+    // if (delta_rows > 0)
+    //     exit_code = matrix_add_rows(second, delta_rows);
+    // else if (delta_rows < 0)
+    //     exit_code = matrix_add_rows(first, -delta_rows);
+    exit_code = matrix_add_rows(delta_rows > 0 ? second : first, abs(delta_rows));
 
     if (exit_code == exit_success)
     {
         int delta_cols = first->cols - second->cols;
 
-        if (delta_cols > 0)
-            exit_code = matrix_add_cols(second, delta_cols);
-        else if (delta_cols < 0)
-            exit_code = matrix_add_cols(first, -delta_cols);
+        // if (delta_cols > 0)
+        //     exit_code = matrix_add_cols(second, delta_cols);
+        // else if (delta_cols < 0)
+        //     exit_code = matrix_add_cols(first, -delta_cols);
+        exit_code = matrix_add_cols(delta_cols > 0 ? second : first, abs(delta_rows));
     }
 
     return exit_code;
@@ -273,7 +275,11 @@ int64_t matrix_row_min(const matrix_t *matrix, uint32_t row)
 
 static exit_t matrix_add_rows(matrix_t *matrix, uint32_t amount)
 {
+    if (amount == 0)
+        return exit_success;
+
     exit_t exit_code = exit_success;
+
     uint32_t new_rows = matrix->rows + amount;
 
     int64_t **new_element = (int64_t**)realloc(matrix->element, new_rows * sizeof(int64_t*));
@@ -309,6 +315,9 @@ static exit_t matrix_add_rows(matrix_t *matrix, uint32_t amount)
 
 static exit_t matrix_add_cols(matrix_t *matrix, uint32_t amount)
 {
+    if (amount == 0)
+        return exit_success;
+
     exit_t exit_code = exit_success;
     uint32_t new_cols = matrix->cols + amount;
 
