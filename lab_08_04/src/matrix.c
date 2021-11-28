@@ -75,21 +75,11 @@ exit_t matrix_to_same_size(matrix_t *first, matrix_t *second)
     exit_t exit_code = exit_success;
 
     int delta_rows = first->rows - second->rows;
-
-    // if (delta_rows > 0)
-    //     exit_code = matrix_add_rows(second, delta_rows);
-    // else if (delta_rows < 0)
-    //     exit_code = matrix_add_rows(first, -delta_rows);
     exit_code = matrix_add_rows(delta_rows > 0 ? second : first, abs(delta_rows));
 
     if (exit_code == exit_success)
     {
         int delta_cols = first->cols - second->cols;
-
-        // if (delta_cols > 0)
-        //     exit_code = matrix_add_cols(second, delta_cols);
-        // else if (delta_cols < 0)
-        //     exit_code = matrix_add_cols(first, -delta_cols);
         exit_code = matrix_add_cols(delta_cols > 0 ? second : first, abs(delta_rows));
     }
 
