@@ -1,12 +1,15 @@
 #include "mylib.h"
 #include <check.h>
 #include <string.h>
+#include <stdio.h>
+
+#define BUFFER_SIZE 256
 
 START_TEST(test_dec)
 {
-    char str_expected[] = "123, 456, 0, -10\n";
-    char str[256];
-    int ret_expected = 17;
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 18, "%d, %d, %d, %d\n", 123, 456, 0, -10);
     int ret = my_snprintf(str, 18, "%d, %d, %d, %d\n", 123, 456, 0, -10);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -16,9 +19,9 @@ END_TEST
 
 START_TEST(test_dec_cut)
 {
-    char str_expected[] = "123, 45";
-    char str[256];
-    int ret_expected = 17;
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 8, "%d, %d, %d, %d\n", 123, 456, 0, -10);;
     int ret = my_snprintf(str, 8, "%d, %d, %d, %d\n", 123, 456, 0, -10);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -28,9 +31,9 @@ END_TEST
 
 START_TEST(test_dec_cut_neg)
 {
-    char str_expected[] = "123, 456, 0, -12";
-    char str[256];
-    int ret_expected = 18;
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 17, "%d, %d, %d, %d\n", 123, 456, 0, -123);
     int ret = my_snprintf(str, 17, "%d, %d, %d, %d\n", 123, 456, 0, -123);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -40,9 +43,9 @@ END_TEST
 
 START_TEST(test_dec_cut_neg_minus)
 {
-    char str_expected[] = "123, 456, 0, -";
-    char str[256];
-    int ret_expected = 18;
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 15, "%d, %d, %d, %d\n", 123, 456, 0, -123);
     int ret = my_snprintf(str, 15, "%d, %d, %d, %d\n", 123, 456, 0, -123);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -52,9 +55,9 @@ END_TEST
 
 START_TEST(test_oct)
 {
-    char str_expected[] = "777, 152, 0\n";
-    char str[256];
-    int ret_expected = 12;
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 15, "%o, %o, %o\n", 511, 106, 0);
     int ret = my_snprintf(str, 15, "%o, %o, %o\n", 511, 106, 0);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -64,9 +67,9 @@ END_TEST
 
 START_TEST(test_oct_cut)
 {
-    char str_expected[] = "777, 15";
-    char str[256];
-    int ret_expected = 12;
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 8, "%o, %o, %o\n", 511, 106, 0);
     int ret = my_snprintf(str, 8, "%o, %o, %o\n", 511, 106, 0);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -76,12 +79,12 @@ END_TEST
 
 START_TEST(test_str)
 {
-    char str_expected[] = "aboba, bobiba, klass";
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
     char str1[] = "aboba";
     char str2[] = "klass";
 
-    char str[256];
-    int ret_expected = 20;
+    int ret_expected = snprintf(str_expected, 25, "%s, bobiba, %s", str1, str2);
     int ret = my_snprintf(str, 25, "%s, bobiba, %s", str1, str2);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -91,12 +94,12 @@ END_TEST
 
 START_TEST(test_str_cut)
 {
-    char str_expected[] = "aboba, bobiba, kl";
+    char str_expected[BUFFER_SIZE];
     char str1[] = "aboba";
     char str2[] = "klass";
 
-    char str[256];
-    int ret_expected = 20;
+    char str[BUFFER_SIZE];
+    int ret_expected = snprintf(str_expected, 18, "%s, bobiba, %s", str1, str2);
     int ret = my_snprintf(str, 18, "%s, bobiba, %s", str1, str2);
 
     ck_assert_int_eq(ret_expected, ret);
@@ -106,10 +109,10 @@ END_TEST
 
 START_TEST(test_chr)
 {
-    char str_expected[] = "hello, A B O B A (aboba)\n";
+    char str_expected[BUFFER_SIZE];
+    char str[BUFFER_SIZE];
 
-    char str[256];
-    int ret_expected = 25;
+    int ret_expected = snprintf(str_expected, 26, "hello, %c %c %c %c %c (%c%c%c%c%c)\n", 'A', 'B', 'O', 'B', 'A', 'a', 'b', 'o', 'b', 'a');
     int ret = my_snprintf(str, 26, "hello, %c %c %c %c %c (%c%c%c%c%c)\n", 'A', 'B', 'O', 'B', 'A', 'a', 'b', 'o', 'b', 'a');
 
     ck_assert_int_eq(ret_expected, ret);
