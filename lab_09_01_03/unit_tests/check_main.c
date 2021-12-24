@@ -1,7 +1,6 @@
 #include <check.h>
 #include <string.h>
 #include <stdlib.h>
-#include "goods.h"
 
 #define min(a, b) (((a) < (b)) ? (a) : (b))
 

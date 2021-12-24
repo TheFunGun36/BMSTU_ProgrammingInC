@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Werror -Wpedantic -Iinc -g3 -fdiagnostics-color=always
-OBJS = out/fileio.o out/goods.o out/userio.o
+OBJS = out/fileio.o out/product.o out/fileio.o
 
 app.exe: out/main.o $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm
