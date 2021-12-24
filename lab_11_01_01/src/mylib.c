@@ -126,13 +126,6 @@ int my_snprintf(char *s, size_t n, const char *format, ...)
                 case 'o':
                     converted = put_oct(s, n, va_arg(vl, unsigned), converted);
                     break;
-                default:
-                    {
-                        // yooo, im memory leak!
-                        int *a = malloc(sizeof(int));
-                        // printing junk!
-                        printf("%d", a);
-                    }
             }
         }
     }
