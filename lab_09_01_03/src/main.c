@@ -6,7 +6,7 @@
 #include "goods.h"
 #include "userio.h"
 
-exit_t check_args(int argc, char *argv[], double *calculated_price);
+static exit_t validate_args(int argc, char *argv[], double *converted_price);
 static int comp(product_t prod, product_t sample);
 
 int main(int argc, char *argv[])
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     goods_t goods = { 0 };
     double price;
 
-    exit_t exit_code = check_args(argc, argv, &price);
+    exit_t exit_code = validate_args(argc, argv, &price);
 
     if (exit_code == EXIT_SUCCESS)
         exit_code = file_read_goods(argv[1], &goods);
@@ -30,20 +30,21 @@ int main(int argc, char *argv[])
     return exit_code;
 }
 
-exit_t check_args(int argc, char *argv[], double *calculated_price)
+exit_t validate_args(int argc, char *argv[], double *converted_price)
 {
     exit_t exit_code = EXIT_SUCCESS;
 
-    if (argc == 3)
+    if (argc != 3)
     {
-        *calculated_price = atof(argv[2]);
-
-        if (*calculated_price <= 0.0)
-            exit_code = EXIT_INVALID_ARGS;
+        exit_code = EXIT_INVALID_ARGS;
     }
     else
     {
-        exit_code = EXIT_INVALID_ARGS;
+        char *endptr;
+        *converted_price = strtod(argv[2], &endptr);
+
+        if (endptr != strrchr(argv[2], '\0'))
+            exit_code = EXIT_INVALID_ARGS;
     }
 
     return exit_code;
