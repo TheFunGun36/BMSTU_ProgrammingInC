@@ -2,11 +2,11 @@
 #include <stdarg.h>
 #include <inttypes.h>
 
-static int put_int(char *s, size_t n, int val, int converted)
+static int put_int(char *s, size_t n, int64_t val, int converted)
 {
     if (val < 0)
     {
-        if (converted < n)
+        if (s && converted < n)
             s[converted] = '-';
         converted++;
         val = -val;
@@ -14,7 +14,7 @@ static int put_int(char *s, size_t n, int val, int converted)
 
     int dgts = 0;
 
-    for (int v = val; v > 0; v /= 10)
+    for (int64_t v = val; v > 0; v /= 10)
         dgts++;
 
     dgts = dgts ? dgts : 1;
@@ -56,7 +56,7 @@ static int put_oct(char *s, size_t n, unsigned val, int converted)
         while (mask)
         {
             int c = '0' + ((val & mask) >> (3 * shifts));
-            if (converted < n)
+            if (s && converted < n)
                 s[converted] = c;
             converted++;
             mask >>= 3;
@@ -65,7 +65,7 @@ static int put_oct(char *s, size_t n, unsigned val, int converted)
     }
     else
     {
-        if (converted < n)
+        if (s && converted < n)
             s[converted] = '0';
         converted++;
     }
@@ -77,7 +77,7 @@ static int put_str(char *s, size_t n, char *str, int converted)
 {
     while (*str != '\0')
     {
-        if (converted < n)
+        if (s && converted < n)
             s[converted] = *str;
         converted++;
         str++;
@@ -88,7 +88,7 @@ static int put_str(char *s, size_t n, char *str, int converted)
 
 static int put_chr(char *s, size_t n, char val, int converted)
 {
-    if (converted < n)
+    if (s && converted < n)
         s[converted] = val;
     return ++converted;
 }
@@ -104,7 +104,7 @@ int my_snprintf(char *s, size_t n, const char *format, ...)
     {
         if (*format != '%')
         {
-            if (converted < n)
+            if (s && converted < n)
                 s[converted] = *format;
             format++;
             converted++;
