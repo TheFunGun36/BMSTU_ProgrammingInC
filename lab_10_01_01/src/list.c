@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void remove_element(node_t **head, node_t *after);
-void front_back_split(node_t* head, node_t** back);
+void front_back_split(node_t *head, node_t **back);
 node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const void *, const void *));
 
 node_t *find(node_t *head, const void *data, int (*comparator)(const void *, const void *))
@@ -239,7 +239,7 @@ void clear(node_t **head)
 {
     node_t *node = *head;
 
-    while(node)
+    while (node)
     {
         node_t *next = node->next;
         free(node);
