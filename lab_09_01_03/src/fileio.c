@@ -8,6 +8,7 @@
 static exit_t file_read_product(FILE *f, product_t *prod);
 static exit_t file_read_string(FILE *f, char **string);
 static exit_t file_read_endl(FILE *f);
+static exit_t file_count_products(FILE *f, int *result);
 
 exit_t file_read_goods(char *filename, goods_t *goods)
 {
@@ -16,12 +17,14 @@ exit_t file_read_goods(char *filename, goods_t *goods)
 
     if (f)
     {
-        int res = fscanf(f, "%d", &goods->amount);
-        exit_code = file_read_endl(f);
+        exit_code = file_count_products(f, &goods->amount);
+        //int res = fscanf(f, "%d", &goods->amount);
+        //if (exit_code == EXIT_SUCCESS)
+        //    exit_code = file_read_endl(f);
 
         if (exit_code == EXIT_SUCCESS)
         {
-            if (res != 1 || goods->amount <= 0)
+            if (goods->amount <= 0)
             {
                 exit_code = EXIT_FILE_INVALID_CONTENT;
                 memset(goods, 0, sizeof(goods_t));
@@ -129,4 +132,24 @@ exit_t file_read_endl(FILE *f)
         res = fscanf(f, "%c", &endl);
 
     return (res == 1 && endl == '\n') ? (EXIT_SUCCESS) : (EXIT_FILE_INVALID_CONTENT);
+}
+
+exit_t file_count_products(FILE *f, int *result)
+{
+    exit_t exit_code = EXIT_SUCCESS;
+    product_t product;
+
+    *result = 0;
+
+    while (exit_code == EXIT_SUCCESS)
+    {
+        exit_code = file_read_product(f, &product);
+        (*result)++;
+    }
+
+    (*result)--;
+
+    rewind(f);
+
+    return EXIT_SUCCESS;
 }
