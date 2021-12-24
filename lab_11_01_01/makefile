@@ -6,7 +6,7 @@ app.exe: out/main.o $(OBJS)
 	$(CC) $(CFLAGS) $^ -o $@ -lm -fdiagnostics-color=always
 
 unit_tests.exe: out/check_main.o $(OBJS)
-	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm -fdiagnostics-color=always -lsubunit
+	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm -fdiagnostics-color=always # -lsubunit
 
 out/%.o: src/%.c inc/*.h
 	@-mkdir out/
