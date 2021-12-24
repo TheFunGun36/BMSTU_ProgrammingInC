@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -Wall -Werror -Wpedantic -Iinc -g3 -fdiagnostics-color=always
+CFLAGS = -Wall -Wpedantic -Iinc -g3 -fdiagnostics-color=always
 OBJS = out/mylib.o
 
 app.exe: out/main.o $(OBJS)
-	$(CC) $(CFLAGS) $^ -o $@ -lm -fdiagnostics-color=always
+	$(CC) $(CFLAGS) -Werror $^ -o $@ -lm -fdiagnostics-color=always
 
 unit_tests.exe: out/check_main.o $(OBJS)
 	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm -fdiagnostics-color=always # -lsubunit
