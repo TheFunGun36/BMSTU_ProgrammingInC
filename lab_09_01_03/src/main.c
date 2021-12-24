@@ -1,56 +1,62 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include <math.h>
-#include <string.h>
 #include "fileio.h"
-#include "goods.h"
-#include "userio.h"
+#include "product.h"
 
-static exit_t validate_args(int argc, char *argv[], double *converted_price);
-static int comp(product_t prod, product_t sample);
+#define EXIT_INVALID_MAX_PRICE -7
+#define EXIT_INVALID_ARGS_COUNT -8
+
+int check_args(int argc, char *argv[], double *calculated_price);
+void print_product_array(product_t *product_arr, unsigned int product_arr_size);
 
 int main(int argc, char *argv[])
 {
-    goods_t goods = { 0 };
-    double price;
-
-    exit_t exit_code = validate_args(argc, argv, &price);
-
-    if (exit_code == EXIT_SUCCESS)
-        exit_code = file_read_goods(argv[1], &goods);
+    double max_price = 0.0;
+    int exit_code = check_args(argc, argv, &max_price);
 
     if (exit_code == EXIT_SUCCESS)
     {
-        product_t sample = { .price = (int)ceil(price), .name = NULL };
-        goods_filter(&goods, sample, comp);
-        print_goods(goods);
+        product_t *product_arr;
+        unsigned int product_arr_size = 0;
+        exit_code = read_product_arr(&product_arr, &product_arr_size, argv[1]);
+
+        if (exit_code == EXIT_SUCCESS)
+        { 
+            filter_product_array(product_arr, &product_arr_size, max_price);
+            print_product_array(product_arr, product_arr_size);
+
+            for (int i = 0; i < product_arr_size; i++)
+                free(product_arr[i].name);
+            free(product_arr);
+        }
     }
 
-    goods_free(&goods);
     return exit_code;
 }
 
-exit_t validate_args(int argc, char *argv[], double *converted_price)
+int check_args(int argc, char *argv[], double *calculated_price)
 {
-    exit_t exit_code = EXIT_SUCCESS;
+    int exit_code = EXIT_SUCCESS;
 
-    if (argc != 3)
+    if (argc == 3)
     {
-        exit_code = EXIT_INVALID_ARGS;
+        *calculated_price = atof(argv[2]);
+
+        if (*calculated_price <= 0.0)
+            exit_code = EXIT_INVALID_MAX_PRICE;
     }
     else
     {
-        char *endptr;
-        *converted_price = strtod(argv[2], &endptr);
-
-        if (endptr != strrchr(argv[2], '\0'))
-            exit_code = EXIT_INVALID_ARGS;
+        exit_code = EXIT_INVALID_ARGS_COUNT;
     }
 
     return exit_code;
 }
 
-int comp(product_t prod, product_t sample)
+void print_product_array(product_t *product_arr, unsigned int product_arr_size)
 {
-    return prod.price < sample.price;
+    for (int i = 0; i < product_arr_size; i++)
+    {
+        printf("%s\n%u\n", product_arr[i].name, product_arr[i].price);
+    }
 }

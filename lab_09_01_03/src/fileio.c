@@ -1,60 +1,123 @@
-#include "fileio.h"
-#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
+#include "fileio.h"
 
-#define STR_INC 8
+#define EOF_NOT_FOUND 0
+#define EOF_FOUND 1
+#define EOF_SEARCHING 2
 
-static exit_t file_read_product(FILE *f, product_t *prod);
-static exit_t file_read_string(FILE *f, char **string);
-static exit_t file_read_endl(FILE *f);
+#define STR_INC 4
 
-exit_t file_read_goods(char *filename, goods_t *goods)
+static int file_read_number(unsigned int *number, FILE *f);
+static int seek_eof(FILE *f);
+static int file_read_product(FILE *f, product_t *prod);
+static int file_read_string(FILE *f, char **str);
+static int file_read_endl(FILE *f);
+
+int file_read_endl(FILE *f)
 {
-    exit_t exit_code = EXIT_SUCCESS;
-    FILE *f = fopen(filename, "rt");
+    char endl;
+    int res = fscanf(f, "%c", &endl);
+
+    if (res == 1 && endl == '\r')
+        res = fscanf(f, "%c", &endl);
+
+    return (res == 1 && endl == '\n') ? (EXIT_SUCCESS) : (EXIT_LINE_NOT_READ);
+}
+
+int file_read_number(unsigned int *number, FILE *f)
+{
+    int exit_code = EXIT_SUCCESS;
+    int number_signed;
+    int result = fscanf(f, "%d", &number_signed);
+
+    if (result == 1)
+    {
+        if (number_signed < 0)
+            exit_code = EXIT_INVALID_NUMBER;
+        else
+            exit_code = file_read_endl(f);
+    }
+    else
+        exit_code = EXIT_INVALID_NUMBER;
+
+    if (exit_code == EXIT_SUCCESS)
+        *number = number_signed;
+
+    return exit_code;
+}
+
+int seek_eof(FILE *f)
+{
+    const char *space_symbols = "\r\n\t\v\f";
+    int result = EOF_SEARCHING;
+
+    while (result == EOF_SEARCHING)
+    {
+        char c = fgetc(f);
+
+        if (c == EOF)
+            result = EOF_FOUND;
+        else if (strchr(space_symbols, c))
+            result = EOF_NOT_FOUND;
+    }
+
+    return result;
+}
+
+int read_product_arr(product_t **product_arr, unsigned int *product_arr_size, char *filename)
+{
+    int exit_code = EXIT_SUCCESS;
+    FILE *f = fopen(filename, "rb");
 
     if (f)
     {
-        int res = fscanf(f, "%d", &goods->amount);
-        exit_code = file_read_endl(f);
-
-        if (exit_code == EXIT_SUCCESS)
+        exit_code = file_read_number(product_arr_size, f);
+        
+        if (exit_code == EXIT_SUCCESS && *product_arr_size > 0)
         {
-            if (res != 1 || goods->amount <= 0)
+            *product_arr = calloc(*product_arr_size, sizeof(product_t));
+
+            for (unsigned int i = 0; i < *product_arr_size && exit_code == EXIT_SUCCESS; i++)
+                exit_code = file_read_product(f, *product_arr + i);
+
+            if (seek_eof(f) == EOF_NOT_FOUND)
+                exit_code = EXIT_INVALID_PRODUCTS_AMOUNT;
+
+            if (exit_code != EXIT_SUCCESS)
             {
-                exit_code = EXIT_FILE_INVALID_CONTENT;
-                memset(goods, 0, sizeof(goods_t));
-            }
-            else
-            {
-                exit_code = goods_init(goods, goods->amount);
+                for (int i = 0; i < *product_arr_size; i++)
+                    free((*product_arr)[i].name);
+                free(*product_arr);
+                *product_arr = NULL;
             }
         }
-
-        for (int i = 0; exit_code == EXIT_SUCCESS && i < goods->amount; i++)
-            exit_code = file_read_product(f, goods->val + i);
+        else
+        {
+            exit_code = EXIT_INVALID_PRODUCTS_AMOUNT;
+        }        
 
         fclose(f);
     }
     else
     {
-        exit_code = EXIT_FILE_OPEN;
+        exit_code = EXIT_FILE_NOT_OPENED;
     }
-
+    
     return exit_code;
 }
 
-exit_t file_read_product(FILE *f, product_t *prod)
+int file_read_product(FILE *f, product_t *prod)
 {
-    exit_t exit_code = file_read_string(f, &prod->name);
+    int exit_code = file_read_string(f, &prod->name);
 
     if (exit_code == EXIT_SUCCESS)
     {
-        int res = fscanf(f, "%d", &prod->price);
+        int res = fscanf(f, "%u", &prod->price);
 
         if (res != 1)
-            exit_code = EXIT_FILE_INVALID_CONTENT;
+            exit_code = EXIT_INVALID_NUMBER;
         else
             exit_code = file_read_endl(f);
     }
@@ -68,9 +131,9 @@ exit_t file_read_product(FILE *f, product_t *prod)
     return exit_code;
 }
 
-exit_t file_read_string(FILE *f, char **str)
+int file_read_string(FILE *f, char **str)
 {
-    exit_t exit_code = EXIT_SUCCESS;
+    int exit_code = EXIT_SUCCESS;
     *str = NULL;
 
     char read_next = 1;
@@ -89,7 +152,7 @@ exit_t file_read_string(FILE *f, char **str)
             *str = new_str;
 
             if (!fgets(*str + i - STR_INC, STR_INC + 1, f))
-                exit_code = EXIT_FILE_INVALID_CONTENT;
+                exit_code = EXIT_LINE_NOT_READ;
         }
 
         if (exit_code == EXIT_SUCCESS)
@@ -106,7 +169,7 @@ exit_t file_read_string(FILE *f, char **str)
                 read_next = 0;
 
                 if (endl_pos - *str <= 0)
-                    exit_code = EXIT_FILE_INVALID_CONTENT;
+                    exit_code = EXIT_LINE_NOT_READ;
             }
         }
     }
@@ -118,15 +181,4 @@ exit_t file_read_string(FILE *f, char **str)
     }
 
     return exit_code;
-}
-
-exit_t file_read_endl(FILE *f)
-{
-    char endl;
-    int res = fscanf(f, "%c", &endl);
-
-    if (res == 1 && endl == '\r')
-        res = fscanf(f, "%c", &endl);
-
-    return (res == 1 && endl == '\n') ? (EXIT_SUCCESS) : (EXIT_FILE_INVALID_CONTENT);
 }
