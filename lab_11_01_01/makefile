@@ -3,7 +3,7 @@ CFLAGS = -Wall -Wpedantic -Werror -Iinc -g3 -fdiagnostics-color=always
 OBJS = out/mylib.o
 
 app.exe: out/main.o $(OBJS)
-	$(CC) $(CFLAGS)$^ -o $@ -lm -fdiagnostics-color=always
+	$(CC) $(CFLAGS) $^ -o $@ -lm -fdiagnostics-color=always
 
 unit_tests.exe: out/check_main.o $(OBJS)
 	$(CC) $^ -o $@ -lcheck -lpthread -lrt -lm -fdiagnostics-color=always # -lsubunit
