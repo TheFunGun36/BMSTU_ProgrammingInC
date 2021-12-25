@@ -167,19 +167,16 @@ void front_back_split(node_t *head, node_t **back)
         *back = head;
         node_t *tail = head;
 
-        if (tail)
+        int should_move_back = 0;
+
+        while (tail->next)
         {
-            int should_move_back = 0;
+            tail = tail->next;
 
-            while (tail->next)
-            {
-                tail = tail->next;
-
-                if (should_move_back++)
-                    (*back)++;
-                else
-                    should_move_back = 0;
-            }
+            if (should_move_back++)
+                (*back) = (*back)->next;
+            else
+                should_move_back = 0;
         }
     }
 }
