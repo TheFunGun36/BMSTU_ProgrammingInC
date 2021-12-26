@@ -224,14 +224,17 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
         *head_a = NULL;
 
     node_t *node;
-    for (node = head; node->next && head_b && *head_b; LIST_INC(node))
+    if (node)
     {
-        if (comparator(node->next->data, (*head_b)->data) > 0)
+        for (node = head; node->next && head_b && *head_b; LIST_INC(node))
         {
-            node_t *new_node = *head_b;
-            LIST_INC(*head_b);
-            new_node->next = node->next;
-            node->next = new_node;
+            if (comparator(node->next->data, (*head_b)->data) > 0)
+            {
+                node_t *new_node = *head_b;
+                LIST_INC(*head_b);
+                new_node->next = node->next;
+                node->next = new_node;
+            }
         }
     }
 
