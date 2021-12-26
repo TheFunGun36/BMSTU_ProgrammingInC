@@ -80,10 +80,10 @@ void insert(node_t **head, node_t *elem, node_t *before)
             {
                 node_t *after = *head;
 
-                while (after->next != NULL && after->next != before)
+                while (after->next && after->next != before)
                     LIST_INC(after);
 
-                if (after->next != NULL || before == NULL)
+                if (after->next == before)
                     after->next = elem;
             }
             else
@@ -91,7 +91,7 @@ void insert(node_t **head, node_t *elem, node_t *before)
                 *head = elem;
             }
         }
-        else if (before == NULL)
+        else if (!before)
         {
             *head = elem;
         }
