@@ -190,64 +190,53 @@ void front_back_split(node_t *head, node_t **back)
 node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const void *, const void *))
 {
     node_t *head = NULL;
-
+    
     if (head_a && head_b && *head_a && *head_b)
     {
-        if (comparator((*head_a)->data, (*head_b)->data) < 0)
+        if (comparator((*head_a)->data, (*head_b)->data) > 0)
+        {
+            node_t **tmp = head_a;
+            head_a = head_b;
+            head_b = tmp;
+        }
+        
+        head = *head_a;
+        LIST_INC(*head_a);
+    }
+    else
+    {
+        if (head_a && *head_a)
         {
             head = *head_a;
             LIST_INC(*head_a);
         }
-        else
+        else if (head_b && *head_b)
         {
-            head = *head_b;
-            LIST_INC(*head_b);
-        }
-    }
-    else if (head_a && *head_a)
-    {
-        head = *head_a;
-        LIST_INC(*head_a);
-    }
-    else if (head_b && *head_b)
-    {
-        head = *head_b;
-        LIST_INC(*head_b);
-    }
-
-    node_t *cur = head;
-
-    while (head_a && head_b && *head_a && *head_b)
-    {
-        if (comparator((*head_a)->data, (*head_b)->data) < 0)
-        {
-            cur->next = *head_a;
+            node_t **tmp = head_a;
+            head_a = head_b;
+            head_b = tmp;
+            head = *head_a;
             LIST_INC(*head_a);
         }
-        else
+    }
+
+    node_t *node;
+    for (node = head; node->next && head_b && *head_b; LIST_INC(node))
+    {
+        if (comparator(node->next->data, (*head_b)->data) > 0)
         {
-            cur->next = *head_b;
+            node_t *new_node = *head_b;
             LIST_INC(*head_b);
+            new_node->next = node->next;
+            node->next = new_node;
         }
-
-        LIST_INC(cur);
     }
 
-    while (head_a && *head_a)
+    if (head_b && *head_b)
     {
-        cur->next = *head_a;
-        LIST_INC(*head_a);
-        LIST_INC(cur);
+        node->next = *head_b;
     }
-
-    while (head_b && *head_b)
-    {
-        cur->next = *head_b;
-        LIST_INC(*head_b);
-        LIST_INC(cur);
-    }
-
-    cur->next = NULL;
+    
     return head;
 }
 
