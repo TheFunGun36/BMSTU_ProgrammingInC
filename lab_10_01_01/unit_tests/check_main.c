@@ -214,7 +214,7 @@ START_TEST(test_sort)
         insert(&list, node, NULL);
     }
 
-    sort(&list, int_comp);
+    list = sort(list, int_comp);
 
     node_t *node = list;
     for (int i = 0; i < sizeof(values) / sizeof(int); i++)
@@ -240,7 +240,7 @@ START_TEST(test_sort_odd)
         insert(&list, node, NULL);
     }
 
-    sort(&list, int_comp);
+    list = sort(list, int_comp);
 
     node_t *node = list;
     for (int i = 0; i < sizeof(values) / sizeof(int); i++)
@@ -266,7 +266,7 @@ START_TEST(test_sort_single)
         insert(&list, node, NULL);
     }
 
-    sort(&list, int_comp);
+    list = sort(list, int_comp);
 
     node_t *node = list;
     for (int i = 0; i < sizeof(values) / sizeof(int); i++)

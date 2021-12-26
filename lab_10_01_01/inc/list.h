@@ -18,7 +18,7 @@ void insert(node_t **head, node_t *elem, node_t *before);
 
 void remove_duplicates(node_t **head, int (*comparator)(const void *, const void *));
 
-void sort(node_t **head, int (*comparator)(const void *, const void *));
+node_t *sort(node_t *head, int (*comparator)(const void *, const void *));
 
 void clear(node_t **head);
 

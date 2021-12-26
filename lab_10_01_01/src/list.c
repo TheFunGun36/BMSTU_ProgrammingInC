@@ -121,21 +121,23 @@ void remove_duplicates(node_t **head, int (*comparator)(const void*, const void*
     }
 }
 
-void sort(node_t **head, int (*comparator)(const void*, const void*))
+node_t *sort(node_t *head, int (*comparator)(const void*, const void*))
 {
-    if (head && *head && comparator)
+    if (head && comparator)
     {
-        if ((*head)->next)
+        if (head->next)
         {
             node_t *back;
-            front_back_split(*head, &back);
+            front_back_split(head, &back);
 
-            sort(head, comparator);
-            sort(&back, comparator);
+            head = sort(head, comparator);
+            back = sort(back, comparator);
 
-            *head = sorted_merge(head, &back, comparator);
+            head = sorted_merge(&head, &back, comparator);
         }
     }
+
+    return head;
 }
 
 void remove_element(node_t **head, node_t *after)
