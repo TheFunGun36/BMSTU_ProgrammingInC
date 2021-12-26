@@ -121,7 +121,7 @@ void remove_duplicates(node_t **head, int (*comparator)(const void*, const void*
 
 void sort(node_t **head, int (*comparator)(const void*, const void*))
 {
-    if (head && *head)
+    if (head && *head && comparator)
     {
         if ((*head)->next)
         {
@@ -174,9 +174,10 @@ void front_back_split(node_t *head, node_t **back)
             tail = tail->next;
 
             if (should_move_back++)
+            {
                 (*back) = (*back)->next;
-            else
                 should_move_back = 0;
+            }
         }
     }
 }
