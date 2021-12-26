@@ -1,6 +1,8 @@
 #include "list.h"
 #include <stdlib.h>
 
+#define LIST_INC(list) ((list) = (list)->next)
+
 void remove_element(node_t **head, node_t *after);
 void front_back_split(node_t *head, node_t **back);
 node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const void *, const void *));
@@ -16,7 +18,7 @@ node_t *find(node_t *head, const void *data, int (*comparator)(const void *, con
             if (!comparator(head->data, data))
                 result = head;
             else
-                head = head->next;
+                LIST_INC(head);
         }
     }
 
@@ -49,7 +51,7 @@ void *pop_back(node_t **head)
             node_t *pre_tail = *head;
 
             while (pre_tail->next->next)
-                pre_tail = pre_tail->next;
+                LIST_INC(pre_tail);
 
             result = pre_tail->next->data;
             free(pre_tail->next);
@@ -79,7 +81,7 @@ void insert(node_t **head, node_t *elem, node_t *before)
                 node_t *after = *head;
 
                 while (after->next != NULL && after->next != before)
-                    after = after->next;
+                    LIST_INC(after);
 
                 if (after->next != NULL || before == NULL)
                     after->next = elem;
@@ -115,7 +117,7 @@ void remove_duplicates(node_t **head, int (*comparator)(const void*, const void*
             sec_el = prev_el->next;
         }
 
-        cur_el = cur_el->next;
+        LIST_INC(cur_el);
     }
 }
 
@@ -145,12 +147,12 @@ void remove_element(node_t **head, node_t *after)
         if (!after)
         {
             to_delete = *head;
-            *head = to_delete->next;
+            LIST_INC(*head);
         }
         else
         {
             to_delete = after->next;
-            after->next = to_delete->next;
+            LIST_INC(after->next);
         }
 
         free(to_delete);
@@ -185,52 +187,68 @@ void front_back_split(node_t *head, node_t **back)
 
 node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const void *, const void *))
 {
-    node_t *head;
+    node_t *head = NULL;
 
-    if (comparator((*head_a)->data, (*head_b)->data) < 0)
+    if (head_a && head_b)
     {
-        head = *head_a;
-        *head_a = (*head_a)->next;
-    }
-    else
-    {
-        head = *head_b;
-        *head_b = (*head_b)->next;
-    }
-    
-    node_t *cur = head;
+        if (*head_a && *head_b)
+        {
+            if (comparator((*head_a)->data, (*head_b)->data) < 0)
+            {
+                head = *head_a;
+                LIST_INC(*head_a);
+            }
+            else
+            {
+                head = *head_b;
+                LIST_INC(*head_b);
+            }
+        }
+        else if (*head_a)
+        {
+            head = *head_a;
+            LIST_INC(*head_a);
+        }
+        else if (*head_b)
+        {
+            head = *head_b;
+            LIST_INC(*head_b);
+        }
 
-    while (*head_a && *head_b)
-    {
-        if (comparator((*head_a)->data, (*head_b)->data) < 0)
+        node_t *cur = head;
+
+        while (*head_a && *head_b)
+        {
+            if (comparator((*head_a)->data, (*head_b)->data) < 0)
+            {
+                cur->next = *head_a;
+                LIST_INC(*head_a);
+            }
+            else
+            {
+                cur->next = *head_b;
+                LIST_INC(*head_b);
+            }
+            
+            LIST_INC(cur);
+        }
+
+        while (*head_a)
         {
             cur->next = *head_a;
-            *head_a = (*head_a)->next;
+            LIST_INC(*head_a);
+            LIST_INC(cur);
         }
-        else
+
+        while (*head_b)
         {
             cur->next = *head_b;
-            *head_b = (*head_b)->next;
+            LIST_INC(*head_b);
+            LIST_INC(cur);
         }
 
-        cur = cur->next;
+        cur->next = NULL;
     }
-
-    while (*head_a)
-    {
-        cur->next = *head_a;
-        *head_a = (*head_a)->next;
-        cur = cur->next;
-    }
-
-    while (*head_b)
-    {
-        cur->next = *head_b;
-        *head_b = (*head_b)->next;
-        cur = cur->next;
-    }
-
-    cur->next = NULL;
     return head;
 }
 
