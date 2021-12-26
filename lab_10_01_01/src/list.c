@@ -70,31 +70,31 @@ void *pop_back(node_t **head)
 
 void insert(node_t **head, node_t *elem, node_t *before)
 {
-    if (head && elem)
+    if (*head)
     {
-        elem->next = before;
-
-        if (*head)
+        if (before != *head)
         {
-            if (before != *head)
-            {
-                node_t *after = *head;
+            node_t *after = *head;
 
-                while (after->next && after->next != before)
-                    LIST_INC(after);
+            while (after->next && after->next != before)
+                LIST_INC(after);
 
-                if (after->next == before)
-                    after->next = elem;
-            }
-            else
+            if (after->next == before)
             {
-                *head = elem;
+                after->next = elem;
+                elem->next = before;
             }
         }
-        else if (!before)
+        else
         {
             *head = elem;
+            elem->next = before;
         }
+    }
+    else if (!before)
+    {
+        *head = elem;
+        elem->next = before;
     }
 }
 
