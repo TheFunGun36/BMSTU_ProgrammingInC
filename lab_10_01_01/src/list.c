@@ -128,13 +128,10 @@ void sort(node_t **head, int (*comparator)(const void*, const void*))
             node_t *back;
             front_back_split(*head, &back);
 
-            node_t *head_2 = back->next;
-            back->next = NULL;
-
             sort(head, comparator);
-            sort(&head_2, comparator);
+            sort(&back, comparator);
 
-            *head = sorted_merge(head, &head_2, comparator);
+            *head = sorted_merge(head, &back, comparator);
         }
     }
 }
@@ -179,6 +176,10 @@ void front_back_split(node_t *head, node_t **back)
                 should_move_back = 0;
             }
         }
+
+        node_t *new_head = (*back)->next;
+        (*back)->next = NULL;
+        *back = new_head;
     }
 }
 
