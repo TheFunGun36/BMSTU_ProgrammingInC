@@ -189,66 +189,63 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
 {
     node_t *head = NULL;
 
-    if (head_a && head_b)
+    if (head_a && head_b && *head_a && *head_b)
     {
-        if (*head_a && *head_b)
-        {
-            if (comparator((*head_a)->data, (*head_b)->data) < 0)
-            {
-                head = *head_a;
-                LIST_INC(*head_a);
-            }
-            else
-            {
-                head = *head_b;
-                LIST_INC(*head_b);
-            }
-        }
-        else if (*head_a)
+        if (comparator((*head_a)->data, (*head_b)->data) < 0)
         {
             head = *head_a;
             LIST_INC(*head_a);
         }
-        else if (*head_b)
+        else
         {
             head = *head_b;
             LIST_INC(*head_b);
         }
+    }
+    else if (head_a && *head_a)
+    {
+        head = *head_a;
+        LIST_INC(*head_a);
+    }
+    else if (head_b && *head_b)
+    {
+        head = *head_b;
+        LIST_INC(*head_b);
+    }
 
-        node_t *cur = head;
+    node_t *cur = head;
 
-        while (*head_a && *head_b)
-        {
-            if (comparator((*head_a)->data, (*head_b)->data) < 0)
-            {
-                cur->next = *head_a;
-                LIST_INC(*head_a);
-            }
-            else
-            {
-                cur->next = *head_b;
-                LIST_INC(*head_b);
-            }
-            
-            LIST_INC(cur);
-        }
-
-        while (*head_a)
+    while (head_a && head_b && *head_a && *head_b)
+    {
+        if (comparator((*head_a)->data, (*head_b)->data) < 0)
         {
             cur->next = *head_a;
             LIST_INC(*head_a);
-            LIST_INC(cur);
         }
-
-        while (*head_b)
+        else
         {
             cur->next = *head_b;
             LIST_INC(*head_b);
-            LIST_INC(cur);
         }
 
-        cur->next = NULL;
+        LIST_INC(cur);
     }
+
+    while (head_a && *head_a)
+    {
+        cur->next = *head_a;
+        LIST_INC(*head_a);
+        LIST_INC(cur);
+    }
+
+    while (head_a && *head_b)
+    {
+        cur->next = *head_b;
+        LIST_INC(*head_b);
+        LIST_INC(cur);
+    }
+
+    cur->next = NULL;
     return head;
 }
 
