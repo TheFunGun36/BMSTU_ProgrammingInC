@@ -220,6 +220,8 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
         }
     }
 
+    *head_a = NULL;
+
     node_t *node;
     for (node = head; node->next && head_b && *head_b; LIST_INC(node))
     {
@@ -236,7 +238,9 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
     {
         node->next = *head_b;
     }
-    
+
+    *head_b = NULL;
+
     return head;
 }
 
