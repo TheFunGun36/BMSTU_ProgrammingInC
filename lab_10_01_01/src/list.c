@@ -238,7 +238,7 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
         LIST_INC(cur);
     }
 
-    while (head_a && *head_b)
+    while (head_b && *head_b)
     {
         cur->next = *head_b;
         LIST_INC(*head_b);

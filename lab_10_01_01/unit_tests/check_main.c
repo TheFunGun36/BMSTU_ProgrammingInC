@@ -175,13 +175,13 @@ START_TEST(test_find)
 }
 END_TEST
 
-START_TEST(test_remove_duplitates)
+START_TEST(test_remove_duplicates)
 {
     int values[] = { 7, 8, 1, 3, 2, 2, 7, 4, 1, 4, 5, 9, 8, 6, 5, 5, 5, 0, 3, 6, 0, };
     int expected[] = { 7, 8, 1, 3, 2, 4, 5, 9, 6, 0 };
     node_t *list = NULL;
 
-    for (int i = 0; i < sizeof(values)/sizeof(int); i++)
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
     {
         node_t *node = malloc(sizeof(node_t));
         node->data = values + i;
@@ -191,7 +191,7 @@ START_TEST(test_remove_duplitates)
     remove_duplicates(&list, int_comp);
 
     node_t *node = list;
-    for (int i = 0; i < sizeof(expected)/sizeof(int); i++)
+    for (int i = 0; i < sizeof(expected) / sizeof(int); i++)
     {
         ck_assert_int_eq(*(int*)node->data, expected[i]);
         node = node->next;
@@ -207,7 +207,7 @@ START_TEST(test_sort)
     int values[] = { 7, 8, 1, 3, 2, 4, 5, 9, 6, 0 };
     node_t *list = NULL;
 
-    for (int i = 0; i < sizeof(values)/sizeof(int); i++)
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
     {
         node_t *node = malloc(sizeof(node_t));
         node->data = values + i;
@@ -217,7 +217,59 @@ START_TEST(test_sort)
     sort(&list, int_comp);
 
     node_t *node = list;
-    for (int i = 0; i < sizeof(values)/sizeof(int); i++)
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
+    {
+        ck_assert_int_eq(*(int*)node->data, i);
+        node = node->next;
+    }
+    ck_assert_ptr_eq(node, NULL);
+
+    clear(&list);
+}
+END_TEST
+
+START_TEST(test_sort_odd)
+{
+    int values[] = { 7, 8, 1, 3, 2, 4, 5, 9, 6, 0, 10 };
+    node_t *list = NULL;
+
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
+    {
+        node_t *node = malloc(sizeof(node_t));
+        node->data = values + i;
+        insert(&list, node, NULL);
+    }
+
+    sort(&list, int_comp);
+
+    node_t *node = list;
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
+    {
+        ck_assert_int_eq(*(int*)node->data, i);
+        node = node->next;
+    }
+    ck_assert_ptr_eq(node, NULL);
+
+    clear(&list);
+}
+END_TEST
+
+START_TEST(test_sort_single)
+{
+    int values[] = { 0 };
+    node_t *list = NULL;
+
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
+    {
+        node_t *node = malloc(sizeof(node_t));
+        node->data = values + i;
+        insert(&list, node, NULL);
+    }
+
+    sort(&list, int_comp);
+
+    node_t *node = list;
+    for (int i = 0; i < sizeof(values) / sizeof(int); i++)
     {
         ck_assert_int_eq(*(int*)node->data, i);
         node = node->next;
@@ -242,8 +294,10 @@ Suite *main_suite(void)
     suite_add_tcase(s, tc1);
 
     TCase *tc2 = tcase_create("multi_element_task");
-    tcase_add_test(tc2, test_remove_duplitates);
+    tcase_add_test(tc2, test_remove_duplicates);
     tcase_add_test(tc2, test_sort);
+    tcase_add_test(tc2, test_sort_odd);
+    tcase_add_test(tc2, test_sort_single);
     suite_add_tcase(s, tc2);
 
     return s;
