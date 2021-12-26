@@ -224,7 +224,7 @@ node_t *sorted_merge(node_t **head_a, node_t **head_b, int (*comparator)(const v
         *head_a = NULL;
 
     node_t *node;
-    if (node)
+    if (head)
     {
         for (node = head; node->next && head_b && *head_b; LIST_INC(node))
         {
