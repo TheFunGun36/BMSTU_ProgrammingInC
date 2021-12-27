@@ -18,7 +18,6 @@ int main(int argc, char *argv[])
     {
         product_t *product_arr;
         unsigned int product_arr_size = 0;
-        product_arr->price = 0;
         exit_code = read_product_arr(&product_arr, &product_arr_size, argv[1]);
 
         if (exit_code == EXIT_SUCCESS)
