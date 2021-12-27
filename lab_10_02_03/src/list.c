@@ -88,6 +88,7 @@ node_t *push_back(node_t *head, node_t **tail, node_t *elem)
         else
         {
             head = elem;
+            elem->next = NULL;
             *tail = head;
         }
     }
