@@ -141,7 +141,12 @@ int file_read_string(FILE *f, char **str)
 
     for (int i = STR_INC; exit_code == EXIT_SUCCESS && read_next; i += STR_INC)
     {
-        char *new_str = realloc(*str, (i + 1) * sizeof(char));
+        char *new_str;
+        
+        if (str)
+            new_str = realloc(*str, (i + 1) * sizeof(char));
+        else
+            new_str = malloc((i + 1) * sizeof(char));
 
         if (!new_str)
         {
