@@ -179,7 +179,7 @@ node_t *bign_divide(node_t **a, node_t **b, int *found_negatives)
             if (*b != *a)
                 clear(b, 1);
 
-            while(last_non_zero->next && *(int *)last_non_zero->next->data)
+            while (last_non_zero->next && *(int *)last_non_zero->next->data)
                 last_non_zero = last_non_zero->next;
 
             if (*(int*)last_non_zero->data)
