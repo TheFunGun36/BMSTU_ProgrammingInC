@@ -91,7 +91,7 @@ int main()
         clear(&bn2, 1);
     }
 
-    return 0;
+    return exit_code;
 }
 
 int input_cmd()
