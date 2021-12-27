@@ -176,10 +176,9 @@ int file_read_string(FILE *f, char **str)
 
             if (endl_pos)
             {
-                *endl_pos = '\0';
-
                 if (endl_pos - *str - 1 >= 0 && *(endl_pos - 1) == '\r')
-                    *(--endl_pos) = '\0';
+                    endl_pos--;
+                *endl_pos = '\0';
 
                 read_next = 0;
 
