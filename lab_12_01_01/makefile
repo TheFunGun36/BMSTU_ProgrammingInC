@@ -1,8 +1,8 @@
-CFLAGS = -std=c99 -pedantic -Wfloat-conversion -Wvla -Wfloat-equal -Wall -Werror -g3 -Iinc
+CFLAGS = -std=c99 -Wfloat-conversion -Wvla -Wfloat-equal -Wall -Werror -g3 -Iinc -ldl
 CC = gcc
 
 app.exe: out/main.o out/fileio.a arrayworks.dll
-	$(CC) $^ -o $@
+	$(CC) $^ -o $@ -ldl
 
 unit_tests.exe: out/check_main.o out/arrayworks.o out/check_arrayworks.a
 	$(CC) $^ -o $@
@@ -27,7 +27,7 @@ out/%.a: unit_tests/%.o inc/*.h unit_tests/*.h
 
 %.dll: src/%.o inc/*.h
 	@-mkdir out
-	$(CC) -shared $< -o $@
+	$(CC) -shared $< -o $@ -fPIC
 
 %.dll: unit_tests/%.o inc/*.h unit_tests/*.h
 	@-mkdir out

@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "fileio.h"
-#include "arrayworks.h"
 #include "errorcodes.h"
 
 int count_elements(FILE *f, int *result)
@@ -41,7 +40,7 @@ int read_elements(FILE *f, int *arr_begin, int *arr_end)
     return exit_code;
 }
 
-int create_array_from_file(FILE *f, int **arr_begin, int **arr_end)
+int create_array_from_file(FILE *f, int **arr_begin, int **arr_end, void (*safe_free)(int **, int **))
 {
     int elements_count;
     int exit_code = count_elements(f, &elements_count);

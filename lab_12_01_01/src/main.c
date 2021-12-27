@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <dlfcn.h>
 #include "fileio.h"
-#include "arrayworks.h"
 #include "errorcodes.h"
 
 #define ARG_FILEIN 1
@@ -11,11 +11,18 @@
 
 #define ARGC_MAX 4
 
-int filter_array(int **arr_begin, int **arr_end);
+int filter_array(int **arr_begin, int **arr_end, void *handle);
 int check_args(int argc, char *argv[]);
 
 int main(int argc, char *argv[])
 {
+    void *handle = dlopen("./arrayworks.dll", RTLD_LAZY);
+    if (!handle) {
+        fputs (dlerror(), stderr);
+        exit(1);
+    }
+    void (*safe_free)(int **, int **) = dlsym(handle, "safe_free");
+
     int exit_code = check_args(argc, argv);
 
     int *arr_begin = NULL, *arr_end = NULL;
@@ -26,7 +33,7 @@ int main(int argc, char *argv[])
 
         if (file_stream_in)
         {
-            exit_code = create_array_from_file(file_stream_in, &arr_begin, &arr_end);
+            exit_code = create_array_from_file(file_stream_in, &arr_begin, &arr_end, safe_free);
             fclose(file_stream_in);
         }
         else
@@ -37,11 +44,14 @@ int main(int argc, char *argv[])
 
     if (exit_code == EXIT_SUCCESS && argc == ARGC_MAX)
     {
-        exit_code = filter_array(&arr_begin, &arr_end);
+        exit_code = filter_array(&arr_begin, &arr_end, handle);
     }
 
     if (exit_code == EXIT_SUCCESS)
-        mysort(arr_begin, arr_end - arr_begin, sizeof(int), compar_ascend);
+    {
+        void (*mysort)(void *, size_t, size_t, int (*)(void*, void*)) = dlsym(handle, "mysort");
+        mysort(arr_begin, arr_end - arr_begin, sizeof(int), dlsym(handle, "compar_ascend"));
+    }
 
     if (exit_code == EXIT_SUCCESS)
     {
@@ -73,11 +83,15 @@ int check_args(int argc, char *argv[])
     return exit_code;
 }
 
-int filter_array(int **arr_begin, int **arr_end)
+int filter_array(int **arr_begin, int **arr_end, void *handle)
 {
     int exit_code = EXIT_SUCCESS;
     int *new_arr_begin;
     int *new_arr_end;
+
+    int (*find_min_max_element)(int *, int *, const int **, const int **) = dlsym(handle, "find_min_max_element");
+    void (*swap_constptr)(const void **, const void **) = dlsym(handle, "swap_constptr");
+    int (*key)(const int *, const int *, int **, int **) = dlsym(handle, "key");
 
     find_min_max_element(*arr_begin, *arr_end, (const int **)&new_arr_begin, (const int **)&new_arr_end);
 
@@ -102,6 +116,7 @@ int filter_array(int **arr_begin, int **arr_end)
 
         if (exit_code == EXIT_SUCCESS)
         {
+            void (*safe_free)(int **, int **) = dlsym(handle, "safe_free");
             safe_free(arr_begin, arr_end);
             *arr_begin = new_arr_begin;
             *arr_end = new_arr_end;
