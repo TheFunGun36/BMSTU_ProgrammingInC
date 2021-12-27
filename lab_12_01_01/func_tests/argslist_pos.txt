@@ -1,0 +1,6 @@
+func_tests/pos_01_in.txt output.txt f
+func_tests/pos_02_in.txt output.txt
+func_tests/pos_03_in.txt output.txt f
+func_tests/pos_04_in.txt output.txt
+func_tests/pos_05_in.txt output.txt f
+func_tests/pos_06_in.txt output.txt
