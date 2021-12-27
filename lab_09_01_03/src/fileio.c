@@ -54,7 +54,7 @@ int file_read_number(unsigned int *number, FILE *f)
         exit_code = EXIT_INVALID_NUMBER;
     }
 
-    if (exit_code == EXIT_SUCCESS)
+    if (exit_code == EXIT_SUCCESS || exit_code == EOF)
         *number = number_signed;
 
     return exit_code;
@@ -127,9 +127,6 @@ int file_read_product(FILE *f, product_t *prod)
     if (exit_code == EXIT_SUCCESS)
     {
         exit_code = file_read_number(&prod->price, f);
-
-        if (exit_code == EXIT_SUCCESS)
-            exit_code = file_read_endl(f);
 
         if (exit_code == EOF)
             exit_code = EXIT_SUCCESS;
