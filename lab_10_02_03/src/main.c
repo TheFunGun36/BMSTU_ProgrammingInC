@@ -39,7 +39,6 @@ int main()
                         exit_code = exit_empty_output;
                 }
                 break;
-
             case CMD_MUL:
                 exit_code = input_numbers(&bn1, &bn2);
 
@@ -53,7 +52,6 @@ int main()
                         exit_code = exit_empty_output;
                 }
                 break;
-
             case CMD_SQR:
                 exit_code = input_numbers(&bn1, NULL);
                 
@@ -70,7 +68,6 @@ int main()
                     }
                 }
                 break;
-
             case CMD_DIV:
                 exit_code = input_numbers(&bn1, &bn2);
 
