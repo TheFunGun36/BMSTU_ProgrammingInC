@@ -69,7 +69,7 @@ int seek_eof(FILE *f)
 int read_product_arr(product_t **product_arr, unsigned int *product_arr_size, char *filename)
 {
     int exit_code = EXIT_SUCCESS;
-    FILE *f = fopen(filename, "rb");
+    FILE *f = fopen(filename, "rt");
 
     if (f)
     {
