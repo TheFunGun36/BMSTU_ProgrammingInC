@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <inttypes.h>
 #include "fileio.h"
 
 #define EOF_NOT_FOUND 0
@@ -38,18 +39,20 @@ int file_read_endl(FILE *f)
 int file_read_number(unsigned int *number, FILE *f)
 {
     int exit_code = EXIT_SUCCESS;
-    int number_signed;
-    int result = fscanf(f, "%d", &number_signed);
+    long long number_signed;
+    int result = fscanf(f, "%lld", &number_signed);
 
     if (result == 1)
     {
-        if (number_signed < 0)
+        if (number_signed < 0 || number_signed > INT32_MAX)
             exit_code = EXIT_INVALID_NUMBER;
         else
             exit_code = file_read_endl(f);
     }
     else
+    {
         exit_code = EXIT_INVALID_NUMBER;
+    }
 
     if (exit_code == EXIT_SUCCESS)
         *number = number_signed;
@@ -123,11 +126,9 @@ int file_read_product(FILE *f, product_t *prod)
 
     if (exit_code == EXIT_SUCCESS)
     {
-        int res = fscanf(f, "%u", &prod->price);
+        exit_code = file_read_number(&prod->price, f);
 
-        if (res != 1)
-            exit_code = EXIT_INVALID_NUMBER;
-        else
+        if (exit_code == EXIT_SUCCESS)
             exit_code = file_read_endl(f);
 
         if (exit_code == EOF)

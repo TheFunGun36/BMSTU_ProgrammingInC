@@ -5,3 +5,4 @@ func_tests/pos_04_in.txt 5.5
 func_tests/pos_05_in.txt 1e3
 func_tests/pos_06_in.txt 0.1
 func_tests/pos_07_in.txt 100
+func_tests/pos_08_in.txt 100001

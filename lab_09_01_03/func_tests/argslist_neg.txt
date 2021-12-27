@@ -1,5 +1,14 @@
 func_tests/neg_01_in.txt abc
 func_tests/neg_02_in.txt 100
 func_tests/neg_03_in.txt 100
+func_tests/neg_04_in.txt 100
+func_tests/neg_05_in.txt 100
+func_tests/neg_06_in.txt 10000
+func_tests/neg_07_in.txt 10000
+func_tests/neg_08_in.txt 10000
 func_tests/neg_09_in.txt 300
+func_tests/neg_01_in.txt 0
+func_tests/neg_01_in.txt -12
+func_tests/neg_01_in.txt
+
 wow.txt 15
