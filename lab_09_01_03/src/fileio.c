@@ -17,13 +17,22 @@ static int file_read_endl(FILE *f);
 
 int file_read_endl(FILE *f)
 {
-    char endl;
-    int res = fscanf(f, "%c", &endl);
+    const char *space_symbols = "\r\n\t\v\f";
+    int result = EXIT_SUCCESS;
 
-    if (res == 1 && endl == '\r')
-        res = fscanf(f, "%c", &endl);
+    char c;
 
-    return (res == 1 && endl == '\n') ? (EXIT_SUCCESS) : (EXIT_LINE_NOT_READ);
+    do
+    {
+        c = fgetc(f);
+
+        if (c == EOF)
+            result = EOF;
+        else if (!strchr(space_symbols, c))
+            result = EXIT_LINE_NOT_READ;
+    } while (result == EXIT_SUCCESS && c != '\n');
+
+    return result;
 }
 
 int file_read_number(unsigned int *number, FILE *f)
@@ -120,6 +129,9 @@ int file_read_product(FILE *f, product_t *prod)
             exit_code = EXIT_INVALID_NUMBER;
         else
             exit_code = file_read_endl(f);
+
+        if (exit_code == EOF)
+            exit_code = EXIT_SUCCESS;
     }
 
     if (exit_code != EXIT_SUCCESS)
