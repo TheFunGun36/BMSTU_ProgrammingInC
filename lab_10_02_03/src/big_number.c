@@ -147,46 +147,54 @@ node_t *bign_divide(node_t **a, node_t **b, int *found_negatives)
     *found_negatives = 0;
     node_t *result = NULL;
 
-    if (a && b && *a && list_length(*a) >= list_length(*b))
+    if (a && b && *a)
     {
-        node_t *cur_a = *a;
-        node_t *cur_b = *b;
-        node_t *last_non_zero = cur_a;
-
-        while (cur_b)
+        if (list_length(*a) >= list_length(*b))
         {
-            *(int*)cur_a->data -= *(int*)cur_b->data;
+            node_t *cur_a = *a;
+            node_t *cur_b = *b;
+            node_t *last_non_zero = cur_a;
 
-            *found_negatives |= *(int*)cur_a->data < 0;
+            while (cur_b)
+            {
+                *(int*)cur_a->data -= *(int*)cur_b->data;
 
-            if (*(int*)cur_a->data != 0)
-                last_non_zero = cur_a;
+                *found_negatives |= *(int*)cur_a->data < 0;
 
-            cur_a = cur_a->next;
-            cur_b = cur_b->next;
+                if (*(int*)cur_a->data != 0)
+                    last_non_zero = cur_a;
+
+                cur_a = cur_a->next;
+                cur_b = cur_b->next;
+            }
+
+            while (cur_a)
+            {
+                if (*(int*)cur_a->data != 0)
+                    last_non_zero = cur_a;
+
+                cur_a = cur_a->next;
+            }
+
+            if (*b != *a)
+                clear(b, 1);
+
+            while(last_non_zero->next && *(int*)last_non_zero->next->data)
+                last_non_zero = last_non_zero->next;
+
+            if (*(int*)last_non_zero->data)
+                clear(&last_non_zero->next, 1);
+            else
+                clear(a, 1);
+
+            result = *a;
+            *a = NULL;
         }
-
-        while (cur_a)
-        {
-            if (*(int*)cur_a->data != 0)
-                last_non_zero = cur_a;
-
-            cur_a = cur_a->next;
-        }
-
-        if (*b != *a)
-            clear(b, 1);
-
-        while(last_non_zero->next && *(int*)last_non_zero->next->data)
-            last_non_zero = last_non_zero->next;
-
-        if (*(int*)last_non_zero->data)
-            clear(&last_non_zero->next, 1);
         else
+        {
             clear(a, 1);
-
-        result = *a;
-        *a = NULL;
+            clear(b, 1);
+        }
     }
 
     return result;
